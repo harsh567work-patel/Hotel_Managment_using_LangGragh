@@ -1,0 +1,175 @@
+{
+  "restaurant": {
+    "name": "SpiceRoute Kitchen",
+    "tagline": "Authentic Flavors, Delivered Fast",
+    "address": "12, Food Street, Bangalore - 560001",
+    "contact": "+91-9876543210"
+  },
+  "menu": [
+    {
+      "id": "D001",
+      "dish_name": "Butter Chicken",
+      "category": "Main Course",
+      "description": "Tender chicken pieces simmered in a rich, creamy tomato-based sauce with aromatic spices. Served with fragrant basmati rice.",
+      "price": 280,
+      "prep_time_minutes": 25,
+      "is_available": true,
+      "dish_man": "Chef Ravi",
+      "tags": ["non-veg", "bestseller", "spicy"]
+    },
+    {
+      "id": "D002",
+      "dish_name": "Paneer Tikka Masala",
+      "category": "Main Course",
+      "description": "Soft cottage cheese cubes marinated in yogurt and spices, grilled and cooked in a tangy onion-tomato masala gravy.",
+      "price": 240,
+      "prep_time_minutes": 20,
+      "is_available": true,
+      "dish_man": "Chef Priya",
+      "tags": ["veg", "bestseller", "spicy"]
+    },
+    {
+      "id": "D003",
+      "dish_name": "Chicken Biryani",
+      "category": "Main Course",
+      "description": "Fragrant long-grain basmati rice layered with spiced chicken, caramelised onions, fresh mint and saffron. Slow-cooked dum style.",
+      "price": 320,
+      "prep_time_minutes": 35,
+      "is_available": true,
+      "dish_man": "Chef Ravi",
+      "tags": ["non-veg", "bestseller", "signature"]
+    },
+    {
+      "id": "D004",
+      "dish_name": "Veg Biryani",
+      "category": "Main Course",
+      "description": "Aromatic basmati rice cooked with seasonal vegetables, whole spices, and saffron in the traditional dum style.",
+      "price": 220,
+      "prep_time_minutes": 30,
+      "is_available": true,
+      "dish_man": "Chef Priya",
+      "tags": ["veg", "popular"]
+    },
+    {
+      "id": "D005",
+      "dish_name": "Garlic Naan",
+      "category": "Breads",
+      "description": "Soft leavened flatbread baked in a tandoor oven, brushed with garlic butter and fresh coriander.",
+      "price": 60,
+      "prep_time_minutes": 10,
+      "is_available": true,
+      "dish_man": "Chef Arjun",
+      "tags": ["veg", "bread", "popular"]
+    },
+    {
+      "id": "D006",
+      "dish_name": "Plain Naan",
+      "category": "Breads",
+      "description": "Classic soft leavened flatbread baked in a tandoor oven. Perfect with any curry.",
+      "price": 40,
+      "prep_time_minutes": 8,
+      "is_available": true,
+      "dish_man": "Chef Arjun",
+      "tags": ["veg", "bread"]
+    },
+    {
+      "id": "D007",
+      "dish_name": "Chicken Tikka",
+      "category": "Starters",
+      "description": "Succulent chicken pieces marinated in yogurt and spices, skewered and grilled in a tandoor until perfectly charred.",
+      "price": 220,
+      "prep_time_minutes": 20,
+      "is_available": true,
+      "dish_man": "Chef Ravi",
+      "tags": ["non-veg", "starter", "spicy"]
+    },
+    {
+      "id": "D008",
+      "dish_name": "Veg Samosa (2 pcs)",
+      "category": "Starters",
+      "description": "Crispy golden pastry filled with spiced potatoes and peas. Served with mint chutney and tamarind sauce.",
+      "price": 80,
+      "prep_time_minutes": 10,
+      "is_available": true,
+      "dish_man": "Chef Arjun",
+      "tags": ["veg", "starter", "snack"]
+    },
+    {
+      "id": "D009",
+      "dish_name": "Dal Tadka",
+      "category": "Main Course",
+      "description": "Yellow lentils slow-cooked and tempered with cumin, garlic, dried red chilli and fresh coriander.",
+      "price": 160,
+      "prep_time_minutes": 15,
+      "is_available": true,
+      "dish_man": "Chef Priya",
+      "tags": ["veg", "comfort food"]
+    },
+    {
+      "id": "D010",
+      "dish_name": "Mango Lassi",
+      "category": "Drinks",
+      "description": "Chilled, creamy yogurt-based drink blended with fresh Alphonso mango pulp and a hint of cardamom.",
+      "price": 90,
+      "prep_time_minutes": 5,
+      "is_available": true,
+      "dish_man": "Chef Priya",
+      "tags": ["veg", "cold", "sweet"]
+    },
+    {
+      "id": "D011",
+      "dish_name": "Masala Chai",
+      "category": "Drinks",
+      "description": "Traditional Indian spiced tea brewed with ginger, cardamom, cinnamon, and cloves in full-cream milk.",
+      "price": 50,
+      "prep_time_minutes": 5,
+      "is_available": true,
+      "dish_man": "Chef Arjun",
+      "tags": ["veg", "hot", "classic"]
+    },
+    {
+      "id": "D012",
+      "dish_name": "Gulab Jamun (3 pcs)",
+      "category": "Desserts",
+      "description": "Soft milk-solid dumplings deep-fried to golden perfection and soaked in rose-flavoured sugar syrup.",
+      "price": 110,
+      "prep_time_minutes": 10,
+      "is_available": true,
+      "dish_man": "Chef Priya",
+      "tags": ["veg", "sweet", "dessert"]
+    },
+    {
+      "id": "D013",
+      "dish_name": "Mutton Rogan Josh",
+      "category": "Main Course",
+      "description": "Slow-cooked tender mutton in a bold, aromatic Kashmiri-style sauce with whole spices and dried red chillies.",
+      "price": 380,
+      "prep_time_minutes": 45,
+      "is_available": false,
+      "dish_man": "Chef Ravi",
+      "tags": ["non-veg", "spicy", "slow-cook"]
+    },
+    {
+      "id": "D014",
+      "dish_name": "Paneer Butter Masala",
+      "category": "Main Course",
+      "description": "Soft paneer cubes in a velvety, mildly spiced tomato-cashew gravy with a touch of cream and butter.",
+      "price": 230,
+      "prep_time_minutes": 20,
+      "is_available": false,
+      "dish_man": "Chef Priya",
+      "tags": ["veg", "mild", "creamy"]
+    },
+    {
+      "id": "D015",
+      "dish_name": "Chocolate Brownie",
+      "category": "Desserts",
+      "description": "Warm fudgy dark chocolate brownie served with a scoop of vanilla ice cream and chocolate drizzle.",
+      "price": 150,
+      "prep_time_minutes": 8,
+      "is_available": true,
+      "dish_man": "Chef Arjun",
+      "tags": ["veg", "sweet", "dessert", "popular"]
+    }
+  ]
+}

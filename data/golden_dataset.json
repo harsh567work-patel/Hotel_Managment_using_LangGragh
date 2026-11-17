@@ -1,0 +1,72 @@
+[
+  {
+    "id": "Q001",
+    "question": "What biryani options do you have?",
+    "expected_answer": "We have two biryani options: Chicken Biryani (₹320, 35 min) and Veg Biryani (₹220, 30 min). Both are cooked dum style.",
+    "context": "Chicken Biryani and Veg Biryani are available on the menu.",
+    "category": "menu_query"
+  },
+  {
+    "id": "Q002",
+    "question": "Is Mutton Rogan Josh available today?",
+    "expected_answer": "I'm sorry, Mutton Rogan Josh is currently unavailable. Can I suggest Butter Chicken or Chicken Biryani instead?",
+    "context": "Mutton Rogan Josh has is_available: false in the knowledge base.",
+    "category": "availability_check"
+  },
+  {
+    "id": "Q003",
+    "question": "What are your cheapest starters?",
+    "expected_answer": "Our starters are Veg Samosa (2 pcs) at ₹80 and Chicken Tikka at ₹220.",
+    "context": "Starters category has two items: Veg Samosa and Chicken Tikka.",
+    "category": "menu_query"
+  },
+  {
+    "id": "Q004",
+    "question": "How long will butter chicken take?",
+    "expected_answer": "Butter Chicken takes approximately 25 minutes to prepare.",
+    "context": "Butter Chicken has prep_time_minutes: 25.",
+    "category": "prep_time_query"
+  },
+  {
+    "id": "Q005",
+    "question": "What vegetarian main courses do you serve?",
+    "expected_answer": "Our vegetarian main courses include Paneer Tikka Masala (₹240), Veg Biryani (₹220), and Dal Tadka (₹160). Paneer Butter Masala is currently unavailable.",
+    "context": "Veg mains are Paneer Tikka Masala, Veg Biryani, Dal Tadka (available) and Paneer Butter Masala (unavailable).",
+    "category": "menu_query"
+  },
+  {
+    "id": "Q006",
+    "question": "Who made the Chicken Biryani?",
+    "expected_answer": "Chicken Biryani is a specialty of Chef Ravi.",
+    "context": "Chicken Biryani dish_man is Chef Ravi.",
+    "category": "dish_info"
+  },
+  {
+    "id": "Q007",
+    "question": "Do you have desserts?",
+    "expected_answer": "Yes! We have Gulab Jamun (3 pcs) at ₹110 and Chocolate Brownie at ₹150. Both take about 8-10 minutes.",
+    "context": "Desserts category has Gulab Jamun and Chocolate Brownie.",
+    "category": "menu_query"
+  },
+  {
+    "id": "Q008",
+    "question": "What drinks do you offer?",
+    "expected_answer": "We serve Mango Lassi (₹90) and Masala Chai (₹50). Both are ready in 5 minutes.",
+    "context": "Drinks category has Mango Lassi and Masala Chai.",
+    "category": "menu_query"
+  },
+  {
+    "id": "Q009",
+    "question": "What is the most expensive dish?",
+    "expected_answer": "The most expensive dish on our menu is Mutton Rogan Josh at ₹380, though it is currently unavailable. Among available dishes, Chicken Biryani at ₹320 is the priciest.",
+    "context": "Mutton Rogan Josh at ₹380 is unavailable. Chicken Biryani at ₹320 is the priciest available item.",
+    "category": "price_query"
+  },
+  {
+    "id": "Q010",
+    "question": "Tell me about the weather today",
+    "expected_answer": "I can only help you with food ordering at SpiceRoute Kitchen. Would you like to see our menu or place an order?",
+    "context": "Out-of-scope question. The system should redirect to food ordering.",
+    "category": "out_of_scope"
+  }
+]
