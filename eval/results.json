@@ -1,13 +1,13 @@
 {
   "metrics": {
-    "total_test_cases": 54,
-    "total_turns_executed": 73,
-    "intent_accuracy_percent": 98.63,
-    "cart_state_exact_match_percent": 100.0,
-    "grounded_answer_correctness_percent": 94.44,
-    "order_completion_rate_percent": 100.0,
-    "median_latency_seconds": 5.03,
-    "p95_latency_seconds": 11.34
+    "total_test_cases": 59,
+    "total_turns_executed": 88,
+    "intent_accuracy_percent": 98.86,
+    "cart_state_exact_match_percent": 91.53,
+    "grounded_answer_correctness_percent": 86.44,
+    "order_completion_rate_percent": 37.5,
+    "median_latency_seconds": 7.98,
+    "p95_latency_seconds": 16.62
   },
   "cases": [
     {
@@ -19,9 +19,12 @@
           "user": "What biryani options do you have?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
           "bot_reply": "We currently offer two biryani choices:\n\n- **Veg Biryani** \u2013 \u20b9220, 30\u202fmin prep, vegetarian, crafted by Chef\u202fPriya.  \n- **Chicken Biryani** \u2013 \u20b9320, 35\u202fmin prep, non\u2011vegetarian, crafted by Chef\u202fRavi.\n\nBoth dishes are available right now. Would you like to add either biryani to your cart, or do you have any other questions?",
-          "latency_seconds": 7.9
+          "latency_seconds": 5.2
         }
       ],
       "final_cart": [],
@@ -38,9 +41,12 @@
           "user": "What vegetarian main courses do you have?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "We offer a range of vegetarian main courses.\u202fPaneer Butter Masala is currently unavailable.\u202fAvailable options are Paneer Tikka Masala (\u20b9240\u202f\u00b7\u202f20\u202fmin, Chef\u202fPriya), Dal Tadka (\u20b9160\u202f\u00b7\u202f15\u202fmin, Chef\u202fPriya) and Veg Biryani (\u20b9220\u202f\u00b7\u202f30\u202fmin, Chef\u202fPriya).\u202fWould you like to add any of these to your cart or need anything else?",
-          "latency_seconds": 5.51
+          "bot_reply": "We have several vegetarian main courses: Paneer\u202fTikka\u202fMasala \u2013 \u20b9240, 20\u202fmin, Chef\u202fPriya; Dal\u202fTadka \u2013 \u20b9160, 15\u202fmin, Chef\u202fPriya; and Veg\u202fBiryani \u2013 \u20b9220, 30\u202fmin, Chef\u202fPriya. Our Paneer\u202fButter\u202fMasala is currently unavailable today. All of these dishes are vegetarian and prepared by Chef\u202fPriya. Would you like to add any of them to your cart or have any other questions?",
+          "latency_seconds": 3.97
         }
       ],
       "final_cart": [],
@@ -57,9 +63,12 @@
           "user": "Do you have desserts?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "Yes, we have desserts available today.\u202f\u2022\u202f**Gulab Jamun (3 pcs)** \u2013 \u20b9110, 10\u202fmin prep, crafted by Chef\u202fPriya \u2013 soft milk\u2011solid dumplings soaked in rose\u2011flavoured syrup.\u202f\u2022\u202f**Chocolate Brownie** \u2013 \u20b9150, 8\u202fmin prep, crafted by Chef\u202fArjun \u2013 warm fudgy brownie served with vanilla ice\u2011cream and chocolate drizzle. Both are vegetarian treats. Would you like to add any of these to your cart or do you have any other questions?",
-          "latency_seconds": 5.37
+          "bot_reply": "Yes, we have desserts on the menu.\u202fGulab Jamun (3\u202fpcs) \u2013 \u20b9110, 10\u202fmin prep, created by Chef\u202fPriya, soft milk\u2011solid dumplings soaked in rose\u2011flavoured syrup.\u202fChocolate Brownie \u2013 \u20b9150, 8\u202fmin prep, crafted by Chef\u202fArjun, a warm fudgy brownie served with vanilla ice\u2011cream and chocolate drizzle. Both desserts are vegetarian and currently available. Would you like to add any of these to your cart or have any other questions?",
+          "latency_seconds": 3.57
         }
       ],
       "final_cart": [],
@@ -76,9 +85,12 @@
           "user": "What drinks do you serve?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "We serve two refreshing drinks:\n\n- **Mango Lassi** \u2013 \u20b990.0, 5\u202fmin prep, crafted by Chef Priya; a chilled, creamy yogurt\u2011based blend of fresh Alphonso mango pulp with a hint of cardamom.  \n- **Masala Chai** \u2013 \u20b950.0, 5\u202fmin prep, crafted by Chef Arjun; a traditional spiced tea brewed with ginger, cardamom, cinnamon, cloves, and full\u2011cream milk.\n\nBoth are vegetarian and currently available. Would you like to add either drink to your cart, or do you have any other questions?",
-          "latency_seconds": 5.03
+          "bot_reply": "We currently serve two drinks: **Mango Lassi** \u2013 \u20b990, 5\u202fmin prep, crafted by Chef\u202fPriya; and **Masala Chai** \u2013 \u20b950, 5\u202fmin prep, crafted by Chef\u202fArjun. Both are vegetarian and available right now. Would you like to add any of these to your cart or have any other questions?",
+          "latency_seconds": 3.74
         }
       ],
       "final_cart": [],
@@ -95,9 +107,12 @@
           "user": "What starters can I order?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "We have two starter options available:\n\n- **Chicken Tikka** \u2013 \u20b9220.0, 20\u202fmin prep, Specialty Chef\u202fRavi. Succulent chicken pieces marinated in yogurt and spices, skewered and grilled until perfectly charred. *(non\u2011veg, spicy)*\n- **Veg Samosa (2 pcs)** \u2013 \u20b980.0, 10\u202fmin prep, Specialty Chef\u202fArjun. Crispy golden pastry filled with spiced potatoes and peas, served with mint chutney and tamarind sauce. *(veg, snack)*\n\nWould you like to add any of these to your cart, or do you have any other questions?",
-          "latency_seconds": 5.48
+          "bot_reply": "We have two starters ready for you:\n\n- **Chicken Tikka** \u2013 \u20b9220, 20\u202fmin prep, prepared by Chef\u202fRavi. Succulent chicken pieces marinated in yogurt and spices, grilled to a perfect char. *(Non\u2011veg, spicy)*  \n- **Veg Samosa (2\u202fpcs)** \u2013 \u20b980, 10\u202fmin prep, prepared by Chef\u202fArjun. Crispy golden pastries filled with spiced potatoes and peas, served with mint chutney and tamarind sauce. *(Veg, snack)*  \n\nWould you like to add any of these to your cart, or do you have any other questions?",
+          "latency_seconds": 6.39
         }
       ],
       "final_cart": [],
@@ -114,9 +129,12 @@
           "user": "What kind of naan or breads do you have?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "We have two naan options in our Breads section:\n\n- **Plain Naan** \u2013 \u20b940.00, prep time\u202f8\u202fmin, made by Chef\u202fArjun. A classic soft, leavened flatbread baked in the tandoor.  \n- **Garlic Naan** \u2013 \u20b960.00, prep time\u202f10\u202fmin, made by Chef\u202fArjun. Soft flatbread brushed with garlic butter and fresh coriander.\n\nBoth are vegetarian and currently available. Would you like to add any of these to your cart or have any other questions?",
-          "latency_seconds": 4.97
+          "bot_reply": "We have two naan options in our Breads section:\n\n- **Plain Naan** \u2013 \u20b940.00, prep time\u202f8\u202fmin, made by Chef\u202fArjun. A classic soft, leavened flatbread baked in the tandoor.  \n- **Garlic Naan** \u2013 \u20b960.00, prep time\u202f10\u202fmin, made by Chef\u202fArjun. Soft flatbread brushed with garlic butter and fresh coriander.\n\nBoth are vegetarian and currently available. Would you like to add any of these to your cart, or do you have any other questions?",
+          "latency_seconds": 15.56
         }
       ],
       "final_cart": [],
@@ -133,9 +151,12 @@
           "user": "Who made the Chicken Biryani?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "The Chicken Biryani is crafted by our Specialty Chef, **Chef\u202fRavi**. It\u2019s a signature non\u2011veg main course priced at \u20b9320.0 with a prep time of 35\u202fminutes.  \n\nWould you like to add the Chicken Biryani to your cart, or do you have any other questions?",
-          "latency_seconds": 5.05
+          "bot_reply": "Chicken Biryani is prepared by our specialty chef, **Chef Ravi**. It\u2019s a non\u2011vegetarian main course priced at \u20b9320.00, takes about 35 minutes to prepare, and is currently available.  \n\nWould you like to add Chicken Biryani to your cart, or do you have any other questions?",
+          "latency_seconds": 13.58
         }
       ],
       "final_cart": [],
@@ -152,9 +173,12 @@
           "user": "Who prepares the Dal Tadka?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "The Dal Tadka is prepared by our Specialty Chef, **Chef\u202fPriya**. It\u2019s a vegetarian main\u2011course priced at \u20b9160.0 with a 15\u2011minute prep time. If you\u2019d like, you can also explore Chef\u202fPriya\u2019s other vegetarian mains like Paneer Tikka Masala or Veg Biryani. Would you like to add Dal Tadka to your cart or have any other questions?",
-          "latency_seconds": 5.46
+          "bot_reply": "The Dal Tadka is prepared by our Specialty Chef, **Chef\u202fPriya**.  \n\nWould you like to add the Dal Tadka to your cart, or do you have any other questions?",
+          "latency_seconds": 7.8
         }
       ],
       "final_cart": [],
@@ -171,9 +195,12 @@
           "user": "How long does butter chicken take to prepare?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "Butter Chicken is currently **available** and takes **25\u202fminutes** to prepare. It\u2019s a non\u2011vegetarian main course crafted by Chef\u202fRavi, featuring tender chicken in a rich, creamy tomato\u2011based sauce. Would you like to add Butter Chicken to your cart, or do you have any other questions?",
-          "latency_seconds": 9.11
+          "bot_reply": "Butter Chicken is currently **available** and takes **25\u202fminutes** to prepare. It\u2019s a non\u2011vegetarian main course priced at **\u20b9280.0**, crafted by our Specialty Chef\u202fRavi. The dish features tender chicken simmered in a rich, creamy tomato\u2011based sauce with aromatic spices, served with fragrant basmati rice. Would you like to add Butter Chicken to your cart or have any other questions?",
+          "latency_seconds": 16.51
         }
       ],
       "final_cart": [],
@@ -190,9 +217,12 @@
           "user": "Show me what food you have",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
           "bot_reply": "Here\u2019s what we currently offer:\n\n- Veg\u202fSamosa (2\u202fpcs) \u2013 Starters, \u20b980.0, 10\u202fmin prep, Chef\u202fArjun (vegetarian).  \n- Butter\u202fChicken \u2013 Main Course, \u20b9280.0, 25\u202fmin prep, Chef\u202fRavi (non\u2011vegetarian).  \n- Veg\u202fBiryani \u2013 Main Course, \u20b9220.0, 30\u202fmin prep, Chef\u202fPriya (vegetarian).  \n- Dal\u202fTadka \u2013 Main Course, \u20b9160.0, 15\u202fmin prep, Chef\u202fPriya (vegetarian).  \n- Chocolate\u202fBrownie \u2013 Desserts, \u20b9150.0, 8\u202fmin prep, Chef\u202fArjun (vegetarian).  \n\nWould you like to add any of these to your cart or have any other questions?",
-          "latency_seconds": 10.34
+          "latency_seconds": 10.57
         }
       ],
       "final_cart": [],
@@ -209,9 +239,12 @@
           "user": "What are your cheapest starters?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "Our starters are:\n\n- **Veg Samosa (2 pcs)** \u2013\u202f\u20b980.0, prep time\u202f10\u202fmin, prepared by Chef\u202fArjun.  \n- **Chicken Tikka** \u2013\u202f\u20b9220.0, prep time\u202f20\u202fmin, prepared by Chef\u202fRavi.\n\nThe Veg Samosa is the cheapest starter on the menu. Would you like to add any of these to your cart, or do you have any other questions?",
-          "latency_seconds": 11.33
+          "bot_reply": "Our most affordable starter is the **Veg Samosa (2 pcs)** \u2013\u202f\u20b980.0, 10\u202fmin prep, crafted by **Chef\u202fArjun**. The other starter on the menu, **Chicken Tikka**, is priced at \u20b9220.0 with a 20\u2011minute prep time (Chef\u202fRavi).  \n\nWould you like to add any of these to your cart, or do you have any other questions?",
+          "latency_seconds": 15.62
         }
       ],
       "final_cart": [],
@@ -228,9 +261,12 @@
           "user": "What is the most expensive dish on your menu?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "The most expensive item on our menu is **Mutton Rogan\u202fJosh** \u2013 \u20b9380, 45\u202fmin preparation, crafted by Chef\u202fRavi \u2013 but it is **unavailable today**. As alternatives in the same Main\u2011Course, non\u2011vegetarian category, you might enjoy **Chicken Biryani** (\u20b9320, 35\u202fmin, Chef\u202fRavi) or **Butter Chicken** (\u20b9280, 25\u202fmin, Chef\u202fRavi). Both are popular and ready to order. Would you like to add one of these to your cart or have any other questions?",
-          "latency_seconds": 8.61
+          "bot_reply": "The most expensive dish on our menu is the **Mutton Rogan\u202fJosh** priced at **\u20b9380.0**, but it is **unavailable today**. For a similarly satisfying non\u2011vegetarian main course, you might enjoy **Chicken Biryani** (\u20b9320.0, 35\u202fmin, Chef\u202fRavi) or **Butter Chicken** (\u20b9280.0, 25\u202fmin, Chef\u202fRavi), both of which are available. Would you like to add one of these to your cart or have any other questions?",
+          "latency_seconds": 13.39
         }
       ],
       "final_cart": [],
@@ -247,9 +283,12 @@
           "user": "What drinks do you have under 100 rupees?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "We have two drinks priced under\u202f\u20b9100:\n\n- **Mango Lassi** \u2013 \u20b990.0, prep time\u202f5\u202fmin, crafted by Chef\u202fPriya; a chilled, creamy yogurt\u2011based drink with fresh Alphonso mango pulp and a hint of cardamom.  \n- **Masala Chai** \u2013 \u20b950.0, prep time\u202f5\u202fmin, crafted by Chef\u202fArjun; a traditional spiced tea brewed with ginger, cardamom, cinnamon, cloves, and full\u2011cream milk.\n\nBoth are currently available. Would you like to add either of these to your cart, or do you have any other questions?",
-          "latency_seconds": 10.64
+          "bot_reply": "We have two drinks priced under\u202f\u20b9100.  \n**Mango Lassi** \u2013 \u20b990, 5\u202fmin prep, specialty of Chef\u202fPriya; a chilled, creamy yogurt drink blended with fresh Alphonso mango pulp and a hint of cardamom.  \n**Masala Chai** \u2013 \u20b950, 5\u202fmin prep, specialty of Chef\u202fArjun; a traditional spiced tea brewed with ginger, cardamom, cinnamon, cloves in full\u2011cream milk.  \nWould you like to add any of these to your cart or have any other questions?",
+          "latency_seconds": 15.75
         }
       ],
       "final_cart": [],
@@ -266,9 +305,12 @@
           "user": "What is your fastest dessert to prepare?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "The quickest dessert we offer is the **Chocolate Brownie** \u2013 it\u2019s ready in just **8\u202fminutes**, priced at **\u20b9150.0**, and is prepared by **Chef\u202fArjun**. It\u2019s a warm, fudgy dark\u2011chocolate brownie served with vanilla ice\u2011cream and a chocolate drizzle, and it\u2019s currently **AVAILABLE**.  \n\nWould you like to add the Chocolate Brownie to your cart, or do you have any other questions?",
-          "latency_seconds": 8.44
+          "bot_reply": "Our quickest dessert is the **Chocolate Brownie** \u2013 it\u2019s ready in just **8\u202fminutes**, priced at **\u20b9150.0**, and is crafted by **Chef Arjun**. It\u2019s a warm, fudgy dark\u2011chocolate brownie served with vanilla ice\u2011cream and a chocolate drizzle. The other dessert, Gulab Jamun, takes 10\u202fminutes, so the brownie is the fastest option. Would you like to add the Chocolate Brownie to your cart, or do you have any other questions?",
+          "latency_seconds": 16.7
         }
       ],
       "final_cart": [],
@@ -285,9 +327,12 @@
           "user": "What is the cheapest vegetarian main course?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "The cheapest vegetarian main\u2011course is **Dal Tadka** \u2013 priced at **\u20b9160**, with a preparation time of **15\u202fminutes**, crafted by **Chef Priya**.  \n\nWould you like to add Dal Tadka to your cart, or do you have any other questions?",
-          "latency_seconds": 12.6
+          "bot_reply": "The cheapest vegetarian main\u2011course is **Dal Tadka** \u2013 priced at **\u20b9160.0**, prepared in **15\u202fminutes**, and crafted by **Chef Priya**. It\u2019s a comforting yellow\u2011lentil dish tempered with cumin, garlic, dried red chilli and fresh coriander.  \n\nWould you like to add Dal Tadka to your cart, or do you have any other questions?",
+          "latency_seconds": 12.28
         }
       ],
       "final_cart": [],
@@ -304,9 +349,12 @@
           "user": "What is your lowest price bread?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "The cheapest bread we offer is the **Plain Naan** \u2013\u202f\u20b940.0, prepared in about\u202f8\u202fminutes by our Specialty Chef\u202fArjun. It\u2019s a classic soft leavened flatbread baked in the tandoor, perfect with any curry. \n\nWould you like to add the Plain Naan to your cart, or do you have any other questions?",
-          "latency_seconds": 10.26
+          "bot_reply": "Our most affordable bread is the **Plain Naan** \u2013\u202f\u20b940.0, prepared in about\u202f8\u202fminutes by Chef\u202fArjun. It\u2019s a classic soft leavened flatbread baked in our tandoor, perfect with any curry. If you\u2019d like, you can also enjoy the Garlic Naan (\u20b960.0, 10\u202fmin, Chef\u202fArjun) for a garlicky twist. Would you like to add the Plain Naan to your cart or have any other questions?",
+          "latency_seconds": 11.74
         }
       ],
       "final_cart": [],
@@ -323,9 +371,12 @@
           "user": "What is your most expensive starter?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "Our most expensive starter is **Chicken Tikka** \u2013 priced at **\u20b9220.0**, prepared in **20\u202fminutes**, and crafted by **Chef Ravi**. It\u2019s a succulent, char\u2011grilled chicken dish marinated in yogurt and spices.  \n\nWould you like to add Chicken Tikka to your cart, or is there anything else I can help you with?",
-          "latency_seconds": 7.62
+          "bot_reply": "Our most expensive starter is **Chicken Tikka** \u2013 priced at **\u20b9220.0**, prepared in **20\u202fminutes**, and crafted by **Chef Ravi**. It\u2019s a succulent, char\u2011grilled chicken dish seasoned with yogurt and spices.  \n\nWould you like to add Chicken Tikka to your cart, or is there anything else I can help you with?",
+          "latency_seconds": 14.12
         }
       ],
       "final_cart": [],
@@ -342,9 +393,12 @@
           "user": "What items do you have under 100 rupees?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "We have one item priced under\u202f\u20b9100: **Veg Samosa (2\u202fpcs)** \u2013 a starter priced at **\u20b980.0**, prepared in **10\u202fminutes** by **Chef\u202fArjun**. It\u2019s a crispy golden pastry filled with spiced potatoes and peas, served with mint chutney and tamarind sauce. This dish is currently **AVAILABLE** and is vegetarian. Would you like to add the Veg Samosa to your cart or ask about anything else?",
-          "latency_seconds": 11.37
+          "bot_reply": "We have one item priced under\u202f\u20b9100:\n\n- **Veg Samosa (2 pcs)** \u2013 \u20b980.0, prep time\u202f10\u202fmin, vegetarian starter prepared by Chef\u202fArjun.  \n\nWould you like to add the Veg Samosa to your cart, or is there anything else I can help you with?",
+          "latency_seconds": 11.04
         }
       ],
       "final_cart": [],
@@ -361,9 +415,12 @@
           "user": "I want 1 butter chicken",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Butter Chicken** x1 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Butter Chicken x1 \u2014 \u20b9280\n\n**Total: \u20b9280** | \u23f1\ufe0f Prep Time: ~25 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 9.35
+          "bot_reply": "\u2705 Added **Butter Chicken** x1 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Butter Chicken x1 \u2014 \u20b9280\n\n\ud83d\udcb0 **Total:** \u20b9280\n\u23f1\ufe0f **Prep time:** ~25 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 13.43
         }
       ],
       "final_cart": [
@@ -385,9 +442,12 @@
           "user": "Add 2 veg biryani to my cart",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Veg Biryani** x2 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Veg Biryani x2 \u2014 \u20b9440\n\n**Total: \u20b9440** | \u23f1\ufe0f Prep Time: ~30 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 7.29
+          "bot_reply": "\u2705 Added **Veg Biryani** x2 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Veg Biryani x2 \u2014 \u20b9440\n\n\ud83d\udcb0 **Total:** \u20b9440\n\u23f1\ufe0f **Prep time:** ~30 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 8.72
         }
       ],
       "final_cart": [
@@ -409,9 +469,12 @@
           "user": "I want 1 paneer tikka masala and 2 garlic naan",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Paneer Tikka Masala** x1 to your cart\n\u2705 Added **Garlic Naan** x2 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Paneer Tikka Masala x1 \u2014 \u20b9240\n  \u2022 Garlic Naan x2 \u2014 \u20b9120\n\n**Total: \u20b9360** | \u23f1\ufe0f Prep Time: ~20 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 9.15
+          "bot_reply": "\u2705 Added **Paneer Tikka Masala** x1 to your cart\n\u2705 Added **Garlic Naan** x2 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Paneer Tikka Masala x1 \u2014 \u20b9240\n  \u2022 Garlic Naan x2 \u2014 \u20b9120\n\n\ud83d\udcb0 **Total:** \u20b9360\n\u23f1\ufe0f **Prep time:** ~20 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 4.9
         }
       ],
       "final_cart": [
@@ -437,9 +500,12 @@
           "user": "Please add veg samosa and a mango lassi",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Veg Samosa (2 pcs)** x1 to your cart\n\u2705 Added **Mango Lassi** x1 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Veg Samosa (2 pcs) x1 \u2014 \u20b980\n  \u2022 Mango Lassi x1 \u2014 \u20b990\n\n**Total: \u20b9170** | \u23f1\ufe0f Prep Time: ~10 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 8.85
+          "bot_reply": "\u2705 Added **Veg Samosa (2 pcs)** x1 to your cart\n\u2705 Added **Mango Lassi** x1 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Veg Samosa (2 pcs) x1 \u2014 \u20b980\n  \u2022 Mango Lassi x1 \u2014 \u20b990\n\n\ud83d\udcb0 **Total:** \u20b9170\n\u23f1\ufe0f **Prep time:** ~10 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 8.18
         }
       ],
       "final_cart": [
@@ -465,9 +531,12 @@
           "user": "Order one dal tadka and two plain naan",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Dal Tadka** x1 to your cart\n\u2705 Added **Plain Naan** x2 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Dal Tadka x1 \u2014 \u20b9160\n  \u2022 Plain Naan x2 \u2014 \u20b980\n\n**Total: \u20b9240** | \u23f1\ufe0f Prep Time: ~15 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 8.87
+          "bot_reply": "\u2705 Added **Dal Tadka** x1 to your cart\n\u2705 Added **Plain Naan** x2 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Dal Tadka x1 \u2014 \u20b9160\n  \u2022 Plain Naan x2 \u2014 \u20b980\n\n\ud83d\udcb0 **Total:** \u20b9240\n\u23f1\ufe0f **Prep time:** ~15 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 8.15
         }
       ],
       "final_cart": [
@@ -493,9 +562,12 @@
           "user": "Add one chocolate brownie to my cart",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Chocolate Brownie** x1 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Chocolate Brownie x1 \u2014 \u20b9150\n\n**Total: \u20b9150** | \u23f1\ufe0f Prep Time: ~8 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 9.46
+          "bot_reply": "\u2705 Added **Chocolate Brownie** x1 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Chocolate Brownie x1 \u2014 \u20b9150\n\n\ud83d\udcb0 **Total:** \u20b9150\n\u23f1\ufe0f **Prep time:** ~8 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 9.94
         }
       ],
       "final_cart": [
@@ -517,9 +589,12 @@
           "user": "I want 3 masala chai",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Masala Chai** x3 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Masala Chai x3 \u2014 \u20b9150\n\n**Total: \u20b9150** | \u23f1\ufe0f Prep Time: ~5 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 8.81
+          "bot_reply": "\u2705 Added **Masala Chai** x3 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Masala Chai x3 \u2014 \u20b9150\n\n\ud83d\udcb0 **Total:** \u20b9150\n\u23f1\ufe0f **Prep time:** ~5 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 10.16
         }
       ],
       "final_cart": [
@@ -541,9 +616,12 @@
           "user": "Give me one chicken tikka and one garlic naan",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Chicken Tikka** x1 to your cart\n\u2705 Added **Garlic Naan** x1 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Chicken Tikka x1 \u2014 \u20b9220\n  \u2022 Garlic Naan x1 \u2014 \u20b960\n\n**Total: \u20b9280** | \u23f1\ufe0f Prep Time: ~20 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 9.08
+          "bot_reply": "\u2705 Added **Chicken Tikka** x1 to your cart\n\u2705 Added **Garlic Naan** x1 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Chicken Tikka x1 \u2014 \u20b9220\n  \u2022 Garlic Naan x1 \u2014 \u20b960\n\n\ud83d\udcb0 **Total:** \u20b9280\n\u23f1\ufe0f **Prep time:** ~20 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 3.78
         }
       ],
       "final_cart": [
@@ -569,17 +647,23 @@
           "user": "I want 2 butter chicken and 1 plain naan",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Butter Chicken** x2 to your cart\n\u2705 Added **Plain Naan** x1 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Butter Chicken x2 \u2014 \u20b9560\n  \u2022 Plain Naan x1 \u2014 \u20b940\n\n**Total: \u20b9600** | \u23f1\ufe0f Prep Time: ~25 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 4.12
+          "bot_reply": "\u2705 Added **Butter Chicken** x2 to your cart\n\u2705 Added **Plain Naan** x1 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Butter Chicken x2 \u2014 \u20b9560\n  \u2022 Plain Naan x1 \u2014 \u20b940\n\n\ud83d\udcb0 **Total:** \u20b9600\n\u23f1\ufe0f **Prep time:** ~25 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 3.29
         },
         {
           "user": "Remove the plain naan",
           "expected_intent": "modify_cart",
           "actual_intent": "modify_cart",
+          "actual_intents": [
+            "modify_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Removed **Plain Naan** from your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Butter Chicken x2 \u2014 \u20b9560\n\n**Total: \u20b9560** | \u23f1\ufe0f Prep Time: ~25 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 6.07
+          "bot_reply": "\u2705 Removed **Plain Naan** from your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Butter Chicken x2 \u2014 \u20b9560\n\n\ud83d\udcb0 **Total:** \u20b9560\n\u23f1\ufe0f **Prep time:** ~25 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 12.34
         }
       ],
       "final_cart": [
@@ -601,17 +685,23 @@
           "user": "Add 1 butter chicken",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Butter Chicken** x1 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Butter Chicken x1 \u2014 \u20b9280\n\n**Total: \u20b9280** | \u23f1\ufe0f Prep Time: ~25 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 4.05
+          "bot_reply": "\u2705 Added **Butter Chicken** x1 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Butter Chicken x1 \u2014 \u20b9280\n\n\ud83d\udcb0 **Total:** \u20b9280\n\u23f1\ufe0f **Prep time:** ~25 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 7.15
         },
         {
           "user": "Change butter chicken to 3",
           "expected_intent": "modify_cart",
           "actual_intent": "modify_cart",
+          "actual_intents": [
+            "modify_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Updated **Butter Chicken** quantity to 3\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Butter Chicken x3 \u2014 \u20b9840\n\n**Total: \u20b9840** | \u23f1\ufe0f Prep Time: ~25 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 3.99
+          "bot_reply": "\u2705 Updated **Butter Chicken** quantity to 3\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Butter Chicken x3 \u2014 \u20b9840\n\n\ud83d\udcb0 **Total:** \u20b9840\n\u23f1\ufe0f **Prep time:** ~25 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 4.63
         }
       ],
       "final_cart": [
@@ -633,17 +723,23 @@
           "user": "I want 4 garlic naan",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Garlic Naan** x4 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Garlic Naan x4 \u2014 \u20b9240\n\n**Total: \u20b9240** | \u23f1\ufe0f Prep Time: ~10 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 3.93
+          "bot_reply": "\u2705 Added **Garlic Naan** x4 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Garlic Naan x4 \u2014 \u20b9240\n\n\ud83d\udcb0 **Total:** \u20b9240\n\u23f1\ufe0f **Prep time:** ~10 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 8.68
         },
         {
           "user": "Actually make it 2 garlic naan instead",
           "expected_intent": "modify_cart",
           "actual_intent": "modify_cart",
+          "actual_intents": [
+            "modify_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Updated **Garlic Naan** quantity to 2\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Garlic Naan x2 \u2014 \u20b9120\n\n**Total: \u20b9120** | \u23f1\ufe0f Prep Time: ~10 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 4.14
+          "bot_reply": "\u2705 Updated **Garlic Naan** quantity to 2\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Garlic Naan x2 \u2014 \u20b9120\n\n\ud83d\udcb0 **Total:** \u20b9120\n\u23f1\ufe0f **Prep time:** ~10 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 12.33
         }
       ],
       "final_cart": [
@@ -665,17 +761,23 @@
           "user": "Add 2 chicken biryani",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Chicken Biryani** x2 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Chicken Biryani x2 \u2014 \u20b9640\n\n**Total: \u20b9640** | \u23f1\ufe0f Prep Time: ~35 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 4.84
+          "bot_reply": "\u2705 Added **Chicken Biryani** x2 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Chicken Biryani x2 \u2014 \u20b9640\n\n\ud83d\udcb0 **Total:** \u20b9640\n\u23f1\ufe0f **Prep time:** ~35 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 11.98
         },
         {
           "user": "Clear my cart",
           "expected_intent": "modify_cart",
           "actual_intent": "modify_cart",
+          "actual_intents": [
+            "modify_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Emptied the cart.\n\n\nYour cart is currently empty. Tell me what you'd like to eat!",
-          "latency_seconds": 4.34
+          "bot_reply": "\u2705 Emptied the cart.\n\nYour cart is currently empty. Tell me what you'd like to eat!",
+          "latency_seconds": 12.49
         }
       ],
       "final_cart": [],
@@ -692,17 +794,23 @@
           "user": "I want 1 veg biryani",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Veg Biryani** x1 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Veg Biryani x1 \u2014 \u20b9220\n\n**Total: \u20b9220** | \u23f1\ufe0f Prep Time: ~30 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 7.93
+          "bot_reply": "\u2705 Added **Veg Biryani** x1 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Veg Biryani x1 \u2014 \u20b9220\n\n\ud83d\udcb0 **Total:** \u20b9220\n\u23f1\ufe0f **Prep time:** ~30 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 21.08
         },
         {
           "user": "Remove the mango lassi",
           "expected_intent": "modify_cart",
           "actual_intent": "modify_cart",
+          "actual_intents": [
+            "modify_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u26a0\ufe0f **Mango Lassi** was not in your cart.\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Veg Biryani x1 \u2014 \u20b9220\n\n**Total: \u20b9220** | \u23f1\ufe0f Prep Time: ~30 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 5.29
+          "bot_reply": "\u26a0\ufe0f **Mango Lassi** was not in your cart.\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Veg Biryani x1 \u2014 \u20b9220\n\n\ud83d\udcb0 **Total:** \u20b9220\n\u23f1\ufe0f **Prep time:** ~30 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 8.54
         }
       ],
       "final_cart": [
@@ -724,25 +832,34 @@
           "user": "Add 1 butter chicken and 1 dal tadka",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Butter Chicken** x1 to your cart\n\u2705 Added **Dal Tadka** x1 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Butter Chicken x1 \u2014 \u20b9280\n  \u2022 Dal Tadka x1 \u2014 \u20b9160\n\n**Total: \u20b9440** | \u23f1\ufe0f Prep Time: ~25 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 4.51
+          "bot_reply": "\u2705 Added **Butter Chicken** x1 to your cart\n\u2705 Added **Dal Tadka** x1 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Butter Chicken x1 \u2014 \u20b9280\n  \u2022 Dal Tadka x1 \u2014 \u20b9160\n\n\ud83d\udcb0 **Total:** \u20b9440\n\u23f1\ufe0f **Prep time:** ~25 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 12.42
         },
         {
           "user": "Remove dal tadka",
           "expected_intent": "modify_cart",
           "actual_intent": "modify_cart",
+          "actual_intents": [
+            "modify_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Removed **Dal Tadka** from your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Butter Chicken x1 \u2014 \u20b9280\n\n**Total: \u20b9280** | \u23f1\ufe0f Prep Time: ~25 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 6.13
+          "bot_reply": "\u2705 Removed **Dal Tadka** from your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Butter Chicken x1 \u2014 \u20b9280\n\n\ud83d\udcb0 **Total:** \u20b9280\n\u23f1\ufe0f **Prep time:** ~25 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 2.67
         },
         {
           "user": "Remove butter chicken",
           "expected_intent": "modify_cart",
           "actual_intent": "modify_cart",
+          "actual_intents": [
+            "modify_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Removed **Butter Chicken** from your cart\n\n\nYour cart is currently empty. Tell me what you'd like to eat!",
-          "latency_seconds": 3.65
+          "bot_reply": "\u2705 Removed **Butter Chicken** from your cart\n\nYour cart is currently empty. Tell me what you'd like to eat!",
+          "latency_seconds": 9.84
         }
       ],
       "final_cart": [],
@@ -759,17 +876,23 @@
           "user": "Add 2 mango lassi",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Mango Lassi** x2 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Mango Lassi x2 \u2014 \u20b9180\n\n**Total: \u20b9180** | \u23f1\ufe0f Prep Time: ~5 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 3.74
+          "bot_reply": "\u2705 Added **Mango Lassi** x2 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Mango Lassi x2 \u2014 \u20b9180\n\n\ud83d\udcb0 **Total:** \u20b9180\n\u23f1\ufe0f **Prep time:** ~5 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 8.59
         },
         {
           "user": "Set mango lassi quantity to 0",
           "expected_intent": "modify_cart",
           "actual_intent": "modify_cart",
+          "actual_intents": [
+            "modify_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Removed **Mango Lassi** from your cart\n\n\nYour cart is currently empty. Tell me what you'd like to eat!",
-          "latency_seconds": 4.04
+          "bot_reply": "\u2705 Removed **Mango Lassi** from your cart\n\nYour cart is currently empty. Tell me what you'd like to eat!",
+          "latency_seconds": 10.82
         }
       ],
       "final_cart": [],
@@ -786,9 +909,12 @@
           "user": "Please empty my cart",
           "expected_intent": "modify_cart",
           "actual_intent": "modify_cart",
+          "actual_intents": [
+            "modify_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Emptied the cart.\n\n\nYour cart is currently empty. Tell me what you'd like to eat!",
-          "latency_seconds": 3.82
+          "bot_reply": "\u2705 Emptied the cart.\n\nYour cart is currently empty. Tell me what you'd like to eat!",
+          "latency_seconds": 3.5
         }
       ],
       "final_cart": [],
@@ -805,9 +931,12 @@
           "user": "Is Mutton Rogan Josh available today?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "I\u2019m sorry, but the Mutton Rogan\u202fJosh is **unavailable today**.\u202fYou might enjoy our other main\u2011course, non\u2011vegetarian options: **Butter Chicken** (\u20b9280, 25\u202fmin, Chef\u202fRavi) or **Chicken Biryani** (\u20b9320, 35\u202fmin, Chef\u202fRavi). Both are prepared by Chef\u202fRavi and are ready to satisfy a similar craving. Would you like to add one of these to your cart, or is there anything else I can help you with?",
-          "latency_seconds": 9.22
+          "bot_reply": "I'm sorry, but the Mutton Rogan\u202fJosh is **unavailable today**.\u202fYou might enjoy the available alternatives in the same main\u2011course, non\u2011veg category: **Butter Chicken** (\u20b9280, 25\u202fmin, Chef\u202fRavi) or **Chicken Biryani** (\u20b9320, 35\u202fmin, Chef\u202fRavi). Both are prepared by Chef\u202fRavi and offer a delicious, satisfying experience. Would you like to add one of these to your cart or need help with anything else?",
+          "latency_seconds": 11.4
         }
       ],
       "final_cart": [],
@@ -823,10 +952,13 @@
         {
           "user": "Can I order Paneer Butter Masala?",
           "expected_intent": "menu_inquiry",
-          "actual_intent": "add_to_cart",
-          "intent_match": false,
-          "bot_reply": "\u26a0\ufe0f Sorry, **Paneer Butter Masala** is currently unavailable today. Can I suggest **Paneer Tikka Masala, Dal Tadka** instead?\n\n\nYour cart is currently empty. Tell me what you'd like to eat!",
-          "latency_seconds": 11.67
+          "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
+          "intent_match": true,
+          "bot_reply": "I\u2019m sorry, but Paneer Butter Masala is unavailable today.\u202fYou might enjoy one of these vegetarian main\u2011course alternatives from Chef\u202fPriya: Paneer Tikka Masala (\u20b9240, 20\u202fmin), Dal Tadka (\u20b9160, 15\u202fmin), or Veg Biryani (\u20b9220, 30\u202fmin).\u202fAll are freshly prepared and ready to order.\u202fWould you like to add any of these to your cart, or is there something else I can help you with?",
+          "latency_seconds": 20.95
         }
       ],
       "final_cart": [],
@@ -843,9 +975,12 @@
           "user": "I want 1 mutton rogan josh",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u26a0\ufe0f Sorry, **Mutton Rogan Josh** is currently unavailable today. Can I suggest **Butter Chicken, Chicken Biryani** instead?\n\n\nYour cart is currently empty. Tell me what you'd like to eat!",
-          "latency_seconds": 5.44
+          "bot_reply": "\u26a0\ufe0f Sorry, **Mutton Rogan Josh** is currently unavailable today. Can I suggest **Butter Chicken, Chicken Biryani** instead?\n\nYour cart is currently empty. Tell me what you'd like to eat!",
+          "latency_seconds": 11.19
         }
       ],
       "final_cart": [],
@@ -862,9 +997,12 @@
           "user": "Add 2 paneer butter masala",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u26a0\ufe0f Sorry, **Paneer Butter Masala** is currently unavailable today. Can I suggest **Paneer Tikka Masala, Dal Tadka** instead?\n\n\nYour cart is currently empty. Tell me what you'd like to eat!",
-          "latency_seconds": 5.25
+          "bot_reply": "\u26a0\ufe0f Sorry, **Paneer Butter Masala** is currently unavailable today. Can I suggest **Paneer Tikka Masala, Dal Tadka** instead?\n\nYour cart is currently empty. Tell me what you'd like to eat!",
+          "latency_seconds": 3.64
         }
       ],
       "final_cart": [],
@@ -881,9 +1019,12 @@
           "user": "Add a large pepperoni pizza to my order",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u26a0\ufe0f I couldn't find 'large pepperoni pizza' on our menu. Please check the menu or ask me for suggestions!\n\n\nYour cart is currently empty. Tell me what you'd like to eat!",
-          "latency_seconds": 4.75
+          "bot_reply": "\u26a0\ufe0f I couldn't find 'large pepperoni pizza' on our menu. Please check the menu or ask me for suggestions!\n\nYour cart is currently empty. Tell me what you'd like to eat!",
+          "latency_seconds": 3.27
         }
       ],
       "final_cart": [],
@@ -900,9 +1041,12 @@
           "user": "I want a bowl of pasta alfredo",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u26a0\ufe0f I couldn't find 'pasta alfredo' on our menu. Please check the menu or ask me for suggestions!\n\n\nYour cart is currently empty. Tell me what you'd like to eat!",
-          "latency_seconds": 4.71
+          "bot_reply": "\u26a0\ufe0f I couldn't find 'pasta alfredo' on our menu. Please check the menu or ask me for suggestions!\n\nYour cart is currently empty. Tell me what you'd like to eat!",
+          "latency_seconds": 3.09
         }
       ],
       "final_cart": [],
@@ -919,9 +1063,12 @@
           "user": "Can you add salmon sushi?",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u26a0\ufe0f I couldn't find 'salmon sushi' on our menu. Please check the menu or ask me for suggestions!\n\n\nYour cart is currently empty. Tell me what you'd like to eat!",
-          "latency_seconds": 4.7
+          "bot_reply": "\u26a0\ufe0f I couldn't find 'salmon sushi' on our menu. Please check the menu or ask me for suggestions!\n\nYour cart is currently empty. Tell me what you'd like to eat!",
+          "latency_seconds": 5.13
         }
       ],
       "final_cart": [],
@@ -938,15 +1085,18 @@
           "user": "Do you have cheese burgers?",
           "expected_intent": "menu_inquiry",
           "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
           "intent_match": true,
-          "bot_reply": "I\u2019m sorry, we don\u2019t have cheese burgers on our menu. However, we do offer several tasty vegetarian main\u2011course options, such as Paneer Tikka Masala (\u20b9240, 20\u202fmin, Chef\u202fPriya), Dal Tadka (\u20b9160, 15\u202fmin, Chef\u202fPriya) and Veg Biryani (\u20b9220, 30\u202fmin, Chef\u202fPriya). Would you like to add any of these to your cart or have any other questions?",
-          "latency_seconds": 7.12
+          "bot_reply": "We\u2019m sorry, but cheese burgers aren\u2019t on our menu at the moment. However, if you\u2019re looking for a satisfying main\u2011course option, we do have several vegetarian favorites such as Paneer Tikka Masala (\u20b9240, 20\u202fmin, Chef Priya), Dal Tadka (\u20b9160, 15\u202fmin, Chef Priya) and Veg Biryani (\u20b9220, 30\u202fmin, Chef Priya). Would you like to add any of these to your cart, or can I help you with something else?",
+          "latency_seconds": 5.48
         }
       ],
       "final_cart": [],
       "cart_match": true,
       "order_placed": false,
-      "grounding_score": 0.3
+      "grounding_score": 0.33
     },
     {
       "id": "TC043",
@@ -957,31 +1107,45 @@
           "user": "I want 2 butter chicken",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Butter Chicken** x2 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Butter Chicken x2 \u2014 \u20b9560\n\n**Total: \u20b9560** | \u23f1\ufe0f Prep Time: ~25 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 9.85
+          "bot_reply": "\u2705 Added **Butter Chicken** x2 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Butter Chicken x2 \u2014 \u20b9560\n\n\ud83d\udcb0 **Total:** \u20b9560\n\u23f1\ufe0f **Prep time:** ~25 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 10.21
         },
         {
           "user": "Checkout please",
           "expected_intent": "checkout",
           "actual_intent": "checkout",
+          "actual_intents": [
+            "checkout"
+          ],
           "intent_match": true,
-          "bot_reply": "\ud83d\udccb **Order Review & Checkout:**\n\n  \u2022 Butter Chicken x2 \u2014 \u20b9560 (~25 min)\n\n\ud83d\udcb0 **Order Total: \u20b9560**\n\u23f1\ufe0f **Kitchen Prep Time: ~25 min** (Delivery: +15 min)\n\ud83d\udccd **Delivering from:** SpiceRoute Kitchen, 12 Food Street, Bangalore\n\nPlease reply **'confirm'** to place this order, or tell me any changes you'd like to make!",
-          "latency_seconds": 1.79
+          "bot_reply": "\ud83d\udccb **Order Review & Checkout:**\n\n  \u2022 Butter Chicken x2 \u2014 \u20b9560 (~25 min)\n\n\ud83d\udcb0 **Total:** \u20b9560\n\u23f1\ufe0f **Prep time:** ~25 min (Delivery: +15 min)\n\ud83d\udccd **Address:** Not provided yet\n\nPlease provide your **delivery address** in Bangalore (e.g. *'12 MG Road, Bangalore'*) so we can confirm your order!",
+          "latency_seconds": 1.71
         },
         {
           "user": "Confirm order",
           "expected_intent": "confirm_order",
           "actual_intent": "confirm_order",
+          "actual_intents": [
+            "confirm_order"
+          ],
           "intent_match": true,
-          "bot_reply": "\ud83c\udf89 **Order Placed Successfully!**\n\n\ud83d\udce6 **Order ID:** `ORD-56B4462B`\n\ud83c\udf7d\ufe0f **Summary:**\n  \u2022 Butter Chicken x2 \u2014 \u20b9560\n\n\ud83d\udcb0 **Total Amount:** \u20b9560 (Payment on Delivery)\n\u23f1\ufe0f **Estimated Delivery Time:** ~40 minutes\n\nOur chefs are preparing your food with authentic spices. You can check your status anytime by saying **'where is my order?'**.\nThank you for dining with **SpiceRoute Kitchen**! \ud83c\udf36\ufe0f",
-          "latency_seconds": 1.73
+          "bot_reply": "\ud83d\udccd **Delivery Address Required:**\n\nWe need your delivery address in **Bangalore, Bengaluru** before we can confirm and place your order!\n\nPlease provide your street or locality (e.g., *'12 MG Road, Bangalore'*).",
+          "latency_seconds": 3.14
         }
       ],
-      "final_cart": [],
-      "cart_match": true,
-      "order_placed": true,
-      "grounding_score": 1.0
+      "final_cart": [
+        {
+          "dish_name": "Butter Chicken",
+          "quantity": 2
+        }
+      ],
+      "cart_match": false,
+      "order_placed": false,
+      "grounding_score": 0.0
     },
     {
       "id": "TC044",
@@ -992,31 +1156,49 @@
           "user": "Add 1 veg biryani and 2 garlic naan",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Veg Biryani** x1 to your cart\n\u2705 Added **Garlic Naan** x2 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Veg Biryani x1 \u2014 \u20b9220\n  \u2022 Garlic Naan x2 \u2014 \u20b9120\n\n**Total: \u20b9340** | \u23f1\ufe0f Prep Time: ~30 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 6.19
+          "bot_reply": "\u2705 Added **Veg Biryani** x1 to your cart\n\u2705 Added **Garlic Naan** x2 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Veg Biryani x1 \u2014 \u20b9220\n  \u2022 Garlic Naan x2 \u2014 \u20b9120\n\n\ud83d\udcb0 **Total:** \u20b9340\n\u23f1\ufe0f **Prep time:** ~30 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 8.82
         },
         {
           "user": "Checkout",
           "expected_intent": "checkout",
           "actual_intent": "checkout",
+          "actual_intents": [
+            "checkout"
+          ],
           "intent_match": true,
-          "bot_reply": "\ud83d\udccb **Order Review & Checkout:**\n\n  \u2022 Veg Biryani x1 \u2014 \u20b9220 (~30 min)\n  \u2022 Garlic Naan x2 \u2014 \u20b9120 (~10 min)\n\n\ud83d\udcb0 **Order Total: \u20b9340**\n\u23f1\ufe0f **Kitchen Prep Time: ~30 min** (Delivery: +15 min)\n\ud83d\udccd **Delivering from:** SpiceRoute Kitchen, 12 Food Street, Bangalore\n\nPlease reply **'confirm'** to place this order, or tell me any changes you'd like to make!",
-          "latency_seconds": 1.64
+          "bot_reply": "\ud83d\udccb **Order Review & Checkout:**\n\n  \u2022 Veg Biryani x1 \u2014 \u20b9220 (~30 min)\n  \u2022 Garlic Naan x2 \u2014 \u20b9120 (~10 min)\n\n\ud83d\udcb0 **Total:** \u20b9340\n\u23f1\ufe0f **Prep time:** ~30 min (Delivery: +15 min)\n\ud83d\udccd **Address:** Not provided yet\n\nPlease provide your **delivery address** in Bangalore (e.g. *'12 MG Road, Bangalore'*) so we can confirm your order!",
+          "latency_seconds": 4.22
         },
         {
           "user": "Yes, confirm it",
           "expected_intent": "confirm_order",
           "actual_intent": "confirm_order",
+          "actual_intents": [
+            "confirm_order"
+          ],
           "intent_match": true,
-          "bot_reply": "\ud83c\udf89 **Order Placed Successfully!**\n\n\ud83d\udce6 **Order ID:** `ORD-81FC7670`\n\ud83c\udf7d\ufe0f **Summary:**\n  \u2022 Veg Biryani x1 \u2014 \u20b9220\n  \u2022 Garlic Naan x2 \u2014 \u20b9120\n\n\ud83d\udcb0 **Total Amount:** \u20b9340 (Payment on Delivery)\n\u23f1\ufe0f **Estimated Delivery Time:** ~45 minutes\n\nOur chefs are preparing your food with authentic spices. You can check your status anytime by saying **'where is my order?'**.\nThank you for dining with **SpiceRoute Kitchen**! \ud83c\udf36\ufe0f",
-          "latency_seconds": 1.72
+          "bot_reply": "\ud83d\udccd **Delivery Address Required:**\n\nWe need your delivery address in **Bangalore, Bengaluru** before we can confirm and place your order!\n\nPlease provide your street or locality (e.g., *'12 MG Road, Bangalore'*).",
+          "latency_seconds": 3.64
         }
       ],
-      "final_cart": [],
-      "cart_match": true,
-      "order_placed": true,
-      "grounding_score": 1.0
+      "final_cart": [
+        {
+          "dish_name": "Veg Biryani",
+          "quantity": 1
+        },
+        {
+          "dish_name": "Garlic Naan",
+          "quantity": 2
+        }
+      ],
+      "cart_match": false,
+      "order_placed": false,
+      "grounding_score": 0.2
     },
     {
       "id": "TC045",
@@ -1027,39 +1209,60 @@
           "user": "Add 2 chicken tikka and 2 mango lassi",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Chicken Tikka** x2 to your cart\n\u2705 Added **Mango Lassi** x2 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Chicken Tikka x2 \u2014 \u20b9440\n  \u2022 Mango Lassi x2 \u2014 \u20b9180\n\n**Total: \u20b9620** | \u23f1\ufe0f Prep Time: ~20 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 5.27
+          "bot_reply": "\u2705 Added **Chicken Tikka** x2 to your cart\n\u2705 Added **Mango Lassi** x2 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Chicken Tikka x2 \u2014 \u20b9440\n  \u2022 Mango Lassi x2 \u2014 \u20b9180\n\n\ud83d\udcb0 **Total:** \u20b9620\n\u23f1\ufe0f **Prep time:** ~20 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 10.5
         },
         {
           "user": "Change mango lassi to 1",
           "expected_intent": "modify_cart",
           "actual_intent": "modify_cart",
+          "actual_intents": [
+            "modify_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Updated **Mango Lassi** quantity to 1\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Chicken Tikka x2 \u2014 \u20b9440\n  \u2022 Mango Lassi x1 \u2014 \u20b990\n\n**Total: \u20b9530** | \u23f1\ufe0f Prep Time: ~20 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 3.9
+          "bot_reply": "\u2705 Updated **Mango Lassi** quantity to 1\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Chicken Tikka x2 \u2014 \u20b9440\n  \u2022 Mango Lassi x1 \u2014 \u20b990\n\n\ud83d\udcb0 **Total:** \u20b9530\n\u23f1\ufe0f **Prep time:** ~20 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 3.77
         },
         {
           "user": "Ready to checkout",
           "expected_intent": "checkout",
           "actual_intent": "checkout",
+          "actual_intents": [
+            "checkout"
+          ],
           "intent_match": true,
-          "bot_reply": "\ud83d\udccb **Order Review & Checkout:**\n\n  \u2022 Chicken Tikka x2 \u2014 \u20b9440 (~20 min)\n  \u2022 Mango Lassi x1 \u2014 \u20b990 (~5 min)\n\n\ud83d\udcb0 **Order Total: \u20b9530**\n\u23f1\ufe0f **Kitchen Prep Time: ~20 min** (Delivery: +15 min)\n\ud83d\udccd **Delivering from:** SpiceRoute Kitchen, 12 Food Street, Bangalore\n\nPlease reply **'confirm'** to place this order, or tell me any changes you'd like to make!",
-          "latency_seconds": 1.81
+          "bot_reply": "\ud83d\udccb **Order Review & Checkout:**\n\n  \u2022 Chicken Tikka x2 \u2014 \u20b9440 (~20 min)\n  \u2022 Mango Lassi x1 \u2014 \u20b990 (~5 min)\n\n\ud83d\udcb0 **Total:** \u20b9530\n\u23f1\ufe0f **Prep time:** ~20 min (Delivery: +15 min)\n\ud83d\udccd **Address:** Not provided yet\n\nPlease provide your **delivery address** in Bangalore (e.g. *'12 MG Road, Bangalore'*) so we can confirm your order!",
+          "latency_seconds": 4.29
         },
         {
           "user": "Confirm",
           "expected_intent": "confirm_order",
           "actual_intent": "confirm_order",
+          "actual_intents": [
+            "confirm_order"
+          ],
           "intent_match": true,
-          "bot_reply": "\ud83c\udf89 **Order Placed Successfully!**\n\n\ud83d\udce6 **Order ID:** `ORD-1C891ACD`\n\ud83c\udf7d\ufe0f **Summary:**\n  \u2022 Chicken Tikka x2 \u2014 \u20b9440\n  \u2022 Mango Lassi x1 \u2014 \u20b990\n\n\ud83d\udcb0 **Total Amount:** \u20b9530 (Payment on Delivery)\n\u23f1\ufe0f **Estimated Delivery Time:** ~35 minutes\n\nOur chefs are preparing your food with authentic spices. You can check your status anytime by saying **'where is my order?'**.\nThank you for dining with **SpiceRoute Kitchen**! \ud83c\udf36\ufe0f",
-          "latency_seconds": 1.58
+          "bot_reply": "\ud83d\udccd **Delivery Address Required:**\n\nWe need your delivery address in **Bangalore, Bengaluru** before we can confirm and place your order!\n\nPlease provide your street or locality (e.g., *'12 MG Road, Bangalore'*).",
+          "latency_seconds": 3.97
         }
       ],
-      "final_cart": [],
-      "cart_match": true,
-      "order_placed": true,
-      "grounding_score": 1.0
+      "final_cart": [
+        {
+          "dish_name": "Chicken Tikka",
+          "quantity": 2
+        },
+        {
+          "dish_name": "Mango Lassi",
+          "quantity": 1
+        }
+      ],
+      "cart_match": false,
+      "order_placed": false,
+      "grounding_score": 0.0
     },
     {
       "id": "TC046",
@@ -1070,9 +1273,12 @@
           "user": "I want to checkout now",
           "expected_intent": "checkout",
           "actual_intent": "checkout",
+          "actual_intents": [
+            "checkout"
+          ],
           "intent_match": true,
-          "bot_reply": "\ud83d\uded2 Your cart is currently empty! Please explore our menu or tell me what you'd like to eat before checking out.",
-          "latency_seconds": 1.74
+          "bot_reply": "\ud83d\uded2 Your cart is currently empty!\n\nPlease explore our menu or tell me what you'd like to eat before checking out.",
+          "latency_seconds": 7.01
         }
       ],
       "final_cart": [],
@@ -1089,9 +1295,12 @@
           "user": "Confirm my order",
           "expected_intent": "confirm_order",
           "actual_intent": "confirm_order",
+          "actual_intents": [
+            "confirm_order"
+          ],
           "intent_match": true,
-          "bot_reply": "\ud83d\uded2 Your cart is currently empty! Please explore our menu or tell me what you'd like to eat before checking out.",
-          "latency_seconds": 1.53
+          "bot_reply": "\ud83d\uded2 Your cart is currently empty!\n\nPlease explore our menu or tell me what you'd like to eat before checking out.",
+          "latency_seconds": 1.21
         }
       ],
       "final_cart": [],
@@ -1108,9 +1317,12 @@
           "user": "Where is my order?",
           "expected_intent": "track_order",
           "actual_intent": "track_order",
+          "actual_intents": [
+            "track_order"
+          ],
           "intent_match": true,
           "bot_reply": "You don't have an active order yet! Would you like to place one? Tell me what you'd like to eat or ask to see our menu.",
-          "latency_seconds": 1.58
+          "latency_seconds": 1.28
         }
       ],
       "final_cart": [],
@@ -1127,31 +1339,45 @@
           "user": "I want 1 chicken biryani",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Chicken Biryani** x1 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Chicken Biryani x1 \u2014 \u20b9320\n\n**Total: \u20b9320** | \u23f1\ufe0f Prep Time: ~35 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 4.36
+          "bot_reply": "\u2705 Added **Chicken Biryani** x1 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Chicken Biryani x1 \u2014 \u20b9320\n\n\ud83d\udcb0 **Total:** \u20b9320\n\u23f1\ufe0f **Prep time:** ~35 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 3.72
         },
         {
           "user": "Confirm order",
           "expected_intent": "confirm_order",
           "actual_intent": "confirm_order",
+          "actual_intents": [
+            "confirm_order"
+          ],
           "intent_match": true,
-          "bot_reply": "\ud83c\udf89 **Order Placed Successfully!**\n\n\ud83d\udce6 **Order ID:** `ORD-25C180BF`\n\ud83c\udf7d\ufe0f **Summary:**\n  \u2022 Chicken Biryani x1 \u2014 \u20b9320\n\n\ud83d\udcb0 **Total Amount:** \u20b9320 (Payment on Delivery)\n\u23f1\ufe0f **Estimated Delivery Time:** ~50 minutes\n\nOur chefs are preparing your food with authentic spices. You can check your status anytime by saying **'where is my order?'**.\nThank you for dining with **SpiceRoute Kitchen**! \ud83c\udf36\ufe0f",
-          "latency_seconds": 1.74
+          "bot_reply": "\ud83d\udccd **Delivery Address Required:**\n\nWe need your delivery address in **Bangalore, Bengaluru** before we can confirm and place your order!\n\nPlease provide your street or locality (e.g., *'12 MG Road, Bangalore'*).",
+          "latency_seconds": 1.03
         },
         {
           "user": "Where is my food?",
           "expected_intent": "track_order",
-          "actual_intent": "track_order",
-          "intent_match": true,
-          "bot_reply": "\ud83d\udce6 **Live Order Tracking**\n\n**Order ID:** `ORD-25C180BF`\n**Status:** Freshly preparing in our kitchen \ud83c\udf73\n\u23f1\ufe0f **Estimated Delivery:** ~50 minutes from placement\n\nOur delivery partner will reach your address shortly. Let us know if you need anything else!",
-          "latency_seconds": 1.72
+          "actual_intent": "menu_inquiry",
+          "actual_intents": [
+            "menu_inquiry"
+          ],
+          "intent_match": false,
+          "bot_reply": "I\u2019m sorry\u2014I don\u2019t have any details about a current order in our system. Could you please share your order number or the dishes you ordered so I can check the status for you? In the meantime, feel free to browse our menu; we have popular items like Veg Biryani (\u20b9220, 30\u202fmin, Chef\u202fPriya) and Butter Chicken (\u20b9280, 25\u202fmin, Chef\u202fRavi). Would you like to add any dish to your cart or have any other questions?",
+          "latency_seconds": 10.28
         }
       ],
-      "final_cart": [],
-      "cart_match": true,
-      "order_placed": true,
-      "grounding_score": 1.0
+      "final_cart": [
+        {
+          "dish_name": "Chicken Biryani",
+          "quantity": 1
+        }
+      ],
+      "cart_match": false,
+      "order_placed": false,
+      "grounding_score": 0.0
     },
     {
       "id": "TC050",
@@ -1162,31 +1388,49 @@
           "user": "Add 2 veg samosa and 1 masala chai",
           "expected_intent": "add_to_cart",
           "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
           "intent_match": true,
-          "bot_reply": "\u2705 Added **Veg Samosa (2 pcs)** x2 to your cart\n\u2705 Added **Masala Chai** x1 to your cart\n\n\n\ud83d\uded2 **Your Cart:**\n  \u2022 Veg Samosa (2 pcs) x2 \u2014 \u20b9160\n  \u2022 Masala Chai x1 \u2014 \u20b950\n\n**Total: \u20b9210** | \u23f1\ufe0f Prep Time: ~10 min\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
-          "latency_seconds": 4.8
+          "bot_reply": "\u2705 Added **Veg Samosa (2 pcs)** x2 to your cart\n\u2705 Added **Masala Chai** x1 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Veg Samosa (2 pcs) x2 \u2014 \u20b9160\n  \u2022 Masala Chai x1 \u2014 \u20b950\n\n\ud83d\udcb0 **Total:** \u20b9210\n\u23f1\ufe0f **Prep time:** ~10 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 6.28
         },
         {
           "user": "Confirm",
           "expected_intent": "confirm_order",
           "actual_intent": "confirm_order",
+          "actual_intents": [
+            "confirm_order"
+          ],
           "intent_match": true,
-          "bot_reply": "\ud83c\udf89 **Order Placed Successfully!**\n\n\ud83d\udce6 **Order ID:** `ORD-85C8C489`\n\ud83c\udf7d\ufe0f **Summary:**\n  \u2022 Veg Samosa (2 pcs) x2 \u2014 \u20b9160\n  \u2022 Masala Chai x1 \u2014 \u20b950\n\n\ud83d\udcb0 **Total Amount:** \u20b9210 (Payment on Delivery)\n\u23f1\ufe0f **Estimated Delivery Time:** ~25 minutes\n\nOur chefs are preparing your food with authentic spices. You can check your status anytime by saying **'where is my order?'**.\nThank you for dining with **SpiceRoute Kitchen**! \ud83c\udf36\ufe0f",
-          "latency_seconds": 1.56
+          "bot_reply": "\ud83d\udccd **Delivery Address Required:**\n\nWe need your delivery address in **Bangalore, Bengaluru** before we can confirm and place your order!\n\nPlease provide your street or locality (e.g., *'12 MG Road, Bangalore'*).",
+          "latency_seconds": 5.82
         },
         {
           "user": "How much longer until delivery?",
           "expected_intent": "track_order",
           "actual_intent": "track_order",
+          "actual_intents": [
+            "track_order"
+          ],
           "intent_match": true,
-          "bot_reply": "\ud83d\udce6 **Live Order Tracking**\n\n**Order ID:** `ORD-85C8C489`\n**Status:** Freshly preparing in our kitchen \ud83c\udf73\n\u23f1\ufe0f **Estimated Delivery:** ~25 minutes from placement\n\nOur delivery partner will reach your address shortly. Let us know if you need anything else!",
-          "latency_seconds": 1.56
+          "bot_reply": "You don't have an active order yet! Would you like to place one? Tell me what you'd like to eat or ask to see our menu.",
+          "latency_seconds": 3.32
         }
       ],
-      "final_cart": [],
-      "cart_match": true,
-      "order_placed": true,
-      "grounding_score": 1.0
+      "final_cart": [
+        {
+          "dish_name": "Veg Samosa (2 pcs)",
+          "quantity": 2
+        },
+        {
+          "dish_name": "Masala Chai",
+          "quantity": 1
+        }
+      ],
+      "cart_match": false,
+      "order_placed": false,
+      "grounding_score": 0.2
     },
     {
       "id": "TC051",
@@ -1197,9 +1441,12 @@
           "user": "Track my food delivery status",
           "expected_intent": "track_order",
           "actual_intent": "track_order",
+          "actual_intents": [
+            "track_order"
+          ],
           "intent_match": true,
           "bot_reply": "You don't have an active order yet! Would you like to place one? Tell me what you'd like to eat or ask to see our menu.",
-          "latency_seconds": 3.11
+          "latency_seconds": 5.06
         }
       ],
       "final_cart": [],
@@ -1216,9 +1463,12 @@
           "user": "What is the weather in Bangalore today?",
           "expected_intent": "out_of_scope",
           "actual_intent": "out_of_scope",
+          "actual_intents": [
+            "out_of_scope"
+          ],
           "intent_match": true,
           "bot_reply": "\ud83c\udf7d\ufe0f I'm SpiceRoute Kitchen's food ordering assistant and can only help you with:\n  \u2022 Browsing our restaurant menu & specials\n  \u2022 Customizing and placing your food order\n  \u2022 Checking live order preparation & delivery status\n\nWhat delicious dish can I get started for you today?",
-          "latency_seconds": 1.76
+          "latency_seconds": 7.97
         }
       ],
       "final_cart": [],
@@ -1235,9 +1485,12 @@
           "user": "Write a python script to sort a list",
           "expected_intent": "out_of_scope",
           "actual_intent": "out_of_scope",
+          "actual_intents": [
+            "out_of_scope"
+          ],
           "intent_match": true,
           "bot_reply": "\ud83c\udf7d\ufe0f I'm SpiceRoute Kitchen's food ordering assistant and can only help you with:\n  \u2022 Browsing our restaurant menu & specials\n  \u2022 Customizing and placing your food order\n  \u2022 Checking live order preparation & delivery status\n\nWhat delicious dish can I get started for you today?",
-          "latency_seconds": 1.77
+          "latency_seconds": 1.49
         }
       ],
       "final_cart": [],
@@ -1254,12 +1507,247 @@
           "user": "Who won the 2022 football world cup?",
           "expected_intent": "out_of_scope",
           "actual_intent": "out_of_scope",
+          "actual_intents": [
+            "out_of_scope"
+          ],
           "intent_match": true,
           "bot_reply": "\ud83c\udf7d\ufe0f I'm SpiceRoute Kitchen's food ordering assistant and can only help you with:\n  \u2022 Browsing our restaurant menu & specials\n  \u2022 Customizing and placing your food order\n  \u2022 Checking live order preparation & delivery status\n\nWhat delicious dish can I get started for you today?",
-          "latency_seconds": 1.95
+          "latency_seconds": 6.08
         }
       ],
       "final_cart": [],
+      "cart_match": true,
+      "order_placed": false,
+      "grounding_score": 1.0
+    },
+    {
+      "id": "TC055",
+      "category": "address_handling",
+      "description": "Provide delivery address while awaiting order confirmation",
+      "turns": [
+        {
+          "user": "I want 2 butter chicken",
+          "expected_intent": "add_to_cart",
+          "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
+          "intent_match": true,
+          "bot_reply": "\u2705 Added **Butter Chicken** x2 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Butter Chicken x2 \u2014 \u20b9560\n\n\ud83d\udcb0 **Total:** \u20b9560\n\u23f1\ufe0f **Prep time:** ~25 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 27.51
+        },
+        {
+          "user": "Checkout",
+          "expected_intent": "checkout",
+          "actual_intent": "checkout",
+          "actual_intents": [
+            "checkout"
+          ],
+          "intent_match": true,
+          "bot_reply": "\ud83d\udccb **Order Review & Checkout:**\n\n  \u2022 Butter Chicken x2 \u2014 \u20b9560 (~25 min)\n\n\ud83d\udcb0 **Total:** \u20b9560\n\u23f1\ufe0f **Prep time:** ~25 min (Delivery: +15 min)\n\ud83d\udccd **Address:** Not provided yet\n\nPlease provide your **delivery address** in Bangalore (e.g. *'12 MG Road, Bangalore'*) so we can confirm your order!",
+          "latency_seconds": 10.71
+        },
+        {
+          "user": "My address is 45 MG Road, Bangalore",
+          "expected_intent": "set_delivery_address",
+          "actual_intent": "set_delivery_address",
+          "actual_intents": [
+            "set_delivery_address"
+          ],
+          "intent_match": true,
+          "bot_reply": "\ud83d\udccd **Delivery Address Saved:**\n  \u2022 Street: 45 MG Road\n  \u2022 City: Bangalore\n  \u2022 State: Karnataka\n\n\ud83d\udccb **Order Review & Checkout:**\n\n  \u2022 Butter Chicken x2 \u2014 \u20b9560 (~25 min)\n\n\ud83d\udcb0 **Total:** \u20b9560\n\u23f1\ufe0f **Prep time:** ~25 min (Delivery: +15 min)\n\ud83d\udccd **Address:** 45 MG Road, Bangalore, Karnataka\n\nPlease reply **'confirm'** to place your order, or let me know if you'd like to make any changes!",
+          "latency_seconds": 6.27
+        },
+        {
+          "user": "Confirm order",
+          "expected_intent": "confirm_order",
+          "actual_intent": "confirm_order",
+          "actual_intents": [
+            "confirm_order"
+          ],
+          "intent_match": true,
+          "bot_reply": "\ud83c\udf89 **Order Placed Successfully!**\n\n\ud83d\udce6 **Order ID:** `ORD-F0E8D7F0`\n\n\ud83c\udf7d\ufe0f **Summary:**\n  \u2022 Butter Chicken x2 \u2014 \u20b9560\n\n\ud83d\udcb0 **Total:** \u20b9560 (Payment on Delivery)\n\u23f1\ufe0f **Prep time:** ~25 min (Delivery: ~40 min total)\n\ud83d\udccd **Address:** 45 MG Road, Bangalore, Karnataka\n\nOur chefs are preparing your food with authentic spices.\nYou can check your status anytime by saying **'where is my order?'**.\n\nThank you for dining with **SpiceRoute Kitchen**! \ud83c\udf36\ufe0f",
+          "latency_seconds": 12.4
+        }
+      ],
+      "final_cart": [],
+      "cart_match": true,
+      "order_placed": true,
+      "grounding_score": 1.0
+    },
+    {
+      "id": "TC056",
+      "category": "address_handling",
+      "description": "Unserviceable city rejected, prompt for Bangalore address, then recover",
+      "turns": [
+        {
+          "user": "I want 1 paneer tikka masala",
+          "expected_intent": "add_to_cart",
+          "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
+          "intent_match": true,
+          "bot_reply": "\u2705 Added **Paneer Tikka Masala** x1 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Paneer Tikka Masala x1 \u2014 \u20b9240\n\n\ud83d\udcb0 **Total:** \u20b9240\n\u23f1\ufe0f **Prep time:** ~20 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 15.15
+        },
+        {
+          "user": "Checkout",
+          "expected_intent": "checkout",
+          "actual_intent": "checkout",
+          "actual_intents": [
+            "checkout"
+          ],
+          "intent_match": true,
+          "bot_reply": "\ud83d\udccb **Order Review & Checkout:**\n\n  \u2022 Paneer Tikka Masala x1 \u2014 \u20b9240 (~20 min)\n\n\ud83d\udcb0 **Total:** \u20b9240\n\u23f1\ufe0f **Prep time:** ~20 min (Delivery: +15 min)\n\ud83d\udccd **Address:** Not provided yet\n\nPlease provide your **delivery address** in Bangalore (e.g. *'12 MG Road, Bangalore'*) so we can confirm your order!",
+          "latency_seconds": 5.38
+        },
+        {
+          "user": "Deliver to Flat 101, Bandra West, Mumbai",
+          "expected_intent": "set_delivery_address",
+          "actual_intent": "set_delivery_address",
+          "actual_intents": [
+            "set_delivery_address"
+          ],
+          "intent_match": true,
+          "bot_reply": "\u26a0\ufe0f **Delivery Area Notice:**\n\nWe currently only deliver within **Bangalore, Bengaluru**. Unfortunately, we cannot deliver to **Mumbai**.\n\nPlease provide a delivery address in Bangalore so we can deliver your order!\n*(Your cart has been saved)*",
+          "latency_seconds": 13.74
+        },
+        {
+          "user": "Okay, deliver to 12 Brigade Road, Bangalore instead",
+          "expected_intent": "set_delivery_address",
+          "actual_intent": "set_delivery_address",
+          "actual_intents": [
+            "set_delivery_address"
+          ],
+          "intent_match": true,
+          "bot_reply": "\ud83d\udccd **Delivery Address Saved:**\n  \u2022 Street: 12 Brigade Road\n  \u2022 City: Bangalore\n  \u2022 State: Karnataka\n\n\ud83d\udccb **Order Review & Checkout:**\n\n  \u2022 Paneer Tikka Masala x1 \u2014 \u20b9240 (~20 min)\n\n\ud83d\udcb0 **Total:** \u20b9240\n\u23f1\ufe0f **Prep time:** ~20 min (Delivery: +15 min)\n\ud83d\udccd **Address:** 12 Brigade Road, Bangalore, Karnataka\n\nPlease reply **'confirm'** to place your order, or let me know if you'd like to make any changes!",
+          "latency_seconds": 8.42
+        },
+        {
+          "user": "Confirm",
+          "expected_intent": "confirm_order",
+          "actual_intent": "confirm_order",
+          "actual_intents": [
+            "confirm_order"
+          ],
+          "intent_match": true,
+          "bot_reply": "\ud83c\udf89 **Order Placed Successfully!**\n\n\ud83d\udce6 **Order ID:** `ORD-6CFE47D4`\n\n\ud83c\udf7d\ufe0f **Summary:**\n  \u2022 Paneer Tikka Masala x1 \u2014 \u20b9240\n\n\ud83d\udcb0 **Total:** \u20b9240 (Payment on Delivery)\n\u23f1\ufe0f **Prep time:** ~20 min (Delivery: ~35 min total)\n\ud83d\udccd **Address:** 12 Brigade Road, Bangalore, Karnataka\n\nOur chefs are preparing your food with authentic spices.\nYou can check your status anytime by saying **'where is my order?'**.\n\nThank you for dining with **SpiceRoute Kitchen**! \ud83c\udf36\ufe0f",
+          "latency_seconds": 7.99
+        }
+      ],
+      "final_cart": [],
+      "cart_match": true,
+      "order_placed": true,
+      "grounding_score": 1.0
+    },
+    {
+      "id": "TC057",
+      "category": "compound_request",
+      "description": "Multi-intent turn: add one mango lassi and make it final",
+      "turns": [
+        {
+          "user": "add one mango lassi and make it final",
+          "expected_intent": "add_to_cart",
+          "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart",
+            "checkout"
+          ],
+          "intent_match": true,
+          "bot_reply": "\u2705 Added **Mango Lassi** x1 to your cart\n\n\ud83d\udccb **Order Review & Checkout:**\n\n  \u2022 Mango Lassi x1 \u2014 \u20b990 (~5 min)\n\n\ud83d\udcb0 **Total:** \u20b990\n\u23f1\ufe0f **Prep time:** ~5 min (Delivery: +15 min)\n\ud83d\udccd **Address:** Not provided yet\n\nPlease provide your **delivery address** in Bangalore (e.g. *'12 MG Road, Bangalore'*) so we can confirm your order!",
+          "latency_seconds": 6.59
+        }
+      ],
+      "final_cart": [
+        {
+          "dish_name": "Mango Lassi",
+          "quantity": 1
+        }
+      ],
+      "cart_match": true,
+      "order_placed": false,
+      "grounding_score": 1.0
+    },
+    {
+      "id": "TC058",
+      "category": "compound_request",
+      "description": "Multi-intent turn: address and confirmation in one message",
+      "turns": [
+        {
+          "user": "I want 1 chicken biryani",
+          "expected_intent": "add_to_cart",
+          "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
+          "intent_match": true,
+          "bot_reply": "\u2705 Added **Chicken Biryani** x1 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Chicken Biryani x1 \u2014 \u20b9320\n\n\ud83d\udcb0 **Total:** \u20b9320\n\u23f1\ufe0f **Prep time:** ~35 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 2.25
+        },
+        {
+          "user": "My address is 100 Indiranagar Bangalore and confirm order",
+          "expected_intent": "set_delivery_address",
+          "actual_intent": "set_delivery_address",
+          "actual_intents": [
+            "set_delivery_address",
+            "confirm_order"
+          ],
+          "intent_match": true,
+          "bot_reply": "\ud83d\udccd **Delivery Address Saved:**\n  \u2022 Street: 100 Indiranagar\n  \u2022 City: Bangalore\n  \u2022 State: Karnataka\n\n\ud83d\udccb **Order Review & Checkout:**\n\n  \u2022 Chicken Biryani x1 \u2014 \u20b9320 (~35 min)\n\n\ud83d\udcb0 **Total:** \u20b9320\n\u23f1\ufe0f **Prep time:** ~35 min (Delivery: +15 min)\n\ud83d\udccd **Address:** 100 Indiranagar, Bangalore, Karnataka\n\nPlease reply **'confirm'** to place your order, or let me know if you'd like to make any changes!\n\n\ud83c\udf89 **Order Placed Successfully!**\n\n\ud83d\udce6 **Order ID:** `ORD-E1EDBFC4`\n\n\ud83c\udf7d\ufe0f **Summary:**\n  \u2022 Chicken Biryani x1 \u2014 \u20b9320\n\n\ud83d\udcb0 **Total:** \u20b9320 (Payment on Delivery)\n\u23f1\ufe0f **Prep time:** ~35 min (Delivery: ~50 min total)\n\ud83d\udccd **Address:** 100 Indiranagar, Bangalore, Karnataka\n\nOur chefs are preparing your food with authentic spices.\nYou can check your status anytime by saying **'where is my order?'**.\n\nThank you for dining with **SpiceRoute Kitchen**! \ud83c\udf36\ufe0f",
+          "latency_seconds": 2.2
+        }
+      ],
+      "final_cart": [],
+      "cart_match": true,
+      "order_placed": true,
+      "grounding_score": 1.0
+    },
+    {
+      "id": "TC059",
+      "category": "address_handling",
+      "description": "Delivery question asked while awaiting order confirmation is NOT out_of_scope",
+      "turns": [
+        {
+          "user": "I want 2 garlic naan",
+          "expected_intent": "add_to_cart",
+          "actual_intent": "add_to_cart",
+          "actual_intents": [
+            "add_to_cart"
+          ],
+          "intent_match": true,
+          "bot_reply": "\u2705 Added **Garlic Naan** x2 to your cart\n\n\ud83d\uded2 **Your Cart:**\n\n  \u2022 Garlic Naan x2 \u2014 \u20b9120\n\n\ud83d\udcb0 **Total:** \u20b9120\n\u23f1\ufe0f **Prep time:** ~10 min\n\ud83d\udccd **Address:** Not set yet (Provide address at checkout)\n\nWould you like to add anything else, or say **'checkout'** to place your order?",
+          "latency_seconds": 8.11
+        },
+        {
+          "user": "Checkout",
+          "expected_intent": "checkout",
+          "actual_intent": "checkout",
+          "actual_intents": [
+            "checkout"
+          ],
+          "intent_match": true,
+          "bot_reply": "\ud83d\udccb **Order Review & Checkout:**\n\n  \u2022 Garlic Naan x2 \u2014 \u20b9120 (~10 min)\n\n\ud83d\udcb0 **Total:** \u20b9120\n\u23f1\ufe0f **Prep time:** ~10 min (Delivery: +15 min)\n\ud83d\udccd **Address:** Not provided yet\n\nPlease provide your **delivery address** in Bangalore (e.g. *'12 MG Road, Bangalore'*) so we can confirm your order!",
+          "latency_seconds": 1.72
+        },
+        {
+          "user": "Do you deliver to Whitefield and what is the delivery fee?",
+          "expected_intent": "delivery_question",
+          "actual_intent": "delivery_question",
+          "actual_intents": [
+            "delivery_question"
+          ],
+          "intent_match": true,
+          "bot_reply": "\ud83d\ude9a **SpiceRoute Kitchen Delivery Information:**\n\n\u2022 **Delivery Areas:** We deliver across all locations in **Bangalore, Bengaluru** (including Indiranagar, Koramangala, Whitefield, HSR Layout, MG Road, etc.).\n\u2022 **Delivery Fee:** **FREE** delivery on all orders!\n\u2022 **Payment:** Cash or UPI on Delivery.\n\u2022 **Delivery Time:** Total time is kitchen preparation time (~15\u201335 min) + **15 minutes** delivery buffer.\n\nWhen you're ready, please tell me your delivery address in Bangalore so we can finalize your order!",
+          "latency_seconds": 3.29
+        }
+      ],
+      "final_cart": [
+        {
+          "dish_name": "Garlic Naan",
+          "quantity": 2
+        }
+      ],
       "cart_match": true,
       "order_placed": false,
       "grounding_score": 1.0
