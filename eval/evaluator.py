@@ -2,7 +2,7 @@
 eval/evaluator.py — Real end-to-end evaluation suite for SpiceRoute Kitchen.
 Runs full multi-turn conversations through the ACTUAL compiled LangGraph food_graph.
 Reports:
-  1. Intent classification accuracy across all turns
+  1. Intent classification accuracy across all turns (including multi-intent support)
   2. Cart-state exact-match rate
   3. Grounded-answer correctness (rubric + LLM Judge)
   4. Order completion rate
@@ -54,7 +54,6 @@ def evaluate_response_grounding(judge_llm: ChatGroq, query: str, reply: str, rub
     """
     reply_lower = reply.lower()
 
-    # Rule-based fast check
     must_mention = rubric.get("must_mention", [])
     must_not_mention = rubric.get("must_not_mention", [])
 
@@ -127,12 +126,15 @@ def run_evaluation():
         state: OrderState = {
             "messages": [],
             "intent": "",
+            "intents": [],
             "user_query": "",
             "retrieved_menu": [],
             "unavailable_items": [],
             "cart": [],
             "total_price": 0.0,
             "max_prep_time": 0,
+            "delivery_address": None,
+            "pending_action": None,
             "order_confirmed": False,
             "edit_requested": False,
             "order_id": None,
@@ -162,7 +164,9 @@ def run_evaluation():
             latencies.append(t_elapsed)
 
             actual_intent = state.get("intent")
-            intent_ok = (actual_intent == expected_intent)
+            actual_intents = state.get("intents", [])
+            # Accept if exact match or if expected intent is in the multi-intent list
+            intent_ok = (actual_intent == expected_intent) or (expected_intent in actual_intents)
             if intent_ok:
                 correct_intents += 1
 
@@ -173,6 +177,7 @@ def run_evaluation():
                 "user": user_msg,
                 "expected_intent": expected_intent,
                 "actual_intent": actual_intent,
+                "actual_intents": actual_intents,
                 "intent_match": intent_ok,
                 "bot_reply": last_bot_reply,
                 "latency_seconds": round(t_elapsed, 2),

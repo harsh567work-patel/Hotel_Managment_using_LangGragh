@@ -2,6 +2,7 @@
 cart_builder_node — manages cart modifications (add, remove, update quantity, clear)
 using structured output (CartActions) and resolving dish names against the FULL menu
 in Qdrant (top-1 vector match with score threshold).
+Uses real newlines, markdown lists, with Total, Prep time, and Address each on its own line.
 Never crashes on unknown dishes; produces exactly ONE assistant message.
 """
 
@@ -105,7 +106,6 @@ def apply_cart_actions(current_cart: List[CartItem], actions: List[CartAction]) 
 
         # Check availability for additions
         if act.action == "add" and not is_available:
-            # Find alternatives
             alts = search_menu(
                 query=f"{dish.get('category')} {dish_name}",
                 top_k=2,
@@ -177,6 +177,7 @@ def cart_builder_node(state: OrderState) -> dict:
     """
     Extracts cart actions using structured outputs, applies changes to cart in state,
     and returns exactly ONE descriptive AIMessage.
+    Uses real newlines, markdown lists, with Total, Prep time, and Address each on its own line.
     """
     last_human = ""
     for m in reversed(state.get("messages", [])):
@@ -219,6 +220,13 @@ def cart_builder_node(state: OrderState) -> dict:
     total_price = sum(c["unit_price"] * c["quantity"] for c in new_cart)
     max_prep_time = max((c["prep_time_minutes"] for c in new_cart), default=0)
 
+    # Preserve or update pending_action
+    pending = state.get("pending_action")
+    if not new_cart:
+        pending = None
+    elif pending == "awaiting_order_confirmation":
+        pending = "awaiting_order_confirmation"
+
     # Build response message
     msg_parts = []
     if success_notes:
@@ -231,20 +239,30 @@ def cart_builder_node(state: OrderState) -> dict:
             f"  • {c['dish_name']} x{c['quantity']} — ₹{c['unit_price'] * c['quantity']:.0f}"
             for c in new_cart
         ]
+        address = state.get("delivery_address")
+        if address and address.get("street"):
+            addr_str = f"{address.get('street')}, {address.get('city')}, {address.get('state', 'Karnataka')}"
+        else:
+            addr_str = "Not set yet (Provide address at checkout)"
+
         msg_parts.append(
-            "\n🛒 **Your Cart:**\n" + "\n".join(cart_lines) +
-            f"\n\n**Total: ₹{total_price:.0f}** | ⏱️ Prep Time: ~{max_prep_time} min\n\n"
+            "🛒 **Your Cart:**\n\n" +
+            "\n".join(cart_lines) + "\n\n" +
+            f"💰 **Total:** ₹{total_price:.0f}\n" +
+            f"⏱️ **Prep time:** ~{max_prep_time} min\n" +
+            f"📍 **Address:** {addr_str}\n\n" +
             "Would you like to add anything else, or say **'checkout'** to place your order?"
         )
     else:
         if not success_notes and not error_notes:
             msg_parts.append("I couldn't identify any dishes to add. What would you like to order?")
         else:
-            msg_parts.append("\nYour cart is currently empty. Tell me what you'd like to eat!")
+            msg_parts.append("Your cart is currently empty. Tell me what you'd like to eat!")
 
     return {
         "cart": new_cart,
         "total_price": total_price,
         "max_prep_time": max_prep_time,
+        "pending_action": pending,
         "messages": [AIMessage(content="\n\n".join(msg_parts))],
     }
