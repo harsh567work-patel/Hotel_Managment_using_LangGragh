@@ -1,0 +1,1235 @@
+[
+  {
+    "id": "TC001",
+    "category": "menu_question",
+    "description": "Inquiring about biryani options",
+    "turns": [
+      {
+        "user": "What biryani options do you have?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Chicken Biryani",
+        "Veg Biryani"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC002",
+    "category": "menu_question",
+    "description": "Vegetarian main courses inquiry",
+    "turns": [
+      {
+        "user": "What vegetarian main courses do you have?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Paneer Tikka Masala",
+        "Veg Biryani",
+        "Dal Tadka"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC003",
+    "category": "menu_question",
+    "description": "Desserts inquiry",
+    "turns": [
+      {
+        "user": "Do you have desserts?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Gulab Jamun",
+        "Chocolate Brownie"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC004",
+    "category": "menu_question",
+    "description": "Drinks options",
+    "turns": [
+      {
+        "user": "What drinks do you serve?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Mango Lassi",
+        "Masala Chai"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC005",
+    "category": "menu_question",
+    "description": "Starters list",
+    "turns": [
+      {
+        "user": "What starters can I order?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Veg Samosa",
+        "Chicken Tikka"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC006",
+    "category": "menu_question",
+    "description": "Bread varieties",
+    "turns": [
+      {
+        "user": "What kind of naan or breads do you have?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Garlic Naan",
+        "Plain Naan"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC007",
+    "category": "menu_question",
+    "description": "Chef inquiry for Chicken Biryani",
+    "turns": [
+      {
+        "user": "Who made the Chicken Biryani?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Chef Ravi"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC008",
+    "category": "menu_question",
+    "description": "Chef specialty for Dal Tadka",
+    "turns": [
+      {
+        "user": "Who prepares the Dal Tadka?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Chef Priya"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC009",
+    "category": "menu_question",
+    "description": "Prep time for Butter Chicken",
+    "turns": [
+      {
+        "user": "How long does butter chicken take to prepare?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "25"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC010",
+    "category": "menu_question",
+    "description": "General menu browsing",
+    "turns": [
+      {
+        "user": "Show me what food you have",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "SpiceRoute"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC011",
+    "category": "price_superlatives",
+    "description": "Cheapest starter",
+    "turns": [
+      {
+        "user": "What are your cheapest starters?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Veg Samosa",
+        "80"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC012",
+    "category": "price_superlatives",
+    "description": "Most expensive dish on menu",
+    "turns": [
+      {
+        "user": "What is the most expensive dish on your menu?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Mutton Rogan Josh",
+        "380"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC013",
+    "category": "price_superlatives",
+    "description": "Drinks under 100",
+    "turns": [
+      {
+        "user": "What drinks do you have under 100 rupees?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Mango Lassi",
+        "Masala Chai"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC014",
+    "category": "price_superlatives",
+    "description": "Fastest dessert",
+    "turns": [
+      {
+        "user": "What is your fastest dessert to prepare?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Chocolate Brownie",
+        "8"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC015",
+    "category": "price_superlatives",
+    "description": "Cheapest vegetarian main",
+    "turns": [
+      {
+        "user": "What is the cheapest vegetarian main course?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Dal Tadka",
+        "160"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC016",
+    "category": "price_superlatives",
+    "description": "Lowest price bread",
+    "turns": [
+      {
+        "user": "What is your lowest price bread?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Plain Naan",
+        "40"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC017",
+    "category": "price_superlatives",
+    "description": "Priciest starter",
+    "turns": [
+      {
+        "user": "What is your most expensive starter?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Chicken Tikka",
+        "220"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC018",
+    "category": "price_superlatives",
+    "description": "Dishes under 100",
+    "turns": [
+      {
+        "user": "What items do you have under 100 rupees?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Plain Naan",
+        "Garlic Naan"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC019",
+    "category": "add_to_cart",
+    "description": "Add single item",
+    "turns": [
+      {
+        "user": "I want 1 butter chicken",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Butter Chicken",
+        "quantity": 1
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Butter Chicken",
+        "\u20b9280"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC020",
+    "category": "add_to_cart",
+    "description": "Add item with quantity 2",
+    "turns": [
+      {
+        "user": "Add 2 veg biryani to my cart",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Veg Biryani",
+        "quantity": 2
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Veg Biryani",
+        "440"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC021",
+    "category": "add_to_cart",
+    "description": "Add multiple items in one message",
+    "turns": [
+      {
+        "user": "I want 1 paneer tikka masala and 2 garlic naan",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Paneer Tikka Masala",
+        "quantity": 1
+      },
+      {
+        "dish_name": "Garlic Naan",
+        "quantity": 2
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Paneer Tikka Masala",
+        "Garlic Naan"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC022",
+    "category": "add_to_cart",
+    "description": "Add starter and drink",
+    "turns": [
+      {
+        "user": "Please add veg samosa and a mango lassi",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Veg Samosa (2 pcs)",
+        "quantity": 1
+      },
+      {
+        "dish_name": "Mango Lassi",
+        "quantity": 1
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Veg Samosa",
+        "Mango Lassi"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC023",
+    "category": "add_to_cart",
+    "description": "Add bread and dal",
+    "turns": [
+      {
+        "user": "Order one dal tadka and two plain naan",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Dal Tadka",
+        "quantity": 1
+      },
+      {
+        "dish_name": "Plain Naan",
+        "quantity": 2
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Dal Tadka",
+        "Plain Naan"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC024",
+    "category": "add_to_cart",
+    "description": "Add dessert",
+    "turns": [
+      {
+        "user": "Add one chocolate brownie to my cart",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Chocolate Brownie",
+        "quantity": 1
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Chocolate Brownie",
+        "150"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC025",
+    "category": "add_to_cart",
+    "description": "Add 3 masala chai",
+    "turns": [
+      {
+        "user": "I want 3 masala chai",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Masala Chai",
+        "quantity": 3
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Masala Chai",
+        "150"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC026",
+    "category": "add_to_cart",
+    "description": "Add starter and bread",
+    "turns": [
+      {
+        "user": "Give me one chicken tikka and one garlic naan",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Chicken Tikka",
+        "quantity": 1
+      },
+      {
+        "dish_name": "Garlic Naan",
+        "quantity": 1
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Chicken Tikka",
+        "Garlic Naan"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC027",
+    "category": "modify_cart",
+    "description": "Add then remove item",
+    "turns": [
+      {
+        "user": "I want 2 butter chicken and 1 plain naan",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Remove the plain naan",
+        "expected_intent": "modify_cart"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Butter Chicken",
+        "quantity": 2
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Removed",
+        "Plain Naan"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC028",
+    "category": "modify_cart",
+    "description": "Add then update quantity",
+    "turns": [
+      {
+        "user": "Add 1 butter chicken",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Change butter chicken to 3",
+        "expected_intent": "modify_cart"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Butter Chicken",
+        "quantity": 3
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Updated",
+        "3"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC029",
+    "category": "modify_cart",
+    "description": "Add then reduce quantity",
+    "turns": [
+      {
+        "user": "I want 4 garlic naan",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Actually make it 2 garlic naan instead",
+        "expected_intent": "modify_cart"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Garlic Naan",
+        "quantity": 2
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Updated",
+        "2"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC030",
+    "category": "modify_cart",
+    "description": "Clear entire cart",
+    "turns": [
+      {
+        "user": "Add 2 chicken biryani",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Clear my cart",
+        "expected_intent": "modify_cart"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "empty",
+        "cart"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC031",
+    "category": "modify_cart",
+    "description": "Remove item not in cart",
+    "turns": [
+      {
+        "user": "I want 1 veg biryani",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Remove the mango lassi",
+        "expected_intent": "modify_cart"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Veg Biryani",
+        "quantity": 1
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "not in your cart"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC032",
+    "category": "modify_cart",
+    "description": "Add two items then remove both one by one",
+    "turns": [
+      {
+        "user": "Add 1 butter chicken and 1 dal tadka",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Remove dal tadka",
+        "expected_intent": "modify_cart"
+      },
+      {
+        "user": "Remove butter chicken",
+        "expected_intent": "modify_cart"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "empty"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC033",
+    "category": "modify_cart",
+    "description": "Update quantity to zero",
+    "turns": [
+      {
+        "user": "Add 2 mango lassi",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Set mango lassi quantity to 0",
+        "expected_intent": "modify_cart"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Removed"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC034",
+    "category": "modify_cart",
+    "description": "Clear cart when already empty",
+    "turns": [
+      {
+        "user": "Please empty my cart",
+        "expected_intent": "modify_cart"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "empty"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC035",
+    "category": "unavailable_dish",
+    "description": "Inquire Mutton Rogan Josh availability",
+    "turns": [
+      {
+        "user": "Is Mutton Rogan Josh available today?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "unavailable",
+        "Butter Chicken",
+        "Chicken Biryani"
+      ],
+      "must_not_mention": [
+        "Gulab Jamun"
+      ]
+    }
+  },
+  {
+    "id": "TC036",
+    "category": "unavailable_dish",
+    "description": "Inquire Paneer Butter Masala availability",
+    "turns": [
+      {
+        "user": "Can I order Paneer Butter Masala?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "unavailable",
+        "Paneer Tikka Masala"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC037",
+    "category": "unavailable_dish",
+    "description": "Attempt to add Mutton Rogan Josh to cart",
+    "turns": [
+      {
+        "user": "I want 1 mutton rogan josh",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "unavailable",
+        "Butter Chicken"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC038",
+    "category": "unavailable_dish",
+    "description": "Attempt to add Paneer Butter Masala to cart",
+    "turns": [
+      {
+        "user": "Add 2 paneer butter masala",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "unavailable",
+        "Paneer Tikka Masala"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC039",
+    "category": "ambiguous_unknown_dish",
+    "description": "Attempt to add Pizza",
+    "turns": [
+      {
+        "user": "Add a large pepperoni pizza to my order",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "couldn't find"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC040",
+    "category": "ambiguous_unknown_dish",
+    "description": "Attempt to add Pasta",
+    "turns": [
+      {
+        "user": "I want a bowl of pasta alfredo",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "couldn't find"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC041",
+    "category": "ambiguous_unknown_dish",
+    "description": "Attempt to add Sushi",
+    "turns": [
+      {
+        "user": "Can you add salmon sushi?",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "couldn't find"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC042",
+    "category": "ambiguous_unknown_dish",
+    "description": "Ask about Burgers",
+    "turns": [
+      {
+        "user": "Do you have cheese burgers?",
+        "expected_intent": "menu_inquiry"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "SpiceRoute"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC043",
+    "category": "order_fulfillment",
+    "description": "Full order: add -> checkout -> confirm",
+    "turns": [
+      {
+        "user": "I want 2 butter chicken",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Checkout please",
+        "expected_intent": "checkout"
+      },
+      {
+        "user": "Confirm order",
+        "expected_intent": "confirm_order"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": true,
+    "rubric": {
+      "must_mention": [
+        "Order Placed",
+        "Order ID",
+        "ORD-"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC044",
+    "category": "order_fulfillment",
+    "description": "Multi-dish order fulfillment",
+    "turns": [
+      {
+        "user": "Add 1 veg biryani and 2 garlic naan",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Checkout",
+        "expected_intent": "checkout"
+      },
+      {
+        "user": "Yes, confirm it",
+        "expected_intent": "confirm_order"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": true,
+    "rubric": {
+      "must_mention": [
+        "Order Placed",
+        "ORD-"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC045",
+    "category": "order_fulfillment",
+    "description": "Order with cart modification before checkout",
+    "turns": [
+      {
+        "user": "Add 2 chicken tikka and 2 mango lassi",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Change mango lassi to 1",
+        "expected_intent": "modify_cart"
+      },
+      {
+        "user": "Ready to checkout",
+        "expected_intent": "checkout"
+      },
+      {
+        "user": "Confirm",
+        "expected_intent": "confirm_order"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": true,
+    "rubric": {
+      "must_mention": [
+        "Order Placed",
+        "ORD-"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC046",
+    "category": "order_fulfillment",
+    "description": "Checkout when cart is empty",
+    "turns": [
+      {
+        "user": "I want to checkout now",
+        "expected_intent": "checkout"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "cart is currently empty"
+      ],
+      "must_not_mention": [
+        "Order Placed"
+      ]
+    }
+  },
+  {
+    "id": "TC047",
+    "category": "order_fulfillment",
+    "description": "Confirm when cart is empty",
+    "turns": [
+      {
+        "user": "Confirm my order",
+        "expected_intent": "confirm_order"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "empty"
+      ],
+      "must_not_mention": [
+        "Order Placed"
+      ]
+    }
+  },
+  {
+    "id": "TC048",
+    "category": "tracking",
+    "description": "Track order without any active order",
+    "turns": [
+      {
+        "user": "Where is my order?",
+        "expected_intent": "track_order"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "don't have an active order"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC049",
+    "category": "tracking",
+    "description": "Place order then track it",
+    "turns": [
+      {
+        "user": "I want 1 chicken biryani",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Confirm order",
+        "expected_intent": "confirm_order"
+      },
+      {
+        "user": "Where is my food?",
+        "expected_intent": "track_order"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": true,
+    "rubric": {
+      "must_mention": [
+        "Order Tracking",
+        "ORD-"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC050",
+    "category": "tracking",
+    "description": "Ask delivery ETA on placed order",
+    "turns": [
+      {
+        "user": "Add 2 veg samosa and 1 masala chai",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Confirm",
+        "expected_intent": "confirm_order"
+      },
+      {
+        "user": "How much longer until delivery?",
+        "expected_intent": "track_order"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": true,
+    "rubric": {
+      "must_mention": [
+        "Estimated Delivery",
+        "minutes"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC051",
+    "category": "tracking",
+    "description": "Check order progress",
+    "turns": [
+      {
+        "user": "Track my food delivery status",
+        "expected_intent": "track_order"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "active order"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC052",
+    "category": "out_of_scope",
+    "description": "Weather query",
+    "turns": [
+      {
+        "user": "What is the weather in Bangalore today?",
+        "expected_intent": "out_of_scope"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "SpiceRoute",
+        "food ordering"
+      ],
+      "must_not_mention": [
+        "Celsius",
+        "sunny",
+        "rain"
+      ]
+    }
+  },
+  {
+    "id": "TC053",
+    "category": "out_of_scope",
+    "description": "Python coding request",
+    "turns": [
+      {
+        "user": "Write a python script to sort a list",
+        "expected_intent": "out_of_scope"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "food ordering"
+      ],
+      "must_not_mention": [
+        "def sort",
+        "sorted("
+      ]
+    }
+  },
+  {
+    "id": "TC054",
+    "category": "out_of_scope",
+    "description": "Trivia question",
+    "turns": [
+      {
+        "user": "Who won the 2022 football world cup?",
+        "expected_intent": "out_of_scope"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "food ordering"
+      ],
+      "must_not_mention": [
+        "Argentina",
+        "Messi"
+      ]
+    }
+  }
+]
