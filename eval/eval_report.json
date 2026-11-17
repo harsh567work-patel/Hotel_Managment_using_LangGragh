@@ -1,0 +1,150 @@
+{
+  "aggregate": {
+    "faithfulness": 0.99,
+    "relevance": 1.0,
+    "completeness": 0.583,
+    "overall": 0.858
+  },
+  "results": [
+    {
+      "id": "Q001",
+      "category": "menu_query",
+      "question": "What biryani options do you have?",
+      "expected": "We have two biryani options: Chicken Biryani (\u20b9320, 35 min) and Veg Biryani (\u20b9220, 30 min). Both are cooked dum style.",
+      "generated": "We have two biryani options:\n\n- **Chicken Biryani** \u2013 \u20b9320, 35\u202fmin prep, Chef Ravi  \n- **Veg Biryani** \u2013 \u20b9220, 30\u202fmin prep, Chef Priya",
+      "scores": {
+        "faithfulness": 1.0,
+        "relevance": 1.0,
+        "completeness": 0.8,
+        "comment": "Answer is accurate and relevant, but omits the 'dum style' detail present in the expected answer and context.",
+        "overall": 0.933
+      }
+    },
+    {
+      "id": "Q002",
+      "category": "availability_check",
+      "question": "Is Mutton Rogan Josh available today?",
+      "expected": "I'm sorry, Mutton Rogan Josh is currently unavailable. Can I suggest Butter Chicken or Chicken Biryani instead?",
+      "generated": "No, Mutton Rogan Josh is currently unavailable.",
+      "scores": {
+        "faithfulness": 1.0,
+        "relevance": 1.0,
+        "completeness": 0.33,
+        "comment": "Answer is faithful and relevant but lacks the apology and alternative suggestions required for completeness.",
+        "overall": 0.777
+      }
+    },
+    {
+      "id": "Q003",
+      "category": "menu_query",
+      "question": "What are your cheapest starters?",
+      "expected": "Our starters are Veg Samosa (2 pcs) at \u20b980 and Chicken Tikka at \u20b9220.",
+      "generated": "The cheapest starter available is **Veg Samosa (2 pcs)** at \u20b980.",
+      "scores": {
+        "faithfulness": 1.0,
+        "relevance": 1.0,
+        "completeness": 0.5,
+        "comment": "The answer correctly states Veg Samosa at \u20b980 and does not hallucinate, but it omits the second starter (Chicken Tikka at \u20b9220), so it is not fully complete.",
+        "overall": 0.833
+      }
+    },
+    {
+      "id": "Q004",
+      "category": "prep_time_query",
+      "question": "How long will butter chicken take?",
+      "expected": "Butter Chicken takes approximately 25 minutes to prepare.",
+      "generated": "Butter Chicken takes 25 minutes to prepare.",
+      "scores": {
+        "faithfulness": 1.0,
+        "relevance": 1.0,
+        "completeness": 1.0,
+        "comment": "The answer accurately reflects the retrieved prep time, directly answers the question, and includes the essential information from the expected answer.",
+        "overall": 1.0
+      }
+    },
+    {
+      "id": "Q005",
+      "category": "menu_query",
+      "question": "What vegetarian main courses do you serve?",
+      "expected": "Our vegetarian main courses include Paneer Tikka Masala (\u20b9240), Veg Biryani (\u20b9220), and Dal Tadka (\u20b9160). Paneer Butter Masala is currently unavailable.",
+      "generated": "Vegetarian main courses we serve are:\n\n- Veg Biryani  \n- Dal Tadka  \n- Paneer Tikka Masala",
+      "scores": {
+        "faithfulness": 1.0,
+        "relevance": 1.0,
+        "completeness": 0.5,
+        "comment": "Correct items listed without hallucination, but lacks prices and the note about Paneer Butter Masala being unavailable.",
+        "overall": 0.833
+      }
+    },
+    {
+      "id": "Q006",
+      "category": "dish_info",
+      "question": "Who made the Chicken Biryani?",
+      "expected": "Chicken Biryani is a specialty of Chef Ravi.",
+      "generated": "Chef Ravi.",
+      "scores": {
+        "faithfulness": 1.0,
+        "relevance": 1.0,
+        "completeness": 1.0,
+        "comment": "Answer is faithful to the context, directly answers the question, and includes the essential information (Chef Ravi).",
+        "overall": 1.0
+      }
+    },
+    {
+      "id": "Q007",
+      "category": "menu_query",
+      "question": "Do you have desserts?",
+      "expected": "Yes! We have Gulab Jamun (3 pcs) at \u20b9110 and Chocolate Brownie at \u20b9150. Both take about 8-10 minutes.",
+      "generated": "Yes, we have desserts. For example, our Chocolate Brownie is available.",
+      "scores": {
+        "faithfulness": 1.0,
+        "relevance": 1.0,
+        "completeness": 0.2,
+        "comment": "Answer is faithful to the retrieved context and answers the question, but it omits Gulab Jamun, price details, and prep time, so it is incomplete.",
+        "overall": 0.733
+      }
+    },
+    {
+      "id": "Q008",
+      "category": "menu_query",
+      "question": "What drinks do you offer?",
+      "expected": "We serve Mango Lassi (\u20b990) and Masala Chai (\u20b950). Both are ready in 5 minutes.",
+      "generated": "We offer the following drinks:\n\n- Mango Lassi  \n- Masala Chai",
+      "scores": {
+        "faithfulness": 0.9,
+        "relevance": 1.0,
+        "completeness": 0.5,
+        "comment": "Correct drinks listed, but missing price and prep time details, reducing completeness.",
+        "overall": 0.8
+      }
+    },
+    {
+      "id": "Q009",
+      "category": "price_query",
+      "question": "What is the most expensive dish?",
+      "expected": "The most expensive dish on our menu is Mutton Rogan Josh at \u20b9380, though it is currently unavailable. Among available dishes, Chicken Biryani at \u20b9320 is the priciest.",
+      "generated": "The most expensive dish is **Butter Chicken** (\u20b9280).",
+      "scores": {
+        "faithfulness": 1.0,
+        "relevance": 1.0,
+        "completeness": 0.0,
+        "comment": "The answer correctly reflects the retrieved context and answers the question, but it omits the expected details about the unavailable Mutton Rogan Josh and the next most expensive available dish, so it is incomplete.",
+        "overall": 0.667
+      }
+    },
+    {
+      "id": "Q010",
+      "category": "out_of_scope",
+      "question": "Tell me about the weather today",
+      "expected": "I can only help you with food ordering at SpiceRoute Kitchen. Would you like to see our menu or place an order?",
+      "generated": "\ud83c\udf7d\ufe0f I'm SpiceRoute Kitchen's food ordering assistant and can only help you with:\n  \u2022 Browsing our menu\n  \u2022 Placing an order\n  \u2022 Checking your order status\n\nWhat would you like to eat today?",
+      "scores": {
+        "faithfulness": 1.0,
+        "relevance": 1.0,
+        "completeness": 1.0,
+        "comment": "out_of_scope redirect check",
+        "overall": 1.0
+      }
+    }
+  ]
+}
