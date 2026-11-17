@@ -942,7 +942,7 @@
   {
     "id": "TC043",
     "category": "order_fulfillment",
-    "description": "Full order: add -> checkout -> confirm",
+    "description": "Full order: add -> checkout -> address -> confirm",
     "turns": [
       {
         "user": "I want 2 butter chicken",
@@ -951,6 +951,10 @@
       {
         "user": "Checkout please",
         "expected_intent": "checkout"
+      },
+      {
+        "user": "My address is 45 MG Road, Bangalore",
+        "expected_intent": "set_delivery_address"
       },
       {
         "user": "Confirm order",
@@ -980,6 +984,10 @@
       {
         "user": "Checkout",
         "expected_intent": "checkout"
+      },
+      {
+        "user": "Deliver to 22 Residency Road, Bangalore",
+        "expected_intent": "set_delivery_address"
       },
       {
         "user": "Yes, confirm it",
@@ -1012,6 +1020,10 @@
       {
         "user": "Ready to checkout",
         "expected_intent": "checkout"
+      },
+      {
+        "user": "My address is 77 Koramangala, Bangalore",
+        "expected_intent": "set_delivery_address"
       },
       {
         "user": "Confirm",
@@ -1099,8 +1111,8 @@
         "expected_intent": "add_to_cart"
       },
       {
-        "user": "Confirm order",
-        "expected_intent": "confirm_order"
+        "user": "Deliver to 15 Church Street Bangalore and confirm order",
+        "expected_intent": "set_delivery_address"
       },
       {
         "user": "Where is my food?",
