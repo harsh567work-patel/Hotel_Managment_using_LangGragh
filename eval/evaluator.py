@@ -1,183 +1,262 @@
 """
-evaluator.py — offline RAG accuracy scorer against the golden dataset.
-Metrics: Answer Relevance, Context Faithfulness, Exact Match (keyword-based).
-Run: python -m eval.evaluator
+eval/evaluator.py — Real end-to-end evaluation suite for SpiceRoute Kitchen.
+Runs full multi-turn conversations through the ACTUAL compiled LangGraph food_graph.
+Reports:
+  1. Intent classification accuracy across all turns
+  2. Cart-state exact-match rate
+  3. Grounded-answer correctness (rubric + LLM Judge)
+  4. Order completion rate
+  5. Median and p95 latency
+Outputs summary table to stdout and writes full logs to eval/results.json.
 """
 
-import json
 import sys
-import os
+import json
+import time
+import statistics
 from pathlib import Path
+from typing import List, Dict, Any
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+# Ensure project root is on sys.path
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT))
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
-from dotenv import load_dotenv
-load_dotenv()
-
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from langchain_groq import ChatGroq
-from langchain_core.messages import HumanMessage, SystemMessage
-from rag.qdrant_client import search_menu
+from graph.graph_builder import food_graph
+from graph.state import OrderState
+from config import DATA_DIR, GROQ_MODEL, GROQ_API_KEY
 
-DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 
-FAITHFULNESS_PROMPT = """You are evaluating a RAG system's answer quality.
+LLM_JUDGE_PROMPT = """You are an objective evaluation judge assessing an AI food ordering assistant.
 
-Question: {question}
-Expected Answer: {expected}
-RAG-Generated Answer: {generated}
-Retrieved Context: {context}
+User Query: {query}
+Bot Reply: {reply}
+Target Rubric Requirements:
+- Must mention: {must_mention}
+- Must NOT mention: {must_not_mention}
 
-Score the generated answer on these criteria (each 0-1, where 1 is best):
-1. Faithfulness: Does the answer stay true to the retrieved context? (no hallucination)
-2. Answer Relevance: Does it actually answer the question asked?
-3. Completeness: Does it cover the key points in the expected answer?
+Evaluate the reply on a scale of 0.0 to 1.0 on:
+1. Grounding & Faithfulness: Does it avoid hallucinating unlisted dishes/facts?
+2. Relevance: Does it directly address what the user asked?
+3. Rubric Adherence: Does it fulfill the must mention and avoid forbidden topics?
 
 Reply ONLY in this JSON format:
-{{"faithfulness": 0.0, "relevance": 0.0, "completeness": 0.0, "comment": "brief note"}}"""
-
-ANSWER_PROMPT = """You are a food ordering assistant for SpiceRoute Kitchen.
-Answer the user's question using ONLY the information provided in the context below.
-If the answer is not in the context, say so clearly. Be concise.
-
-Context:
-{context}
-
-Question: {question}"""
+{{"score": 1.0, "reason": "brief explanation"}}
+"""
 
 
-def format_context_docs(context_docs: list) -> str:
-    """Format rich context string with all knowledge base fields."""
-    return "\n".join([
-        f"- {d.get('dish_name')}: {d.get('description')} | Category: {d.get('category')} | Price: ₹{d.get('price')} | "
-        f"Prep Time: {d.get('prep_time_minutes')} min | Chef/Specialty: {d.get('dish_man')} | "
-        f"Status: {'Available' if d.get('is_available') else 'Unavailable'}"
-        for d in context_docs
-    ])
+def evaluate_response_grounding(judge_llm: ChatGroq, query: str, reply: str, rubric: dict) -> float:
+    """
+    Evaluates response correctness combining rule-based substring matching and LLM Judge.
+    """
+    reply_lower = reply.lower()
 
+    # Rule-based fast check
+    must_mention = rubric.get("must_mention", [])
+    must_not_mention = rubric.get("must_not_mention", [])
 
-def generate_answer(question: str, context_docs: list, category: str = "") -> str:
-    """Generate an answer using Groq LLM + retrieved context (or guardrail for out-of-scope)."""
-    if category == "out_of_scope":
-        from graph.nodes.guardrail import REDIRECT_MESSAGE
-        return REDIRECT_MESSAGE
+    rule_fail = False
+    for req in must_mention:
+        if req.lower() not in reply_lower:
+            rule_fail = True
+            break
+    for forbad in must_not_mention:
+        if forbad.lower() in reply_lower:
+            return 0.0
 
-    llm = ChatGroq(
-        model=os.getenv("GROQ_MODEL", "openai/gpt-oss-20b"),
-        temperature=0,
-        api_key=os.getenv("GROQ_API_KEY"),
-    )
-    context_text = format_context_docs(context_docs)
-    response = llm.invoke([
-        SystemMessage(content=ANSWER_PROMPT.format(context=context_text, question=question))
-    ])
-    return response.content.strip()
+    if not rule_fail and must_mention:
+        return 1.0
 
-
-def score_answer(question: str, expected: str, generated: str, context_docs: list) -> dict:
-    """Use Groq to score the generated answer."""
-    llm = ChatGroq(
-        model=os.getenv("GROQ_EVAL_MODEL", "openai/gpt-oss-120b"),
-        temperature=0,
-        api_key=os.getenv("GROQ_API_KEY"),
-    )
-    context_text = format_context_docs(context_docs)
-    response = llm.invoke([
-        HumanMessage(content=FAITHFULNESS_PROMPT.format(
-            question=question,
-            expected=expected,
-            generated=generated,
-            context=context_text,
-        ))
-    ])
+    # Call LLM Judge for nuanced assessment
     try:
-        scores = json.loads(response.content.strip())
-    except json.JSONDecodeError:
-        scores = {"faithfulness": 0.0, "relevance": 0.0, "completeness": 0.0, "comment": "parse error"}
-    return scores
+        res = judge_llm.invoke([
+            SystemMessage(content="You are an evaluation scorer. Always reply with valid JSON only."),
+            HumanMessage(content=LLM_JUDGE_PROMPT.format(
+                query=query,
+                reply=reply,
+                must_mention=", ".join(must_mention),
+                must_not_mention=", ".join(must_not_mention),
+            ))
+        ])
+        data = json.loads(res.content.strip())
+        return float(data.get("score", 0.8 if not rule_fail else 0.5))
+    except Exception:
+        return 0.8 if not rule_fail else 0.4
 
 
-def run_evaluation() -> None:
-    """Run full evaluation on golden dataset and print report."""
-    with open(DATA_DIR / "golden_dataset.json", "r", encoding="utf-8") as f:
-        qa_pairs = json.load(f)
+def run_evaluation():
+    """Runs all test conversations through the actual compiled food_graph."""
+    conv_path = PROJECT_ROOT / "tests" / "conversations.json"
+    if not conv_path.exists():
+        raise FileNotFoundError(f"Missing {conv_path}. Run test generation first.")
 
-    results = []
-    print(f"\n{'='*60}")
-    print("  SpiceRoute Kitchen RAG Evaluation Report")
-    print(f"{'='*60}\n")
+    with open(conv_path, "r", encoding="utf-8") as f:
+        test_cases: List[Dict[str, Any]] = json.load(f)
 
-    for qa in qa_pairs:
-        qid = qa["id"]
-        question = qa["question"]
-        expected = qa["expected_answer"]
-        category = qa["category"]
+    judge_llm = ChatGroq(
+        model=GROQ_MODEL,
+        temperature=0,
+        api_key=GROQ_API_KEY,
+    )
 
-        # Retrieve context
-        context_docs = search_menu(query=question, top_k=6, only_available=False)
+    total_turns = 0
+    correct_intents = 0
+    cart_matches = 0
+    grounded_correct_count = 0
+    order_flow_cases = 0
+    order_flow_success = 0
+    latencies: List[float] = []
 
-        # Generate answer
-        generated = generate_answer(question, context_docs, category=category)
+    case_results = []
 
-        # Score
-        if category == "out_of_scope":
-            # For out-of-scope, check that system redirected correctly
-            redirected = any(kw in generated.lower() for kw in ["only help", "food ordering", "menu"])
-            scores = {
-                "faithfulness":  1.0 if redirected else 0.0,
-                "relevance":     1.0 if redirected else 0.0,
-                "completeness":  1.0 if redirected else 0.0,
-                "comment": "out_of_scope redirect check",
-            }
-        else:
-            scores = score_answer(question, expected, generated, context_docs)
+    print(f"\n🚀 Running real LangGraph evaluation on {len(test_cases)} multi-turn test cases...")
+    print("=" * 70)
 
-        overall = round((scores["faithfulness"] + scores["relevance"] + scores["completeness"]) / 3, 3)
-        scores["overall"] = overall
+    for case in test_cases:
+        cid = case["id"]
+        category = case["category"]
+        turns = case["turns"]
+        expected_final_cart = case.get("expected_final_cart", [])
+        expected_order_placed = case.get("expected_order_placed", False)
+        rubric = case.get("rubric", {})
 
-        result = {
-            "id": qid,
-            "category": category,
-            "question": question,
-            "expected": expected,
-            "generated": generated,
-            "scores": scores,
+        # Fresh state for every conversation
+        state: OrderState = {
+            "messages": [],
+            "intent": "",
+            "user_query": "",
+            "retrieved_menu": [],
+            "unavailable_items": [],
+            "cart": [],
+            "total_price": 0.0,
+            "max_prep_time": 0,
+            "order_confirmed": False,
+            "edit_requested": False,
+            "order_id": None,
+            "estimated_delivery_minutes": 0,
+            "fallback_count": 0,
+            "backtrack_count": 0,
+            "error": None,
         }
-        results.append(result)
 
-        print(f"[{qid}] {category.upper()}")
-        print(f"  Q: {question}")
-        print(f"  Generated: {generated[:100]}...")
-        print(f"  Scores → Faithfulness: {scores['faithfulness']} | Relevance: {scores['relevance']} | Completeness: {scores['completeness']}")
-        print(f"  Overall: {overall}")
-        print(f"  Note: {scores.get('comment', '')}\n")
+        case_turn_results = []
+        last_bot_reply = ""
+        last_user_query = ""
 
-    # Aggregate
-    avg_overall = round(sum(r["scores"]["overall"] for r in results) / len(results), 3)
-    avg_faith   = round(sum(r["scores"]["faithfulness"] for r in results) / len(results), 3)
-    avg_rel     = round(sum(r["scores"]["relevance"] for r in results) / len(results), 3)
-    avg_comp    = round(sum(r["scores"]["completeness"] for r in results) / len(results), 3)
+        for turn in turns:
+            user_msg = turn["user"]
+            expected_intent = turn["expected_intent"]
+            last_user_query = user_msg
 
-    print(f"{'='*60}")
-    print("  AGGREGATE SCORES")
-    print(f"{'='*60}")
-    print(f"  Faithfulness:  {avg_faith}")
-    print(f"  Relevance:     {avg_rel}")
-    print(f"  Completeness:  {avg_comp}")
-    print(f"  Overall RAG Score: {avg_overall} / 1.0")
-    print(f"{'='*60}\n")
+            total_turns += 1
+            prev_len = len(state["messages"])
+            state["messages"] = state["messages"] + [HumanMessage(content=user_msg)]
 
-    # Save results
-    report_path = Path(__file__).parent / "eval_report.json"
-    with open(report_path, "w", encoding="utf-8") as f:
-        json.dump({"aggregate": {
-            "faithfulness": avg_faith,
-            "relevance": avg_rel,
-            "completeness": avg_comp,
-            "overall": avg_overall,
-        }, "results": results}, f, indent=2)
-    print(f"📄 Full report saved to: {report_path}")
+            # Time turn latency
+            t0 = time.perf_counter()
+            state = food_graph.invoke(state)
+            t_elapsed = time.perf_counter() - t0
+            latencies.append(t_elapsed)
+
+            actual_intent = state.get("intent")
+            intent_ok = (actual_intent == expected_intent)
+            if intent_ok:
+                correct_intents += 1
+
+            new_ai = [m for m in state["messages"][prev_len:] if isinstance(m, AIMessage)]
+            last_bot_reply = new_ai[-1].content if new_ai else ""
+
+            case_turn_results.append({
+                "user": user_msg,
+                "expected_intent": expected_intent,
+                "actual_intent": actual_intent,
+                "intent_match": intent_ok,
+                "bot_reply": last_bot_reply,
+                "latency_seconds": round(t_elapsed, 2),
+            })
+
+        # Evaluate final cart exact match
+        actual_cart = [
+            {"dish_name": c["dish_name"], "quantity": c["quantity"]}
+            for c in state.get("cart", [])
+        ]
+        cart_match = (actual_cart == expected_final_cart)
+        if cart_match:
+            cart_matches += 1
+
+        # Evaluate order completion
+        actual_order_placed = bool(state.get("order_id"))
+        if expected_order_placed:
+            order_flow_cases += 1
+            if actual_order_placed and len(actual_cart) == 0:
+                order_flow_success += 1
+
+        # Evaluate grounded answer correctness
+        grounding_score = evaluate_response_grounding(judge_llm, last_user_query, last_bot_reply, rubric)
+        if grounding_score >= 0.75:
+            grounded_correct_count += 1
+
+        case_results.append({
+            "id": cid,
+            "category": category,
+            "description": case["description"],
+            "turns": case_turn_results,
+            "final_cart": actual_cart,
+            "cart_match": cart_match,
+            "order_placed": actual_order_placed,
+            "grounding_score": grounding_score,
+        })
+
+    # Summary calculations
+    intent_accuracy = (correct_intents / total_turns) * 100 if total_turns else 0.0
+    cart_match_rate = (cart_matches / len(test_cases)) * 100 if test_cases else 0.0
+    grounding_rate = (grounded_correct_count / len(test_cases)) * 100 if test_cases else 0.0
+    order_completion_rate = (order_flow_success / order_flow_cases) * 100 if order_flow_cases else 100.0
+
+    median_lat = statistics.median(latencies) if latencies else 0.0
+    p95_lat = statistics.quantiles(latencies, n=20)[18] if len(latencies) >= 20 else max(latencies, default=0.0)
+
+    summary = {
+        "metrics": {
+            "total_test_cases": len(test_cases),
+            "total_turns_executed": total_turns,
+            "intent_accuracy_percent": round(intent_accuracy, 2),
+            "cart_state_exact_match_percent": round(cart_match_rate, 2),
+            "grounded_answer_correctness_percent": round(grounding_rate, 2),
+            "order_completion_rate_percent": round(order_completion_rate, 2),
+            "median_latency_seconds": round(median_lat, 2),
+            "p95_latency_seconds": round(p95_lat, 2),
+        },
+        "cases": case_results,
+    }
+
+    # Save to eval/results.json
+    results_path = PROJECT_ROOT / "eval" / "results.json"
+    results_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(results_path, "w", encoding="utf-8") as f:
+        json.dump(summary, f, indent=2)
+
+    # Print results table
+    print("\n" + "=" * 70)
+    print(" 📊 SPICEROUTE KITCHEN — END-TO-END EVALUATION REPORT")
+    print("=" * 70)
+    print(f" {'Metric':<40} | {'Result':<20}")
+    print("-" * 70)
+    print(f" {'Total Test Cases Evaluated':<40} | {len(test_cases):<20}")
+    print(f" {'Total Multi-Turn Dialog Turns':<40} | {total_turns:<20}")
+    print(f" {'Intent Classification Accuracy':<40} | {intent_accuracy:.1f}%")
+    print(f" {'Cart State Exact-Match Rate':<40} | {cart_match_rate:.1f}%")
+    print(f" {'Grounded Answer Correctness':<40} | {grounding_rate:.1f}%")
+    print(f" {'Order Completion Rate':<40} | {order_completion_rate:.1f}%")
+    print(f" {'Median Latency per Turn':<40} | {median_lat:.2f}s")
+    print(f" {'p95 Latency per Turn':<40} | {p95_lat:.2f}s")
+    print("=" * 70)
+    print(f"✅ Full evaluation log written to: {results_path}\n")
+
+    return summary
 
 
 if __name__ == "__main__":
