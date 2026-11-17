@@ -42,6 +42,14 @@ st.markdown("""
         border-left: 4px solid #2ecc71;
         margin-bottom: 12px;
     }
+    .address-box {
+        background: #252525;
+        border-radius: 8px;
+        padding: 10px;
+        margin-top: 10px;
+        font-size: 13px;
+        border-left: 3px solid #3498db;
+    }
     h1 { color: #ff6b35 !important; }
 </style>
 """, unsafe_allow_html=True)
@@ -53,12 +61,15 @@ def init_state() -> None:
         st.session_state.order_state: OrderState = {
             "messages":                   [],
             "intent":                     "",
+            "intents":                    [],
             "user_query":                 "",
             "retrieved_menu":             [],
             "unavailable_items":          [],
             "cart":                       [],
             "total_price":                0.0,
             "max_prep_time":              0,
+            "delivery_address":           None,
+            "pending_action":             None,
             "order_confirmed":            False,
             "edit_requested":             False,
             "order_id":                   None,
@@ -79,16 +90,18 @@ with st.sidebar:
     st.markdown("## 🛒 Your Cart")
     cart = st.session_state.order_state.get("cart", [])
     order_id = st.session_state.order_state.get("order_id")
+    address = st.session_state.order_state.get("delivery_address")
 
     if order_id:
         eta = st.session_state.order_state.get("estimated_delivery_minutes", 35)
+        addr_line = f"<br>📍 <b>Delivery:</b> {address.get('street')}, {address.get('city')}" if address else ""
         st.markdown(
             f"""
             <div class="order-success-box">
                 <h4 style="color: #2ecc71; margin:0 0 8px 0;">🎉 Order Placed!</h4>
                 <b>Order ID:</b> <code>{order_id}</code><br>
                 ⏱️ <b>ETA:</b> ~{eta} minutes<br>
-                🍳 <b>Status:</b> Being freshly prepared
+                🍳 <b>Status:</b> Freshly preparing{addr_line}
             </div>
             """,
             unsafe_allow_html=True
@@ -99,6 +112,7 @@ with st.sidebar:
             st.session_state.order_state["cart"] = []
             st.session_state.order_state["total_price"] = 0.0
             st.session_state.order_state["max_prep_time"] = 0
+            st.session_state.order_state["pending_action"] = None
             st.rerun()
 
     elif cart:
@@ -117,10 +131,22 @@ with st.sidebar:
         )
         st.markdown('</div>', unsafe_allow_html=True)
 
+        if address and address.get("street"):
+            st.markdown(
+                f"""
+                <div class="address-box">
+                    📍 <b>Delivery Address:</b><br>
+                    {address.get('street')}, {address.get('city')}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
         if st.button("🗑️ Clear Cart", use_container_width=True):
             st.session_state.order_state["cart"] = []
             st.session_state.order_state["total_price"] = 0.0
             st.session_state.order_state["max_prep_time"] = 0
+            st.session_state.order_state["pending_action"] = None
             st.rerun()
     else:
         st.markdown("_Your cart is empty._\n\nStart by telling the bot what you'd like to eat!")
@@ -158,6 +184,7 @@ if not st.session_state.display_messages:
             "I'm your AI food ordering concierge. I can help you:\n"
             "  • 🍛 **Browse our menu:** Ask *'What biryani options do you have?'* or *'What are your cheapest starters?'*\n"
             "  • 🛒 **Order & customize:** Say *'I want 2 butter chicken and a mango lassi'*\n"
+            "  • 📍 **Set delivery address:** Say *'Deliver to 12 MG Road, Bangalore'*\n"
             "  • 📦 **Track active orders:** Ask *'Where is my order?'*\n\n"
             "What would you like to eat today?"
         )
@@ -166,7 +193,7 @@ if not st.session_state.display_messages:
 
 
 # ── Chat Input & Graph Invocation ───────────────────────────────────────────
-if prompt := st.chat_input("Type your message here... (e.g., 'What biryani do you have?')"):
+if prompt := st.chat_input("Type your message here... (e.g., 'I want 2 butter chicken')"):
     # Show user message immediately
     with st.chat_message("user"):
         st.markdown(prompt)

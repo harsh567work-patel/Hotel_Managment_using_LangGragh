@@ -1231,5 +1231,164 @@
         "Messi"
       ]
     }
+  },
+  {
+    "id": "TC055",
+    "category": "address_handling",
+    "description": "Provide delivery address while awaiting order confirmation",
+    "turns": [
+      {
+        "user": "I want 2 butter chicken",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Checkout",
+        "expected_intent": "checkout"
+      },
+      {
+        "user": "My address is 45 MG Road, Bangalore",
+        "expected_intent": "set_delivery_address"
+      },
+      {
+        "user": "Confirm order",
+        "expected_intent": "confirm_order"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": true,
+    "rubric": {
+      "must_mention": [
+        "Order Placed",
+        "ORD-",
+        "45 MG Road",
+        "Bangalore"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC056",
+    "category": "address_handling",
+    "description": "Unserviceable city rejected, prompt for Bangalore address, then recover",
+    "turns": [
+      {
+        "user": "I want 1 paneer tikka masala",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Checkout",
+        "expected_intent": "checkout"
+      },
+      {
+        "user": "Deliver to Flat 101, Bandra West, Mumbai",
+        "expected_intent": "set_delivery_address"
+      },
+      {
+        "user": "Okay, deliver to 12 Brigade Road, Bangalore instead",
+        "expected_intent": "set_delivery_address"
+      },
+      {
+        "user": "Confirm",
+        "expected_intent": "confirm_order"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": true,
+    "rubric": {
+      "must_mention": [
+        "Order Placed",
+        "ORD-",
+        "12 Brigade Road"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC057",
+    "category": "compound_request",
+    "description": "Multi-intent turn: add one mango lassi and make it final",
+    "turns": [
+      {
+        "user": "add one mango lassi and make it final",
+        "expected_intent": "add_to_cart"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Mango Lassi",
+        "quantity": 1
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "Mango Lassi",
+        "Order Review",
+        "Checkout"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC058",
+    "category": "compound_request",
+    "description": "Multi-intent turn: address and confirmation in one message",
+    "turns": [
+      {
+        "user": "I want 1 chicken biryani",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "My address is 100 Indiranagar Bangalore and confirm order",
+        "expected_intent": "set_delivery_address"
+      }
+    ],
+    "expected_final_cart": [],
+    "expected_order_placed": true,
+    "rubric": {
+      "must_mention": [
+        "Order Placed",
+        "ORD-",
+        "Indiranagar"
+      ],
+      "must_not_mention": []
+    }
+  },
+  {
+    "id": "TC059",
+    "category": "address_handling",
+    "description": "Delivery question asked while awaiting order confirmation is NOT out_of_scope",
+    "turns": [
+      {
+        "user": "I want 2 garlic naan",
+        "expected_intent": "add_to_cart"
+      },
+      {
+        "user": "Checkout",
+        "expected_intent": "checkout"
+      },
+      {
+        "user": "Do you deliver to Whitefield and what is the delivery fee?",
+        "expected_intent": "delivery_question"
+      }
+    ],
+    "expected_final_cart": [
+      {
+        "dish_name": "Garlic Naan",
+        "quantity": 2
+      }
+    ],
+    "expected_order_placed": false,
+    "rubric": {
+      "must_mention": [
+        "FREE",
+        "Bangalore",
+        "Whitefield"
+      ],
+      "must_not_mention": [
+        "out_of_scope",
+        "weather"
+      ]
+    }
   }
 ]

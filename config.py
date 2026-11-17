@@ -36,3 +36,6 @@ DISH_MATCH_THRESHOLD = 0.65
 DELIVERY_BUFFER_MINUTES = 15
 MAX_FALLBACKS = 3
 MAX_BACKTRACKS = 2
+
+# Serviceable cities for delivery
+SERVICEABLE_CITIES = ["Bangalore", "Bengaluru"]
