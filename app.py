@@ -1,6 +1,7 @@
 """
 app.py — Streamlit chatbot frontend for the SpiceRoute Kitchen food ordering RAG system.
-Maintains OrderState in st.session_state across conversation turns.
+Maintains OrderState across conversation turns, renders all new assistant messages
+generated in each turn as a safety net, and synchronizes live cart / order receipt states.
 """
 
 import streamlit as st
@@ -26,13 +27,20 @@ st.markdown("""
         padding: 16px;
         border-left: 4px solid #ff6b35;
     }
-    .cart-item { margin: 4px 0; font-size: 14px; }
+    .cart-item { margin: 6px 0; font-size: 14px; }
     .total-line {
         border-top: 1px solid #555;
-        margin-top: 8px;
+        margin-top: 10px;
         padding-top: 8px;
         font-weight: bold;
         color: #ff6b35;
+    }
+    .order-success-box {
+        background: #1e3a1e;
+        border-radius: 10px;
+        padding: 16px;
+        border-left: 4px solid #2ecc71;
+        margin-bottom: 12px;
     }
     h1 { color: #ff6b35 !important; }
 </style>
@@ -66,16 +74,33 @@ def init_state() -> None:
 init_state()
 
 
-# ── Sidebar — Live Cart ──────────────────────────────────────────────────────
+# ── Sidebar — Live Cart & Order Status ───────────────────────────────────────
 with st.sidebar:
     st.markdown("## 🛒 Your Cart")
     cart = st.session_state.order_state.get("cart", [])
     order_id = st.session_state.order_state.get("order_id")
 
     if order_id:
-        st.success(f"✅ Order Placed!\n\n**ID:** `{order_id}`")
-        eta = st.session_state.order_state.get("estimated_delivery_minutes", 0)
-        st.info(f"⏱️ Estimated delivery: **{eta} min**")
+        eta = st.session_state.order_state.get("estimated_delivery_minutes", 35)
+        st.markdown(
+            f"""
+            <div class="order-success-box">
+                <h4 style="color: #2ecc71; margin:0 0 8px 0;">🎉 Order Placed!</h4>
+                <b>Order ID:</b> <code>{order_id}</code><br>
+                ⏱️ <b>ETA:</b> ~{eta} minutes<br>
+                🍳 <b>Status:</b> Being freshly prepared
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+        if st.button("➕ Start Another Order", use_container_width=True):
+            st.session_state.order_state["order_id"] = None
+            st.session_state.order_state["order_confirmed"] = False
+            st.session_state.order_state["cart"] = []
+            st.session_state.order_state["total_price"] = 0.0
+            st.session_state.order_state["max_prep_time"] = 0
+            st.rerun()
+
     elif cart:
         st.markdown('<div class="cart-box">', unsafe_allow_html=True)
         for item in cart:
@@ -87,7 +112,7 @@ with st.sidebar:
         total = st.session_state.order_state.get("total_price", 0)
         prep  = st.session_state.order_state.get("max_prep_time", 0)
         st.markdown(
-            f'<div class="total-line">💰 Total: ₹{total:.0f} &nbsp;&nbsp; ⏱️ ~{prep} min</div>',
+            f'<div class="total-line">💰 Total: ₹{total:.0f} &nbsp;&nbsp; ⏱️ Prep: ~{prep} min</div>',
             unsafe_allow_html=True,
         )
         st.markdown('</div>', unsafe_allow_html=True)
@@ -106,7 +131,7 @@ with st.sidebar:
     st.markdown("📞 +91-9876543210")
 
     st.markdown("---")
-    if st.button("🔄 New Conversation", use_container_width=True):
+    if st.button("🔄 Reset Conversation", use_container_width=True):
         st.session_state.clear()
         st.rerun()
 
@@ -115,7 +140,7 @@ with st.sidebar:
 col1, col2 = st.columns([1, 8])
 with col2:
     st.markdown("# 🍽️ SpiceRoute Kitchen")
-    st.caption("_Authentic Flavors, Delivered Fast_ | AI-powered food ordering")
+    st.caption("_Authentic Flavors, Delivered Fast_ | AI-powered food ordering with LangGraph & Groq")
 
 st.markdown("---")
 
@@ -130,26 +155,27 @@ if not st.session_state.display_messages:
     with st.chat_message("assistant"):
         welcome = (
             "👋 Welcome to **SpiceRoute Kitchen**!\n\n"
-            "I'm your AI food ordering assistant. I can help you:\n"
-            "  🍛 Browse our menu\n"
-            "  🛒 Place an order\n"
-            "  📦 Track your order\n\n"
+            "I'm your AI food ordering concierge. I can help you:\n"
+            "  • 🍛 **Browse our menu:** Ask *'What biryani options do you have?'* or *'What are your cheapest starters?'*\n"
+            "  • 🛒 **Order & customize:** Say *'I want 2 butter chicken and a mango lassi'*\n"
+            "  • 📦 **Track active orders:** Ask *'Where is my order?'*\n\n"
             "What would you like to eat today?"
         )
         st.markdown(welcome)
         st.session_state.display_messages.append({"role": "assistant", "content": welcome})
 
 
-# ── Chat Input ───────────────────────────────────────────────────────────────
-if prompt := st.chat_input("Type your message here... (e.g., 'I want butter chicken')"):
+# ── Chat Input & Graph Invocation ───────────────────────────────────────────
+if prompt := st.chat_input("Type your message here... (e.g., 'What biryani do you have?')"):
     # Show user message immediately
     with st.chat_message("user"):
         st.markdown(prompt)
     st.session_state.display_messages.append({"role": "user", "content": prompt})
 
-    # Add to LangGraph state
+    # Prepare LangGraph state
     current_state = st.session_state.order_state
-    current_state["messages"] = current_state["messages"] + [HumanMessage(content=prompt)]
+    prev_msg_count = len(current_state.get("messages", []))
+    current_state["messages"] = current_state.get("messages", []) + [HumanMessage(content=prompt)]
 
     # Run graph
     with st.spinner("Thinking... 🤔"):
@@ -157,13 +183,20 @@ if prompt := st.chat_input("Type your message here... (e.g., 'I want butter chic
             result = food_graph.invoke(current_state)
             st.session_state.order_state = result
 
-            # Extract last AI response
-            ai_messages = [m for m in result["messages"] if isinstance(m, AIMessage)]
-            if ai_messages:
-                reply = ai_messages[-1].content
+            # Render every new AIMessage produced in this turn (slice from previous count)
+            new_turn_messages = result.get("messages", [])[prev_msg_count + 1:]
+            new_ai_messages = [m for m in new_turn_messages if isinstance(m, AIMessage)]
+
+            # Fallback if slice is empty for any reason
+            if not new_ai_messages:
+                all_ai = [m for m in result.get("messages", []) if isinstance(m, AIMessage)]
+                if all_ai:
+                    new_ai_messages = [all_ai[-1]]
+
+            for ai_msg in new_ai_messages:
                 with st.chat_message("assistant"):
-                    st.markdown(reply)
-                st.session_state.display_messages.append({"role": "assistant", "content": reply})
+                    st.markdown(ai_msg.content)
+                st.session_state.display_messages.append({"role": "assistant", "content": ai_msg.content})
 
         except Exception as e:
             error_msg = f"⚠️ Something went wrong: {str(e)}\n\nPlease try rephrasing your request."
