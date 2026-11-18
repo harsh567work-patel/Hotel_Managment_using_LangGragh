@@ -114,7 +114,16 @@ def test_reject_unavailable_dish():
     assert len(updated) == 0
     assert len(errors) == 1
     assert "unavailable today" in errors[0]
-    assert "Butter Chicken" in errors[0] or "Chicken Biryani" in errors[0]
+    valid_non_veg_mains = [
+        "Butter Chicken",
+        "Chicken Biryani",
+        "Hyderabadi Mutton Biryani",
+        "Kadai Chicken",
+        "Malabar Fish Curry",
+    ]
+    assert any(dish in errors[0] for dish in valid_non_veg_mains)
+    assert "Gulab Jamun" not in errors[0]
+    assert "Mango Lassi" not in errors[0]
 
 
 def test_unknown_dish_graceful_handling():

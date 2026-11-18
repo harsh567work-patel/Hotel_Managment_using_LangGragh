@@ -3,6 +3,7 @@ qdrant_client.py — Qdrant client connection, embedding, payload indexing, and 
 Uses FastEmbed for local vectorization and enforces strict startup validation.
 """
 
+import time
 from typing import List, Optional, Tuple, Dict, Any
 from qdrant_client import QdrantClient
 from qdrant_client.models import (
@@ -20,6 +21,9 @@ from config import (
 
 _embedder: Optional[TextEmbedding] = None
 _client: Optional[QdrantClient] = None
+_menu_cache: Optional[List[dict]] = None
+_menu_cache_ts: float = 0.0
+_MENU_CACHE_TTL: float = 60.0
 
 
 def get_embedder() -> TextEmbedding:
@@ -188,20 +192,27 @@ def search_dish_by_name(dish_name: str, threshold: float = DISH_MATCH_THRESHOLD)
     return None, score
 
 
-def get_all_menu_dishes() -> List[dict]:
+def get_all_menu_dishes(force_refresh: bool = False) -> List[dict]:
     """
-    Returns all dishes in the menu collection (payloads).
-    Used for in-memory Python calculations like min/max price, prep times, category lists.
+    Returns all dishes in the menu collection (payloads), with a short TTL cache
+    so menu lookups and cart resolution stay snappy.
     """
+    global _menu_cache, _menu_cache_ts
+    now = time.time()
+    if not force_refresh and _menu_cache is not None and (now - _menu_cache_ts) < _MENU_CACHE_TTL:
+        return _menu_cache
+
     client = get_client()
     # Scroll through collection
     scroll_res = client.scroll(
         collection_name=MENU_COLLECTION,
-        limit=100,
+        limit=200,
         with_payload=True,
     )
     records = scroll_res[0]
-    return [r.payload for r in records if r.payload]
+    _menu_cache = [r.payload for r in records if r.payload]
+    _menu_cache_ts = now
+    return _menu_cache
 
 
 def search_qa(query: str, top_k: int = 3) -> List[dict]:
