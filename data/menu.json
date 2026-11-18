@@ -26,7 +26,7 @@
       "prep_time_minutes": 20,
       "is_available": true,
       "dish_man": "Chef Priya",
-      "tags": ["veg", "bestseller", "spicy"]
+      "tags": ["veg", "bestseller", "spicy", "gluten-free"]
     },
     {
       "id": "D003",
@@ -37,7 +37,7 @@
       "prep_time_minutes": 35,
       "is_available": true,
       "dish_man": "Chef Ravi",
-      "tags": ["non-veg", "bestseller", "signature"]
+      "tags": ["non-veg", "bestseller", "signature", "biryani", "gluten-free"]
     },
     {
       "id": "D004",
@@ -48,7 +48,7 @@
       "prep_time_minutes": 30,
       "is_available": true,
       "dish_man": "Chef Priya",
-      "tags": ["veg", "popular"]
+      "tags": ["veg", "popular", "biryani", "gluten-free"]
     },
     {
       "id": "D005",
@@ -81,7 +81,7 @@
       "prep_time_minutes": 20,
       "is_available": true,
       "dish_man": "Chef Ravi",
-      "tags": ["non-veg", "starter", "spicy"]
+      "tags": ["non-veg", "starter", "spicy", "tandoor", "gluten-free"]
     },
     {
       "id": "D008",
@@ -92,7 +92,7 @@
       "prep_time_minutes": 10,
       "is_available": true,
       "dish_man": "Chef Arjun",
-      "tags": ["veg", "starter", "snack"]
+      "tags": ["veg", "vegan", "starter", "snack"]
     },
     {
       "id": "D009",
@@ -103,7 +103,7 @@
       "prep_time_minutes": 15,
       "is_available": true,
       "dish_man": "Chef Priya",
-      "tags": ["veg", "comfort food"]
+      "tags": ["veg", "comfort food", "gluten-free"]
     },
     {
       "id": "D010",
@@ -114,7 +114,7 @@
       "prep_time_minutes": 5,
       "is_available": true,
       "dish_man": "Chef Priya",
-      "tags": ["veg", "cold", "sweet"]
+      "tags": ["veg", "cold", "sweet", "gluten-free"]
     },
     {
       "id": "D011",
@@ -125,7 +125,7 @@
       "prep_time_minutes": 5,
       "is_available": true,
       "dish_man": "Chef Arjun",
-      "tags": ["veg", "hot", "classic"]
+      "tags": ["veg", "hot", "classic", "gluten-free"]
     },
     {
       "id": "D012",
@@ -147,7 +147,7 @@
       "prep_time_minutes": 45,
       "is_available": false,
       "dish_man": "Chef Ravi",
-      "tags": ["non-veg", "spicy", "slow-cook"]
+      "tags": ["non-veg", "spicy", "slow-cook", "gluten-free"]
     },
     {
       "id": "D014",
@@ -158,7 +158,7 @@
       "prep_time_minutes": 20,
       "is_available": false,
       "dish_man": "Chef Priya",
-      "tags": ["veg", "mild", "creamy"]
+      "tags": ["veg", "mild", "creamy", "gluten-free"]
     },
     {
       "id": "D015",
@@ -170,6 +170,237 @@
       "is_available": true,
       "dish_man": "Chef Arjun",
       "tags": ["veg", "sweet", "dessert", "popular"]
+    },
+    {
+      "id": "D016",
+      "dish_name": "Paneer Tikka",
+      "category": "Starters",
+      "description": "Char-grilled cottage cheese skewers marinated in hung curd, Kashmiri chilli, and aromatic tandoori spices with bell peppers.",
+      "price": 190,
+      "prep_time_minutes": 18,
+      "is_available": true,
+      "dish_man": "Chef Priya",
+      "tags": ["veg", "starter", "tandoor", "gluten-free", "popular"]
+    },
+    {
+      "id": "D017",
+      "dish_name": "Hara Bhara Kabab (4 pcs)",
+      "category": "Starters",
+      "description": "Pan-seared spinach, green pea, and potato patties spiced with roasted cumin and ginger, served with mint yogurt dip.",
+      "price": 140,
+      "prep_time_minutes": 15,
+      "is_available": true,
+      "dish_man": "Chef Priya",
+      "tags": ["veg", "starter", "healthy", "mild"]
+    },
+    {
+      "id": "D018",
+      "dish_name": "Crispy Onion Bhaji",
+      "category": "Starters",
+      "description": "Crunchy gram-flour fritters made with thinly sliced onions, carom seeds, and curry leaves. Served hot with tangy chutney.",
+      "price": 110,
+      "prep_time_minutes": 12,
+      "is_available": true,
+      "dish_man": "Chef Arjun",
+      "tags": ["veg", "vegan", "starter", "snack", "gluten-free"]
+    },
+    {
+      "id": "D019",
+      "dish_name": "Mutton Seekh Kebab",
+      "category": "Starters",
+      "description": "Spiced minced mutton blended with fresh mint, ginger, and garam masala, skewered and roasted in a clay tandoor.",
+      "price": 250,
+      "prep_time_minutes": 22,
+      "is_available": true,
+      "dish_man": "Chef Ravi",
+      "tags": ["non-veg", "starter", "tandoor", "spicy", "gluten-free"]
+    },
+    {
+      "id": "D020",
+      "dish_name": "Tandoori Prawns",
+      "category": "Starters",
+      "description": "Jumbo coastal prawns marinated in spiced yogurt, carom seeds, and lemon juice, flame-grilled to smoky perfection.",
+      "price": 340,
+      "prep_time_minutes": 20,
+      "is_available": false,
+      "dish_man": "Chef Meera",
+      "tags": ["non-veg", "starter", "seafood", "tandoor", "spicy", "gluten-free"]
+    },
+    {
+      "id": "D021",
+      "dish_name": "Palak Paneer",
+      "category": "Main Course",
+      "description": "Fresh cottage cheese cubes gently simmered in a smooth, garlicky spinach puree tempered with cumin and butter.",
+      "price": 230,
+      "prep_time_minutes": 20,
+      "is_available": true,
+      "dish_man": "Chef Priya",
+      "tags": ["veg", "healthy", "mild", "gluten-free"]
+    },
+    {
+      "id": "D022",
+      "dish_name": "Chana Masala",
+      "category": "Main Course",
+      "description": "Hearty chickpeas cooked in a robust Punjabi onion-tomato gravy with roasted coriander, dry mango powder, and ginger.",
+      "price": 180,
+      "prep_time_minutes": 18,
+      "is_available": true,
+      "dish_man": "Chef Priya",
+      "tags": ["veg", "vegan", "spicy", "gluten-free"]
+    },
+    {
+      "id": "D023",
+      "dish_name": "Dal Makhani",
+      "category": "Main Course",
+      "description": "Whole black lentils and kidney beans slow-simmered overnight with tomatoes, cream, and churned white butter.",
+      "price": 210,
+      "prep_time_minutes": 25,
+      "is_available": true,
+      "dish_man": "Chef Priya",
+      "tags": ["veg", "creamy", "bestseller", "slow-cook", "mild", "gluten-free"]
+    },
+    {
+      "id": "D024",
+      "dish_name": "Kadai Chicken",
+      "category": "Main Course",
+      "description": "Wok-tossed chicken cooked with freshly pounded coriander seeds, dried red chillies, crunchy bell peppers, and onions.",
+      "price": 290,
+      "prep_time_minutes": 25,
+      "is_available": true,
+      "dish_man": "Chef Ravi",
+      "tags": ["non-veg", "spicy", "popular", "gluten-free"]
+    },
+    {
+      "id": "D025",
+      "dish_name": "Malabar Fish Curry",
+      "category": "Main Course",
+      "description": "Tender seer fish steaks simmered in a tangy Kerala coconut milk curry infused with curry leaves, fenugreek, and kokum.",
+      "price": 310,
+      "prep_time_minutes": 25,
+      "is_available": true,
+      "dish_man": "Chef Meera",
+      "tags": ["non-veg", "seafood", "coastal", "spicy", "gluten-free"]
+    },
+    {
+      "id": "D026",
+      "dish_name": "Hyderabadi Mutton Biryani",
+      "category": "Main Course",
+      "description": "Royal dum-cooked basmati rice layered with succulent marinated mutton, fried shallots, saffron milk, and mint. Served with raita.",
+      "price": 360,
+      "prep_time_minutes": 40,
+      "is_available": true,
+      "dish_man": "Chef Ravi",
+      "tags": ["non-veg", "biryani", "signature", "spicy", "gluten-free"]
+    },
+    {
+      "id": "D027",
+      "dish_name": "Aloo Gobi",
+      "category": "Main Course",
+      "description": "Homestyle cauliflower florets and potatoes sauteed with turmeric, cumin seeds, ginger juliennes, and fresh coriander.",
+      "price": 170,
+      "prep_time_minutes": 18,
+      "is_available": true,
+      "dish_man": "Chef Arjun",
+      "tags": ["veg", "vegan", "comfort food", "mild", "gluten-free"]
+    },
+    {
+      "id": "D028",
+      "dish_name": "Butter Roti",
+      "category": "Breads",
+      "description": "Whole-wheat flatbread cooked crisp in the tandoor and finished with a light brush of salted butter.",
+      "price": 45,
+      "prep_time_minutes": 8,
+      "is_available": true,
+      "dish_man": "Chef Arjun",
+      "tags": ["veg", "bread", "healthy"]
+    },
+    {
+      "id": "D029",
+      "dish_name": "Lachha Paratha",
+      "category": "Breads",
+      "description": "Multi-layered, flaky whole-wheat flatbread brushed with ghee and baked golden in the tandoor.",
+      "price": 70,
+      "prep_time_minutes": 12,
+      "is_available": true,
+      "dish_man": "Chef Arjun",
+      "tags": ["veg", "bread", "popular"]
+    },
+    {
+      "id": "D030",
+      "dish_name": "Cheese Garlic Naan",
+      "category": "Breads",
+      "description": "Tandoor-baked naan stuffed with melted mozzarella and cheddar cheese, topped with roasted garlic butter.",
+      "price": 95,
+      "prep_time_minutes": 12,
+      "is_available": true,
+      "dish_man": "Chef Arjun",
+      "tags": ["veg", "bread", "bestseller"]
+    },
+    {
+      "id": "D031",
+      "dish_name": "Fresh Lime Soda",
+      "category": "Drinks",
+      "description": "Refreshing chilled sparkling soda mixed with freshly squeezed lime juice, available sweet, salted, or mixed.",
+      "price": 60,
+      "prep_time_minutes": 5,
+      "is_available": true,
+      "dish_man": "Chef Meera",
+      "tags": ["veg", "vegan", "cold", "refreshing", "gluten-free"]
+    },
+    {
+      "id": "D032",
+      "dish_name": "South Indian Filter Coffee",
+      "category": "Drinks",
+      "description": "Authentic frothy decoction coffee brewed from roasted Arabica beans and chicory, served piping hot with frothed milk.",
+      "price": 70,
+      "prep_time_minutes": 5,
+      "is_available": true,
+      "dish_man": "Chef Meera",
+      "tags": ["veg", "hot", "classic", "gluten-free"]
+    },
+    {
+      "id": "D033",
+      "dish_name": "Rose Falooda",
+      "category": "Drinks",
+      "description": "Chilled royal dessert beverage layered with rose syrup, sweet basil seeds, vermicelli, milk, and vanilla ice cream.",
+      "price": 130,
+      "prep_time_minutes": 8,
+      "is_available": true,
+      "dish_man": "Chef Meera",
+      "tags": ["veg", "cold", "sweet", "signature"]
+    },
+    {
+      "id": "D034",
+      "dish_name": "Kesar Pista Kulfi",
+      "category": "Desserts",
+      "description": "Traditional slow-reduced dense Indian ice cream infused with Kashmiri saffron strands and roasted pistachio slivers.",
+      "price": 120,
+      "prep_time_minutes": 10,
+      "is_available": true,
+      "dish_man": "Chef Meera",
+      "tags": ["veg", "sweet", "dessert", "cold", "gluten-free"]
+    },
+    {
+      "id": "D035",
+      "dish_name": "Rasmalai (2 pcs)",
+      "category": "Desserts",
+      "description": "Delicate cottage cheese patties soaked in chilled, saffron-cardamom thickened milk garnished with crushed almonds.",
+      "price": 140,
+      "prep_time_minutes": 10,
+      "is_available": false,
+      "dish_man": "Chef Priya",
+      "tags": ["veg", "sweet", "dessert", "creamy", "gluten-free"]
+    },
+    {
+      "id": "D036",
+      "dish_name": "Gajar Ka Halwa",
+      "category": "Desserts",
+      "description": "Warm winter delicacy of slow-cooked grated red carrots simmered in milk, ghee, cardamom, and toasted cashews.",
+      "price": 130,
+      "prep_time_minutes": 12,
+      "is_available": true,
+      "dish_man": "Chef Priya",
+      "tags": ["veg", "sweet", "dessert", "hot", "gluten-free"]
     }
   ]
 }

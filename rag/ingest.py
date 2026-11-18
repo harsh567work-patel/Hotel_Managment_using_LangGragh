@@ -70,10 +70,12 @@ def ingest_menu() -> None:
         )
 
     # Delete existing points in collection to ensure clean update
-    client.delete(
-        collection_name=MENU_COLLECTION,
-        points_selector=[p.id for p in client.scroll(collection_name=MENU_COLLECTION, limit=100)[0]]
-    )
+    existing_points = client.scroll(collection_name=MENU_COLLECTION, limit=500)[0]
+    if existing_points:
+        client.delete(
+            collection_name=MENU_COLLECTION,
+            points_selector=[p.id for p in existing_points],
+        )
     client.upsert(collection_name=MENU_COLLECTION, points=points)
     print(f"✅  Ingested {len(points)} dishes into '{MENU_COLLECTION}' with rich embeddings & payload filters")
 
@@ -97,10 +99,12 @@ def ingest_golden_dataset() -> None:
             )
         )
 
-    client.delete(
-        collection_name=QA_COLLECTION,
-        points_selector=[p.id for p in client.scroll(collection_name=QA_COLLECTION, limit=100)[0]]
-    )
+    existing_points = client.scroll(collection_name=QA_COLLECTION, limit=500)[0]
+    if existing_points:
+        client.delete(
+            collection_name=QA_COLLECTION,
+            points_selector=[p.id for p in existing_points],
+        )
     client.upsert(collection_name=QA_COLLECTION, points=points)
     print(f"✅  Ingested {len(points)} QA pairs into '{QA_COLLECTION}'")
 

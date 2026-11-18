@@ -20,6 +20,7 @@ ValidIntent = Literal[
     "confirm_order",
     "track_order",
     "set_delivery_address",
+    "set_order_type",
     "delivery_question",
     "greet",
     "out_of_scope",
@@ -38,7 +39,7 @@ class IntentClassification(BaseModel):
 
 
 INTENT_SYSTEM_PROMPT = """You are the intent classifier for SpiceRoute Kitchen's AI food ordering system.
-Classify the user's message into a list of one or more of the following 10 intents, ordered logically:
+Classify the user's message into a list of one or more of the following 11 intents, ordered logically:
 
 1. greet:
    Saying hello, hi, good morning, or introducing themselves.
@@ -66,12 +67,18 @@ Classify the user's message into a list of one or more of the following 10 inten
    User is providing an address, street, house number, area, or city for delivery
    (e.g., "12 MG Road, Bangalore", "Deliver to Koramangala 4th Block", "My address is Bandra, Mumbai", "Indiranagar").
 
-9. delivery_question:
-   User asks about delivery coverage, serviceable cities, delivery fee, or delivery times
-   (e.g., "Do you deliver to Whitefield?", "What is the delivery fee?", "Where do you deliver?", "Can you deliver to Mumbai?").
+9. set_order_type:
+   User specifies how they want to receive or enjoy their order: dining in at the restaurant,
+   self-pickup/takeaway, or switching to home delivery
+   (e.g., "I want to dine here", "will dine here", "dine in", "eat here", "eat at the restaurant",
+   "table 5", "I'll pick it up", "takeaway", "take out", "self pickup", "make it delivery").
 
-10. out_of_scope:
-    User asks something completely unrelated to restaurant food, menu, address, or delivery
+10. delivery_question:
+    User asks about delivery coverage, serviceable cities, delivery fee, payment methods (cash/UPI/cards), dine-in/pickup availability, or delivery times
+    (e.g., "Do you deliver to Whitefield?", "What is the delivery fee?", "Where do you deliver?", "Can you deliver to Mumbai?", "Do you have dine-in?", "What payment methods do you accept?").
+
+11. out_of_scope:
+    User asks something completely unrelated to restaurant food, menu, dining, pickup, address, or delivery
     (e.g. "What's the weather today?", "Write python code", "Who is the president?").
 
 Multi-intent compound messages:
@@ -81,6 +88,9 @@ Examples:
 - "what biryani do you have and add 1 butter chicken" -> ["menu_inquiry", "add_to_cart"]
 - "here is my address 12 MG Road Bangalore and place order" -> ["set_delivery_address", "confirm_order"]
 - "change butter chicken to 2 and checkout" -> ["modify_cart", "checkout"]
+- "i want to dine here only so checkout me" -> ["set_order_type", "checkout"]
+- "make it takeaway and confirm order" -> ["set_order_type", "confirm_order"]
+- "will dine here" -> ["set_order_type"]
 
 State Context:
 - pending_action: {pending_action}
@@ -89,8 +99,9 @@ State Context:
 
 CRITICAL STATE-AWARE RULE:
 While pending_action is 'awaiting_order_confirmation', any message providing an address,
-asking about payment or delivery, or requesting cart changes/additions MUST NEVER be classified
-as 'out_of_scope'. Classify them accurately as set_delivery_address, delivery_question,
+specifying dine-in / eat here / takeaway / pickup / delivery, asking about payment or delivery,
+or requesting cart changes/additions MUST NEVER be classified as 'out_of_scope'.
+Classify them accurately as set_delivery_address, set_order_type, delivery_question,
 add_to_cart, modify_cart, checkout, or confirm_order.
 """
 
