@@ -1,6 +1,27 @@
+# Environment secrets
 .env
+.env.local
+*.env
+
+# Python bytecode & caches
 __pycache__/
 */__pycache__/
 */*/__pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Testing & linting caches
 .pytest_cache/
+.coverage
+htmlcov/
+
+# FastEmbed local model downloads
+fastembed_cache/
+
+# OS and Editor metadata
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

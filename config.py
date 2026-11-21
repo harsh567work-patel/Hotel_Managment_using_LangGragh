@@ -40,3 +40,4 @@ MAX_BACKTRACKS = 2
 
 # Serviceable cities for delivery
 SERVICEABLE_CITIES = ["Bangalore", "Bengaluru"]
+RESTAURANT_LOCATION = "12, Food Street, Bangalore - 560001"

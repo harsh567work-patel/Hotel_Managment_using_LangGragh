@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  # ── Streamlit Conversational Frontend ──────────────────────────────────────
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spiceroute-ui
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    environment:
+      - PORT=8501
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GROQ_MODEL=${GROQ_MODEL:-openai/gpt-oss-120b}
+      - GROQ_FAST_MODEL=${GROQ_FAST_MODEL:-openai/gpt-oss-20b}
+      - QDRANT_URL=${QDRANT_URL}
+      - QDRANT_API_KEY=${QDRANT_API_KEY}
+    command: ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.headless=true"]
+    depends_on:
+      api:
+        condition: service_started
+
+  # ── FastAPI Headless REST API Backend ──────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spiceroute-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GROQ_MODEL=${GROQ_MODEL:-openai/gpt-oss-120b}
+      - GROQ_FAST_MODEL=${GROQ_FAST_MODEL:-openai/gpt-oss-20b}
+      - QDRANT_URL=${QDRANT_URL}
+      - QDRANT_API_KEY=${QDRANT_API_KEY}
+    command: ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]

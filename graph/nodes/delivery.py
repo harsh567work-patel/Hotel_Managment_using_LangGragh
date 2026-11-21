@@ -9,9 +9,10 @@ from pydantic import BaseModel, Field
 from langchain_groq import ChatGroq
 from langchain_core.messages import AIMessage, SystemMessage, HumanMessage
 from graph.state import OrderState, DeliveryAddress
-from config import GROQ_MODEL, GROQ_FAST_MODEL, GROQ_API_KEY, SERVICEABLE_CITIES
-
-RESTAURANT_LOCATION = "SpiceRoute Kitchen, 12 Food Street, Bangalore"
+from config import (
+    GROQ_MODEL, GROQ_FAST_MODEL, GROQ_API_KEY,
+    SERVICEABLE_CITIES, RESTAURANT_LOCATION
+)
 
 
 class OrderTypeExtraction(BaseModel):
