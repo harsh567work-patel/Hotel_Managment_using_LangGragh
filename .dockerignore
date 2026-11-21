@@ -1,0 +1,16 @@
+.git
+.github
+.gitignore
+.env
+.pytest_cache/
+__pycache__/
+*__pycache__*
+*.pyc
+*.pyo
+*.pyd
+*.log
+eval/results.json
+eval/golden_results.json
+.vscode
+.idea
+.DS_Store
