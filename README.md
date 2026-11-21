@@ -20,19 +20,19 @@ The core invariant enforced across the entire graph is:
 
 ```mermaid
 flowchart TD
-    User["👤 Customer Turn"] --> Entry["🏁 intent_detector\n(State-aware with Pydantic structured output)"]
+    User["👤 Customer Turn"] --> Entry["🏁 intent_detector<br/>(State-aware with Pydantic structured output)"]
     
-    Entry -->|len(intents) > 1| Multi["⚡ multi_intent_processor\n(Executes compound requests sequentially)"]
-    Entry -->|greet| Greet["👋 greeter_node"]
-    Entry -->|menu_inquiry| RAG["📖 menu_rag_node\n(Python superlative/diet filters + Qdrant RAG)"]
-    Entry -->|add_to_cart / modify_cart| Cart["🛒 cart_builder_node\n(Pydantic CartActions resolved against 36 dishes)"]
-    Entry -->|set_delivery_address| Delivery["📍 set_delivery_address_node\n(Validates Bangalore serviceability)"]
-    Entry -->|set_order_type| OrderType["🍽️ set_order_type_node\n(Dine-in / Takeaway / Delivery)"]
-    Entry -->|delivery_question| DelivQ["🚚 delivery_question_node\n(Coverage, payment methods, delivery times)"]
-    Entry -->|checkout| Checkout["📋 order_confirm_node\n(Awaiting confirmation state)"]
-    Entry -->|confirm_order| Place["🎉 place_order_node\n(Validates address/order-type, checks limit, spawns OrderRecord)"]
-    Entry -->|track_order| Track["⏱️ order_tracker_node\n(Live countdown, cooking vs served status)"]
-    Entry -->|out_of_scope| Scope["🛡️ guardrail_node\n(Polite refusal, keeps cart & pending action)"]
+    Entry -->|"Compound Request"| Multi["⚡ multi_intent_processor<br/>(Executes compound requests sequentially)"]
+    Entry -->|"greet"| Greet["👋 greeter_node"]
+    Entry -->|"menu_inquiry"| RAG["📖 menu_rag_node<br/>(Python superlative & diet filters + Qdrant RAG)"]
+    Entry -->|"add_to_cart or modify_cart"| Cart["🛒 cart_builder_node<br/>(Pydantic CartActions resolved against 36 dishes)"]
+    Entry -->|"set_delivery_address"| Delivery["📍 set_delivery_address_node<br/>(Validates Bangalore serviceability)"]
+    Entry -->|"set_order_type"| OrderType["🍽️ set_order_type_node<br/>(Dine-in / Takeaway / Delivery)"]
+    Entry -->|"delivery_question"| DelivQ["🚚 delivery_question_node<br/>(Coverage, payment methods, delivery times)"]
+    Entry -->|"checkout"| Checkout["📋 order_confirm_node<br/>(Awaiting confirmation state)"]
+    Entry -->|"confirm_order"| Place["🎉 place_order_node<br/>(Validates address/order-type, checks limit, spawns OrderRecord)"]
+    Entry -->|"track_order"| Track["⏱️ order_tracker_node<br/>(Live countdown, cooking vs served status)"]
+    Entry -->|"out_of_scope"| Scope["🛡️ guardrail_node<br/>(Polite refusal, keeps cart & pending action)"]
     
     Multi --> Output["💬 Exactly ONE Unified Assistant Response"]
     Greet --> Output
