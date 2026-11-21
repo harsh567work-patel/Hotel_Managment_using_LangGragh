@@ -34,6 +34,7 @@ DISH_MATCH_THRESHOLD = 0.65
 
 # ── Delivery & Business Logic ────────────────────────────────────────────────
 DELIVERY_BUFFER_MINUTES = 15
+MAX_ACTIVE_ORDERS = 5
 MAX_FALLBACKS = 3
 MAX_BACKTRACKS = 2
 

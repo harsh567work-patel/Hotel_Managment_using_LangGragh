@@ -23,6 +23,18 @@ class DeliveryAddress(TypedDict, total=False):
     state: str
 
 
+class OrderRecord(TypedDict, total=False):
+    order_id: str
+    items: List[CartItem]
+    total_price: float
+    order_type: str                 # "delivery" | "dine_in" | "pickup"
+    table_number: Optional[str]
+    delivery_address: Optional[DeliveryAddress]
+    eta_minutes: int
+    placed_at: float                # unix timestamp (seconds)
+    status: str                     # "cooking" | "served"
+
+
 class OrderState(TypedDict, total=False):
     # ── Conversation ───────────────────────────────────────────────
     messages: Annotated[List[BaseMessage], operator.add]  # append-only
@@ -42,6 +54,8 @@ class OrderState(TypedDict, total=False):
     max_prep_time: int          # minutes — kitchen preparation time
 
     # ── Delivery & Checkout State ──────────────────────────────────
+    order_type: Optional[str]      # "delivery" | "dine_in" | "pickup" | None
+    table_number: Optional[str]    # optional table number for dine-in
     delivery_address: Optional[DeliveryAddress]
     pending_action: Optional[str]  # e.g., "awaiting_order_confirmation", or None
 
@@ -50,6 +64,7 @@ class OrderState(TypedDict, total=False):
     edit_requested: bool
     order_id: Optional[str]
     estimated_delivery_minutes: int
+    orders: List[OrderRecord]      # persistent history of active (cooking) and served orders
 
     # ── Control ────────────────────────────────────────────────────
     fallback_count: int

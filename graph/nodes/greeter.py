@@ -20,6 +20,7 @@ def greeter_node(state: OrderState) -> dict:
         model=GROQ_FAST_MODEL,
         temperature=0.3,
         api_key=GROQ_API_KEY,
+        streaming=True,
     )
 
     last_user_msg = "Hello"

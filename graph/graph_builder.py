@@ -13,7 +13,7 @@ from graph.nodes.intent_detector import intent_detector_node
 from graph.nodes.greeter import greeter_node
 from graph.nodes.menu_rag import menu_rag_node
 from graph.nodes.cart_builder import cart_builder_node
-from graph.nodes.delivery import set_delivery_address_node, delivery_question_node
+from graph.nodes.delivery import set_delivery_address_node, set_order_type_node, delivery_question_node
 from graph.nodes.order_confirm import order_confirm_node
 from graph.nodes.place_order import place_order_node
 from graph.nodes.order_tracker import order_tracker_node
@@ -50,6 +50,9 @@ def route_from_intent(state: OrderState) -> str:
     if intent == "set_delivery_address":
         return "set_delivery_address"
 
+    if intent == "set_order_type":
+        return "set_order_type"
+
     if intent == "delivery_question":
         return "delivery_question"
 
@@ -59,7 +62,7 @@ def route_from_intent(state: OrderState) -> str:
     if intent == "confirm_order":
         if cart:
             return "place_order"
-        elif order_id:
+        elif order_id or state.get("orders"):
             return "order_tracker"
         else:
             return "order_confirm"
@@ -83,6 +86,7 @@ def build_graph():
     graph.add_node("menu_rag", menu_rag_node)
     graph.add_node("cart_builder", cart_builder_node)
     graph.add_node("set_delivery_address", set_delivery_address_node)
+    graph.add_node("set_order_type", set_order_type_node)
     graph.add_node("delivery_question", delivery_question_node)
     graph.add_node("order_confirm", order_confirm_node)
     graph.add_node("place_order", place_order_node)
@@ -103,6 +107,7 @@ def build_graph():
             "menu_rag": "menu_rag",
             "cart_builder": "cart_builder",
             "set_delivery_address": "set_delivery_address",
+            "set_order_type": "set_order_type",
             "delivery_question": "delivery_question",
             "order_confirm": "order_confirm",
             "place_order": "place_order",
@@ -118,6 +123,7 @@ def build_graph():
     graph.add_edge("menu_rag", END)
     graph.add_edge("cart_builder", END)
     graph.add_edge("set_delivery_address", END)
+    graph.add_edge("set_order_type", END)
     graph.add_edge("delivery_question", END)
     graph.add_edge("order_confirm", END)
     graph.add_edge("place_order", END)
