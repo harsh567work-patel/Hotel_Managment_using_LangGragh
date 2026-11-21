@@ -33,6 +33,11 @@ def test_routing_set_delivery_address():
     assert route_from_intent(state) == "set_delivery_address"
 
 
+def test_routing_set_order_type():
+    state: OrderState = {"intents": ["set_order_type"], "cart": [], "order_id": None}
+    assert route_from_intent(state) == "set_order_type"
+
+
 def test_routing_delivery_question():
     state: OrderState = {"intents": ["delivery_question"], "cart": [], "order_id": None}
     assert route_from_intent(state) == "delivery_question"

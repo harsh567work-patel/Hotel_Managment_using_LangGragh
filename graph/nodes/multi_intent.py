@@ -10,7 +10,7 @@ from graph.state import OrderState
 # Node function handlers
 from graph.nodes.cart_builder import cart_builder_node
 from graph.nodes.menu_rag import menu_rag_node
-from graph.nodes.delivery import set_delivery_address_node, delivery_question_node
+from graph.nodes.delivery import set_delivery_address_node, set_order_type_node, delivery_question_node
 from graph.nodes.order_confirm import order_confirm_node
 from graph.nodes.place_order import place_order_node
 from graph.nodes.order_tracker import order_tracker_node
@@ -24,6 +24,7 @@ INTENT_HANDLER_MAP = {
     "modify_cart": cart_builder_node,
     "menu_inquiry": menu_rag_node,
     "set_delivery_address": set_delivery_address_node,
+    "set_order_type": set_order_type_node,
     "delivery_question": delivery_question_node,
     "checkout": order_confirm_node,
     "confirm_order": place_order_node,
@@ -62,14 +63,17 @@ def multi_intent_processor_node(state: OrderState) -> dict:
         step_msgs = step_result.get("messages", [])
         if step_msgs:
             msg_text = step_msgs[-1].content.strip()
-            # If add_to_cart followed by checkout, keep the add confirmation without redundant cart block
-            if intent_name in ("add_to_cart", "modify_cart") and "checkout" in intents[idx + 1:]:
-                # Extract only the action lines (starts with ✅ or ⚠️)
+            # If add_to_cart/modify_cart followed by checkout/confirm_order, keep only the action lines
+            if intent_name in ("add_to_cart", "modify_cart") and any(i in intents[idx + 1:] for i in ("checkout", "confirm_order")):
                 action_lines = [line for line in msg_text.splitlines() if line.startswith(("✅", "⚠️", "Emptied", "Added", "Removed", "Updated"))]
                 if action_lines:
                     combined_message_parts.append("\n".join(action_lines))
                 else:
                     combined_message_parts.append(msg_text)
+            # If set_order_type followed by checkout/confirm_order, keep only the order mode header line
+            elif intent_name == "set_order_type" and any(i in intents[idx + 1:] for i in ("checkout", "confirm_order")):
+                first_line = msg_text.splitlines()[0] if msg_text.splitlines() else msg_text
+                combined_message_parts.append(first_line)
             else:
                 combined_message_parts.append(msg_text)
 

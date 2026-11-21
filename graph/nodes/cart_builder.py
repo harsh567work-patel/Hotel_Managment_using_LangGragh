@@ -240,17 +240,25 @@ def cart_builder_node(state: OrderState) -> dict:
             for c in new_cart
         ]
         address = state.get("delivery_address")
-        if address and address.get("street"):
+        order_type = state.get("order_type")
+        table_num = state.get("table_number")
+        if order_type == "dine_in":
+            table_suffix = f" (Table {table_num})" if table_num else ""
+            fulfillment_line = f"🍽️ **Order Type:** Dine-in{table_suffix} at SpiceRoute Kitchen"
+        elif order_type == "pickup":
+            fulfillment_line = "🛍️ **Order Type:** Self-Pickup / Takeaway at SpiceRoute Kitchen"
+        elif address and address.get("street"):
             addr_str = f"{address.get('street')}, {address.get('city')}, {address.get('state', 'Karnataka')}"
+            fulfillment_line = f"📍 **Address:** {addr_str}"
         else:
-            addr_str = "Not set yet (Provide address at checkout)"
+            fulfillment_line = "📍 **Address:** Not set yet (Provide address at checkout, or choose dine-in / pickup)"
 
         msg_parts.append(
             "🛒 **Your Cart:**\n\n" +
             "\n".join(cart_lines) + "\n\n" +
             f"💰 **Total:** ₹{total_price:.0f}\n" +
             f"⏱️ **Prep time:** ~{max_prep_time} min\n" +
-            f"📍 **Address:** {addr_str}\n\n" +
+            f"{fulfillment_line}\n\n" +
             "Would you like to add anything else, or say **'checkout'** to place your order?"
         )
     else:
