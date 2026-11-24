@@ -401,6 +401,50 @@
       "is_available": true,
       "dish_man": "Chef Priya",
       "tags": ["veg", "sweet", "dessert", "hot", "gluten-free"]
+    },
+    {
+      "id": "D037",
+      "dish_name": "Tandoori Paneer Pizza",
+      "category": "Pizzas",
+      "description": "Stone-deck baked pizza topped with spiced tandoori paneer cubes, bell peppers, mozzarella, and aromatic herbs.",
+      "price": 380,
+      "prep_time_minutes": 20,
+      "is_available": true,
+      "dish_man": "Chef Ravi",
+      "tags": ["veg", "pizza", "shareable"]
+    },
+    {
+      "id": "D038",
+      "dish_name": "Artisan Garlic Bread",
+      "category": "Sides",
+      "description": "Freshly baked baguette slices toasted with pure dairy garlic butter, parsley, and sea salt.",
+      "price": 150,
+      "prep_time_minutes": 10,
+      "is_available": true,
+      "dish_man": "Chef Ravi",
+      "tags": ["veg", "sides", "shareable"]
+    },
+    {
+      "id": "D039",
+      "dish_name": "Superfood Vegan Buddha Bowl",
+      "category": "Bowls",
+      "description": "Organic quinoa, roasted chickpeas, avocado, baby spinach, and tahini lemon drizzle. 100% plant-based.",
+      "price": 260,
+      "prep_time_minutes": 15,
+      "is_available": true,
+      "dish_man": "Chef Anita",
+      "tags": ["veg", "vegan", "healthy", "gluten-free"]
+    },
+    {
+      "id": "D040",
+      "dish_name": "Fiery Ghost Pepper Pizza",
+      "category": "Pizzas",
+      "description": "Extreme heat artisan pizza infused with Bhut Jolokia ghost pepper sauce, pickled jalapenos, and melted cheese.",
+      "price": 420,
+      "prep_time_minutes": 20,
+      "is_available": true,
+      "dish_man": "Chef Anita",
+      "tags": ["veg", "pizza", "spicy", "shareable"]
     }
   ]
 }

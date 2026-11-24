@@ -6,26 +6,35 @@ This document defines the relational database schema, integrity invariants, and 
 
 ## 1. Regulatory Context & Food Safety Compliance
 
-### FSSAI Statutory Basis
-All dietary and allergen classifications adhere to the **Food Safety and Standards (Labelling and Display) Regulations, 2020** (FSSAI Notification *F. No. 1-94/FSSAI/SP(L&C)/2020* dated 17th November 2020, Chapter II, Regulation 5(3)(ix)).
+> [!WARNING]
+> **Statutory Citation Notice**: Specific regulatory clause numbers, section citations, and mandatory disclosure lists referenced herein are preliminary software working assumptions and **must be verified by a human food safety and legal auditor** prior to commercial rollout.
 
-Under Indian law, food business operators are required to declare the presence of the following **9 statutory allergen categories**:
+### Allergen & Dietary Categories Tracked
+The system tracks the following allergen categories:
 1. **Cereals containing gluten**: wheat, rye, barley, oats, spelt or their hybridized strains and products thereof.
 2. **Crustaceans** and products thereof (prawns, crabs, lobsters, shrimp).
 3. **Eggs** and egg products.
 4. **Fish** and fish products.
-5. **Peanuts** and peanut products.
+5. **Peanuts** and peanut products (*tracked separately from tree nuts*).
 6. **Tree nuts** (almonds, walnuts, pistachios, cashews, pecans, hazelnuts, macadamia) and products thereof.
 7. **Soybeans** and soybean products.
 8. **Milk and milk products** (dairy, khoya, paneer, butter, ghee, curd, cheese).
-9. **Sulphite** in concentrations of 10 mg/kg ($10\text{ ppm}$) or more.
+9. **Sulphites** (in concentrations of 10 mg/kg / $10\text{ ppm}$ or more).
+10. **Sesame** (*extra non-statutory category tracked voluntarily for diner safety*).
 
 ### Derived Invariants & Fail-Safe Semantics
 - **Tri-State Logic**: Every allergen and dietary attribute is strictly tri-state: `YES`, `NO`, or `UNKNOWN`.
 - **Fail-Safe Invariant**: An `UNKNOWN` classification is treated as **UNSAFE** for any diner with a hard restriction.
-- **Derived Dairy Rule**: Under culinary and statutory logic, milk allergen presence strictly implies dairy presence:
+- **Derived Dairy Rule**: Milk allergen presence strictly implies dairy presence:
   $$\text{allergen\_milk} = \text{YES} \implies \text{contains\_dairy} = \text{YES}$$
   Enforced by SQLite database constraint `ck_milk_implies_dairy` and SQLAlchemy model validation.
+- **Vegan Integrity Constraints**:
+  - A dish marked `vegan = YES` strictly implies:
+    $$\text{diet\_vegan} = \text{YES} \implies (\text{diet\_egg} = \text{NO} \land \text{allergen\_milk} = \text{NO} \land \text{contains\_dairy} = \text{NO} \land \text{diet\_non\_veg} \ne \text{YES})$$
+  - `vegan` and `non_veg` can never both be `YES` (`ck_vegan_and_non_veg_exclusive`).
+- **Jain Integrity Constraints**:
+  - A dish marked `jain = YES` strictly implies no onion, no garlic, no root vegetables, and non-veg $\ne$ YES:
+    $$\text{diet\_jain} = \text{YES} \implies (\text{contains\_onion\_garlic} \ne \text{YES} \land \text{contains\_root\_veg} \ne \text{YES} \land \text{diet\_non\_veg} \ne \text{YES})$$
 - **Clinical Preference Strength**: Preferences of kind `allergen` or `diet` **MUST** be `HARD`. Enforced at DB level by constraint `ck_diet_allergen_must_be_hard`.
 - **Financial Precision**: All monetary values are strictly non-negative integers in **paise** ($₹1.00 = 100\text{ paise}$). Floating-point values are rejected.
 
@@ -44,6 +53,8 @@ erDiagram
         string diet_jain
         string diet_halal
         string diet_gluten_free
+        string contains_onion_garlic
+        string contains_root_veg
         string allergen_cereals_gluten
         string allergen_crustaceans
         string allergen_milk
@@ -53,6 +64,7 @@ erDiagram
         string allergen_tree_nuts
         string allergen_soy
         string allergen_sulphite
+        string allergen_sesame
         string contains_dairy
         int spice_level
         int serves
@@ -180,7 +192,7 @@ erDiagram
 ## 3. Data Dictionary
 
 ### 3.1 `menu_item_extensions`
-Extends baseline catalog items with FSSAI allergen classifications, diet flags, portions, and pricing.
+Extends baseline catalog items with allergen classifications, diet flags, portions, and pricing.
 
 | Column | Type | Nullable | Default | Constraints / Invariants | Description |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -189,18 +201,21 @@ Extends baseline catalog items with FSSAI allergen classifications, diet flags, 
 | `diet_non_veg` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Non-vegetarian indicator. |
 | `diet_egg` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Eggitarian / contains egg. |
 | `diet_vegan` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | 100% plant-based / vegan. |
-| `diet_jain` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Jain compliant (no root veg, onion, garlic). |
-| `diet_halal` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Certified Halal. |
+| `diet_jain` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Jain compliance (no onion, garlic, root veg). |
+| `diet_halal` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Certified Halal (defaults to UNKNOWN). |
 | `diet_gluten_free` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Gluten-free recipe & prep. |
-| `allergen_cereals_gluten` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | FSSAI: Wheat, rye, barley, oats, spelt. |
-| `allergen_crustaceans` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | FSSAI: Prawns, crabs, lobsters, shrimp. |
-| `allergen_milk` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | FSSAI: Milk & milk products. |
-| `allergen_eggs` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | FSSAI: Eggs & egg products. |
-| `allergen_fish` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | FSSAI: Fish & fish products. |
-| `allergen_peanuts` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | FSSAI: Peanuts & peanut products. |
-| `allergen_tree_nuts` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | FSSAI: Almonds, walnuts, pistachios, cashews. |
-| `allergen_soy` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | FSSAI: Soybeans & products. |
-| `allergen_sulphite` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | FSSAI: Sulphites ($\ge 10\text{ ppm}$). |
+| `contains_onion_garlic` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Presence of alliums (onion/garlic). |
+| `contains_root_veg` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Root vegetables (potato, carrot, etc.). |
+| `allergen_cereals_gluten` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Wheat, rye, barley, oats, spelt. |
+| `allergen_crustaceans` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Prawns, crabs, lobsters, shrimp. |
+| `allergen_milk` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Milk & dairy derivatives. |
+| `allergen_eggs` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Eggs & egg products. |
+| `allergen_fish` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Fish & fish products. |
+| `allergen_peanuts` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Peanuts & peanut derivatives (tracked separately). |
+| `allergen_tree_nuts` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Tree nuts (almonds, cashews, pistachios, etc.). |
+| `allergen_soy` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Soybeans & products. |
+| `allergen_sulphite` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Sulphites ($\ge 10\text{ ppm}$). |
+| `allergen_sesame` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Sesame seeds / tahini (voluntary category). |
 | `contains_dairy` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK (`allergen_milk != 'YES' OR contains_dairy = 'YES'`) | Derived dairy indicator. |
 | `spice_level` | `INTEGER` | Yes | `NULL` | CHECK (`spice_level IS NULL OR (0 <= spice_level <= 4)`) | Heat rating: 0 (None) to 4 (Extreme). |
 | `serves` | `INTEGER` | No | `1` | CHECK (`serves > 0`) | Portions fed by 1 unit. |
@@ -208,8 +223,8 @@ Extends baseline catalog items with FSSAI allergen classifications, diet flags, 
 | `price_paise` | `INTEGER` | No | - | CHECK (`price_paise >= 0`) | Base item price in integer paise. |
 | `tax_rate_bps` | `INTEGER` | No | `500` | CHECK (`tax_rate_bps >= 0`) | GST in basis points (500 bps = 5%). |
 | `packaging_paise`| `INTEGER` | No | `0` | CHECK (`packaging_paise >= 0`) | Container charge in paise. |
-| `verified_by` | `VARCHAR(128)`| Yes | `NULL` | - | Auditor or chef who signed off. |
-| `verified_at` | `INTEGER` | Yes | `NULL` | Unix epoch seconds | Timestamp of verification. |
+| `verified_by` | `VARCHAR(128)`| Yes | `NULL` | - | Auditor or chef who signed off (NULL in fixtures). |
+| `verified_at` | `INTEGER` | Yes | `NULL` | Unix epoch seconds | Timestamp of verification (NULL in fixtures). |
 | `cross_contact_note`| `TEXT` | Yes | `NULL` | - | Kitchen facility warnings. |
 
 ---

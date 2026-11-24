@@ -80,8 +80,12 @@ class MenuItemExtension(Base):
     diet_halal: Mapped[str] = mapped_column(String(10), default=TriState.UNKNOWN.value, nullable=False)
     diet_gluten_free: Mapped[str] = mapped_column(String(10), default=TriState.UNKNOWN.value, nullable=False)
 
-    # 9 Mandated FSSAI Allergen Categories (TriState: YES / NO / UNKNOWN)
-    # Ref: Food Safety and Standards (Labelling and Display) Regulations, 2020
+    # Jain ingredient specific tri-states
+    contains_onion_garlic: Mapped[str] = mapped_column(String(10), default=TriState.UNKNOWN.value, nullable=False)
+    contains_root_veg: Mapped[str] = mapped_column(String(10), default=TriState.UNKNOWN.value, nullable=False)
+
+    # Statutory Allergen Categories + Non-Statutory Voluntary Sesame (TriState: YES / NO / UNKNOWN)
+    # [Note: Regulatory clause numbers to be verified by a human food safety / legal auditor]
     allergen_cereals_gluten: Mapped[str] = mapped_column(String(10), default=TriState.UNKNOWN.value, nullable=False)
     allergen_crustaceans: Mapped[str] = mapped_column(String(10), default=TriState.UNKNOWN.value, nullable=False)
     allergen_milk: Mapped[str] = mapped_column(String(10), default=TriState.UNKNOWN.value, nullable=False)
@@ -91,6 +95,7 @@ class MenuItemExtension(Base):
     allergen_tree_nuts: Mapped[str] = mapped_column(String(10), default=TriState.UNKNOWN.value, nullable=False)
     allergen_soy: Mapped[str] = mapped_column(String(10), default=TriState.UNKNOWN.value, nullable=False)
     allergen_sulphite: Mapped[str] = mapped_column(String(10), default=TriState.UNKNOWN.value, nullable=False)
+    allergen_sesame: Mapped[str] = mapped_column(String(10), default=TriState.UNKNOWN.value, nullable=False)
 
     # Derived rule: milk allergen YES implies dairy YES
     contains_dairy: Mapped[str] = mapped_column(String(10), default=TriState.UNKNOWN.value, nullable=False)
@@ -123,7 +128,9 @@ class MenuItemExtension(Base):
             "diet_vegan IN ('YES', 'NO', 'UNKNOWN') AND "
             "diet_jain IN ('YES', 'NO', 'UNKNOWN') AND "
             "diet_halal IN ('YES', 'NO', 'UNKNOWN') AND "
-            "diet_gluten_free IN ('YES', 'NO', 'UNKNOWN')",
+            "diet_gluten_free IN ('YES', 'NO', 'UNKNOWN') AND "
+            "contains_onion_garlic IN ('YES', 'NO', 'UNKNOWN') AND "
+            "contains_root_veg IN ('YES', 'NO', 'UNKNOWN')",
             name="ck_diet_tristate",
         ),
         CheckConstraint(
@@ -136,6 +143,7 @@ class MenuItemExtension(Base):
             "allergen_tree_nuts IN ('YES', 'NO', 'UNKNOWN') AND "
             "allergen_soy IN ('YES', 'NO', 'UNKNOWN') AND "
             "allergen_sulphite IN ('YES', 'NO', 'UNKNOWN') AND "
+            "allergen_sesame IN ('YES', 'NO', 'UNKNOWN') AND "
             "contains_dairy IN ('YES', 'NO', 'UNKNOWN')",
             name="ck_allergen_tristate",
         ),
@@ -144,13 +152,53 @@ class MenuItemExtension(Base):
             "allergen_milk != 'YES' OR contains_dairy = 'YES'",
             name="ck_milk_implies_dairy",
         ),
+        # Vegan integrity constraints
+        CheckConstraint(
+            "diet_vegan != 'YES' OR ("
+            "diet_egg = 'NO' AND "
+            "allergen_milk = 'NO' AND "
+            "contains_dairy = 'NO' AND "
+            "diet_non_veg != 'YES')",
+            name="ck_vegan_implies_no_animal_products",
+        ),
+        CheckConstraint(
+            "NOT (diet_vegan = 'YES' AND diet_non_veg = 'YES')",
+            name="ck_vegan_and_non_veg_exclusive",
+        ),
+        # Jain integrity constraint
+        CheckConstraint(
+            "diet_jain != 'YES' OR ("
+            "contains_onion_garlic != 'YES' AND "
+            "contains_root_veg != 'YES' AND "
+            "diet_non_veg != 'YES')",
+            name="ck_jain_rules",
+        ),
     )
 
-    @validates("allergen_milk", "diet_vegan", "contains_dairy")
-    def validate_dairy(self, key: str, value: Any) -> Any:
+    @validates("allergen_milk", "diet_vegan", "contains_dairy", "diet_non_veg", "diet_egg")
+    def validate_dietary_rules(self, key: str, value: Any) -> Any:
         # Enforce derived rule in Python model before flush
         if key == "allergen_milk" and value == "YES":
             self.contains_dairy = "YES"
+
+        vegan = value if key == "diet_vegan" else self.__dict__.get("diet_vegan")
+        non_veg = value if key == "diet_non_veg" else self.__dict__.get("diet_non_veg")
+        egg = value if key == "diet_egg" else self.__dict__.get("diet_egg")
+        milk = value if key == "allergen_milk" else self.__dict__.get("allergen_milk")
+        dairy = value if key == "contains_dairy" else self.__dict__.get("contains_dairy")
+
+        if vegan == "YES" and non_veg == "YES":
+            raise ValueError("Dish cannot be both vegan=YES and non_veg=YES")
+        if vegan == "YES":
+            if egg is not None and egg != "NO":
+                raise ValueError("Vegan dish must have diet_egg='NO'")
+            if milk is not None and milk != "NO":
+                raise ValueError("Vegan dish must have allergen_milk='NO'")
+            if dairy is not None and dairy != "NO":
+                raise ValueError("Vegan dish must have contains_dairy='NO'")
+            if non_veg is not None and non_veg == "YES":
+                raise ValueError("Vegan dish cannot have diet_non_veg='YES'")
+
         return value
 
 

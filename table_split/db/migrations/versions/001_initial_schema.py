@@ -1,6 +1,6 @@
 """
 Migration 001_initial_schema: Initial domain schema for Table Split Mode.
-Implements reversible upgrade() and downgrade() functions.
+Implements reversible upgrade() and downgrade() functions with strict integrity constraints.
 """
 
 from __future__ import annotations
@@ -24,6 +24,12 @@ def upgrade(conn: sqlite3.Connection) -> None:
             diet_jain TEXT NOT NULL DEFAULT 'UNKNOWN',
             diet_halal TEXT NOT NULL DEFAULT 'UNKNOWN',
             diet_gluten_free TEXT NOT NULL DEFAULT 'UNKNOWN',
+
+            -- Jain specific ingredient tri-states
+            contains_onion_garlic TEXT NOT NULL DEFAULT 'UNKNOWN',
+            contains_root_veg TEXT NOT NULL DEFAULT 'UNKNOWN',
+
+            -- Mandated Allergen Categories + Non-statutory Sesame
             allergen_cereals_gluten TEXT NOT NULL DEFAULT 'UNKNOWN',
             allergen_crustaceans TEXT NOT NULL DEFAULT 'UNKNOWN',
             allergen_milk TEXT NOT NULL DEFAULT 'UNKNOWN',
@@ -33,6 +39,8 @@ def upgrade(conn: sqlite3.Connection) -> None:
             allergen_tree_nuts TEXT NOT NULL DEFAULT 'UNKNOWN',
             allergen_soy TEXT NOT NULL DEFAULT 'UNKNOWN',
             allergen_sulphite TEXT NOT NULL DEFAULT 'UNKNOWN',
+            allergen_sesame TEXT NOT NULL DEFAULT 'UNKNOWN',
+
             contains_dairy TEXT NOT NULL DEFAULT 'UNKNOWN',
             spice_level INTEGER,
             serves INTEGER NOT NULL DEFAULT 1,
@@ -43,11 +51,13 @@ def upgrade(conn: sqlite3.Connection) -> None:
             verified_by TEXT,
             verified_at INTEGER,
             cross_contact_note TEXT,
+
             CONSTRAINT ck_spice_level_0_to_4 CHECK (spice_level IS NULL OR (spice_level >= 0 AND spice_level <= 4)),
             CONSTRAINT ck_serves_positive CHECK (serves > 0),
             CONSTRAINT ck_price_paise_non_negative CHECK (price_paise >= 0),
             CONSTRAINT ck_tax_rate_bps_non_negative CHECK (tax_rate_bps >= 0),
             CONSTRAINT ck_packaging_paise_non_negative CHECK (packaging_paise >= 0),
+
             CONSTRAINT ck_diet_tristate CHECK (
                 diet_veg IN ('YES', 'NO', 'UNKNOWN') AND
                 diet_non_veg IN ('YES', 'NO', 'UNKNOWN') AND
@@ -55,8 +65,11 @@ def upgrade(conn: sqlite3.Connection) -> None:
                 diet_vegan IN ('YES', 'NO', 'UNKNOWN') AND
                 diet_jain IN ('YES', 'NO', 'UNKNOWN') AND
                 diet_halal IN ('YES', 'NO', 'UNKNOWN') AND
-                diet_gluten_free IN ('YES', 'NO', 'UNKNOWN')
+                diet_gluten_free IN ('YES', 'NO', 'UNKNOWN') AND
+                contains_onion_garlic IN ('YES', 'NO', 'UNKNOWN') AND
+                contains_root_veg IN ('YES', 'NO', 'UNKNOWN')
             ),
+
             CONSTRAINT ck_allergen_tristate CHECK (
                 allergen_cereals_gluten IN ('YES', 'NO', 'UNKNOWN') AND
                 allergen_crustaceans IN ('YES', 'NO', 'UNKNOWN') AND
@@ -67,9 +80,36 @@ def upgrade(conn: sqlite3.Connection) -> None:
                 allergen_tree_nuts IN ('YES', 'NO', 'UNKNOWN') AND
                 allergen_soy IN ('YES', 'NO', 'UNKNOWN') AND
                 allergen_sulphite IN ('YES', 'NO', 'UNKNOWN') AND
+                allergen_sesame IN ('YES', 'NO', 'UNKNOWN') AND
                 contains_dairy IN ('YES', 'NO', 'UNKNOWN')
             ),
-            CONSTRAINT ck_milk_implies_dairy CHECK (allergen_milk != 'YES' OR contains_dairy = 'YES')
+
+            -- Derived dairy invariant: milk allergen YES implies contains_dairy YES
+            CONSTRAINT ck_milk_implies_dairy CHECK (allergen_milk != 'YES' OR contains_dairy = 'YES'),
+
+            -- Vegan integrity constraints:
+            -- vegan=YES implies egg=NO, milk=NO, dairy=NO, and non_veg!=YES
+            CONSTRAINT ck_vegan_implies_no_animal_products CHECK (
+                diet_vegan != 'YES' OR (
+                    diet_egg = 'NO' AND
+                    allergen_milk = 'NO' AND
+                    contains_dairy = 'NO' AND
+                    diet_non_veg != 'YES'
+                )
+            ),
+            CONSTRAINT ck_vegan_and_non_veg_exclusive CHECK (
+                NOT (diet_vegan = 'YES' AND diet_non_veg = 'YES')
+            ),
+
+            -- Jain integrity constraint:
+            -- jain=YES implies contains_onion_garlic!=YES, contains_root_veg!=YES, and non_veg!=YES
+            CONSTRAINT ck_jain_rules CHECK (
+                diet_jain != 'YES' OR (
+                    contains_onion_garlic != 'YES' AND
+                    contains_root_veg != 'YES' AND
+                    diet_non_veg != 'YES'
+                )
+            )
         );
 
         -- 2. Table Sessions
