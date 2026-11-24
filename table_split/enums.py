@@ -11,10 +11,13 @@ class TriState(str, Enum):
     Tri-state classification for allergens and dietary traits.
     Default must always be UNKNOWN.
     In deterministic safety evaluation, UNKNOWN fails any hard restriction.
+    Values: YES, NO, UNKNOWN (with CONTAINS/FREE compatibility).
     """
+    YES = "YES"
+    NO = "NO"
+    UNKNOWN = "UNKNOWN"
     CONTAINS = "CONTAINS"
     FREE = "FREE"
-    UNKNOWN = "UNKNOWN"
 
 
 class Allergen(str, Enum):

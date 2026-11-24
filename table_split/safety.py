@@ -40,7 +40,7 @@ def is_dish_safe_for_diner(dish: MenuItem, pref: DinerPreference) -> tuple[bool,
     # 3. Allergen checks (Hard safety constraints)
     for allergen in pref.allergies:
         status = profile.allergens.get(allergen, TriState.UNKNOWN)
-        if status == TriState.CONTAINS:
+        if status in (TriState.CONTAINS, TriState.YES):
             reasons.append(f"Contains allergen: {allergen.value}.")
         elif status == TriState.UNKNOWN:
             # FAIL-SAFE INVARIANT: Unknown allergen status fails hard safety check
@@ -49,7 +49,7 @@ def is_dish_safe_for_diner(dish: MenuItem, pref: DinerPreference) -> tuple[bool,
     # 4. Dietary rule compliance (e.g. VEGETARIAN, VEGAN, JAIN, HALAL)
     for diet_rule in pref.diet_rules:
         compliance = profile.diets.get(diet_rule, TriState.UNKNOWN)
-        if compliance == TriState.FREE:
+        if compliance in (TriState.FREE, TriState.NO):
             reasons.append(f"Does not comply with {diet_rule.value} diet.")
         elif compliance == TriState.UNKNOWN:
             # FAIL-SAFE INVARIANT: Unknown diet compliance fails hard dietary check
