@@ -19,6 +19,17 @@ htmlcov/
 # FastEmbed local model downloads
 fastembed_cache/
 
+# Databases
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+
+# Mypy and Ruff caches
+.mypy_cache/
+.ruff_cache/
+
 # OS and Editor metadata
 .DS_Store
 Thumbs.db

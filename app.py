@@ -65,47 +65,564 @@ def _stream_in_chunks(placeholder, text: str, words_per_chunk: int = 3, delay: f
 # ── Inject custom CSS ─────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-    .main { background-color: #1a1a1a; }
-    .stChatMessage { border-radius: 12px; padding: 8px; }
+    /* ═══════════════════════════════════════════════════════════════════════
+       SpiceRoute Kitchen — "Ember Luxe" Design System v3.0
+       Dramatic visual overhaul with Streamlit-native selectors
+       ═══════════════════════════════════════════════════════════════════════ */
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+    /* ════════════════════════════════════════════════════════════════════
+       1. GLOBAL FOUNDATIONS
+       ════════════════════════════════════════════════════════════════════ */
+    .stApp, .main, [data-testid="stAppViewContainer"],
+    [data-testid="stAppViewBlockContainer"], .block-container {
+        background-color: #080808 !important;
+    }
+
+    html, body, .stApp {
+        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+        -webkit-font-smoothing: antialiased !important;
+        -moz-osx-font-smoothing: grayscale !important;
+    }
+
+    /* Target text containers specifically without overriding icon ligature fonts */
+    .stApp p, .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6,
+    .stApp li, .stApp input, .stApp textarea, .stApp button, .stApp label,
+    .stMarkdown, .stCaption {
+        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+    }
+
+    /* Preserve and prioritize Material Symbols icon ligatures */
+    [data-testid="stIconMaterial"],
+    [data-testid="stIconMaterial"] *,
+    .material-symbols-rounded,
+    .material-symbols-outlined,
+    .material-icons {
+        font-family: 'Material Symbols Rounded', 'Material Symbols Outlined', 'Material Icons' !important;
+        font-weight: normal !important;
+        font-style: normal !important;
+        font-size: 1.25rem !important;
+        line-height: 1 !important;
+        letter-spacing: normal !important;
+        text-transform: none !important;
+        display: inline-block !important;
+        white-space: nowrap !important;
+        word-wrap: normal !important;
+        direction: ltr !important;
+        -webkit-font-smoothing: antialiased !important;
+        text-rendering: optimizeLegibility !important;
+        -moz-osx-font-smoothing: grayscale !important;
+        font-feature-settings: 'liga' 1 !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       2. HEADER / TITLE AREA
+       ════════════════════════════════════════════════════════════════════ */
+    h1 {
+        background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FFD700 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+        font-weight: 900 !important;
+        font-size: 2.4rem !important;
+        letter-spacing: -0.04em !important;
+        line-height: 1.1 !important;
+        padding-bottom: 4px !important;
+        filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.3)) !important;
+    }
+
+    h2 {
+        color: #FFFFFF !important;
+        font-weight: 700 !important;
+        font-size: 1.15rem !important;
+        letter-spacing: -0.02em !important;
+    }
+
+    h3 {
+        color: #F7931E !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+        letter-spacing: -0.01em !important;
+    }
+
+    /* Caption under title */
+    [data-testid="stCaptionContainer"], .stCaption {
+        color: #8E8E93 !important;
+        font-size: 13px !important;
+        font-weight: 400 !important;
+        letter-spacing: 0.02em !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       3. SIDEBAR — Premium dark panel
+       ════════════════════════════════════════════════════════════════════ */
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #111113 0%, #0C0C0E 100%) !important;
+        border-right: 1px solid rgba(255, 107, 53, 0.12) !important;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.5) !important;
+    }
+
+    section[data-testid="stSidebar"] > div:first-child {
+        background: transparent !important;
+        padding-top: 24px !important;
+    }
+
+    section[data-testid="stSidebar"] .stMarkdown {
+        color: #C7C7CC !important;
+    }
+
+    section[data-testid="stSidebar"] hr {
+        border: none !important;
+        height: 1px !important;
+        background: linear-gradient(90deg, transparent, rgba(255,107,53,0.2), transparent) !important;
+        margin: 20px 0 !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       4. CART BOX — Glassmorphism card
+       ════════════════════════════════════════════════════════════════════ */
     .cart-box {
-        background: #2d2d2d;
-        border-radius: 10px;
-        padding: 16px;
-        border-left: 4px solid #ff6b35;
+        background: linear-gradient(145deg, rgba(30,30,34,0.95) 0%, rgba(20,20,22,0.98) 100%) !important;
+        border-radius: 16px !important;
+        padding: 20px !important;
+        border: 1px solid rgba(255, 107, 53, 0.2) !important;
+        border-left: 4px solid #FF6B35 !important;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4),
+                    inset 0 1px 0 rgba(255,255,255,0.03) !important;
+        backdrop-filter: blur(10px) !important;
     }
-    .cart-item { margin: 6px 0; font-size: 14px; }
+
+    .cart-item {
+        margin: 0 !important;
+        font-size: 14px !important;
+        color: #E5E5EA !important;
+        padding: 10px 0 !important;
+        border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.01em !important;
+    }
+
+    .cart-item:last-of-type {
+        border-bottom: none !important;
+    }
+
     .total-line {
-        border-top: 1px solid #555;
-        margin-top: 10px;
-        padding-top: 8px;
-        font-weight: bold;
-        color: #ff6b35;
+        border-top: 2px solid #FF6B35 !important;
+        margin-top: 16px !important;
+        padding-top: 14px !important;
+        font-weight: 800 !important;
+        color: #FF6B35 !important;
+        font-size: 16px !important;
+        letter-spacing: 0.02em !important;
+        text-shadow: 0 0 20px rgba(255, 107, 53, 0.3) !important;
     }
+
+    /* ════════════════════════════════════════════════════════════════════
+       5. CHAT MESSAGES — Distinct bubbles with depth
+       ════════════════════════════════════════════════════════════════════ */
+    .stChatMessage, [data-testid="stChatMessage"] {
+        border-radius: 18px !important;
+        padding: 16px 20px !important;
+        margin-bottom: 8px !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        border: 1px solid rgba(255,255,255,0.04) !important;
+    }
+
+    /* Assistant bubble — rich dark card */
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {
+        background: linear-gradient(145deg, #151517 0%, #111113 100%) !important;
+        border-color: rgba(255, 107, 53, 0.1) !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3),
+                    inset 0 1px 0 rgba(255,255,255,0.03) !important;
+    }
+
+    /* User bubble — elevated with accent hint */
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+        background: linear-gradient(145deg, #1C1C1E 0%, #18181A 100%) !important;
+        border-color: rgba(255,255,255,0.08) !important;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.25) !important;
+    }
+
+    .stChatMessage:hover, [data-testid="stChatMessage"]:hover {
+        border-color: rgba(255, 107, 53, 0.25) !important;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4),
+                    0 0 0 1px rgba(255, 107, 53, 0.1) !important;
+        transform: translateY(-1px) !important;
+    }
+
+    /* Chat avatar */
+    [data-testid="stChatMessageAvatarAssistant"] {
+        background: linear-gradient(135deg, #FF6B35, #F7931E) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 2px 10px rgba(255, 107, 53, 0.4) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+    }
+
+    [data-testid="stChatMessageAvatarAssistant"] [data-testid="stIconMaterial"] {
+        color: #FFFFFF !important;
+        font-size: 1.35rem !important;
+        line-height: 1 !important;
+    }
+
+    [data-testid="stChatMessageAvatarUser"] {
+        background: linear-gradient(135deg, #2C2C2E, #3A3A3C) !important;
+        border-radius: 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+    }
+
+    [data-testid="stChatMessageAvatarUser"] [data-testid="stIconMaterial"] {
+        color: #FFFFFF !important;
+        font-size: 1.35rem !important;
+        line-height: 1 !important;
+    }
+
+    /* Chat text */
+    .stChatMessage p, .stChatMessage li,
+    [data-testid="stChatMessage"] p, [data-testid="stChatMessage"] li {
+        color: #E5E5EA !important;
+        font-size: 15px !important;
+        line-height: 1.7 !important;
+        font-weight: 400 !important;
+    }
+
+    .stChatMessage strong, [data-testid="stChatMessage"] strong {
+        color: #FFFFFF !important;
+        font-weight: 700 !important;
+    }
+
+    .stChatMessage em, [data-testid="stChatMessage"] em {
+        color: #C7C7CC !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       6. CHAT INPUT — Premium floating bar
+       ════════════════════════════════════════════════════════════════════ */
+    [data-testid="stChatInput"], .stChatInput {
+        border-radius: 16px !important;
+    }
+
+    [data-testid="stChatInput"] > div, .stChatInput > div {
+        background: #141416 !important;
+        border: 2px solid rgba(255,255,255,0.08) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.4),
+                    inset 0 1px 0 rgba(255,255,255,0.03) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        padding: 4px 8px !important;
+    }
+
+    [data-testid="stChatInput"] > div:focus-within,
+    .stChatInput > div:focus-within {
+        border-color: #FF6B35 !important;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.4),
+                    0 0 0 4px rgba(255, 107, 53, 0.15),
+                    0 0 30px rgba(255, 107, 53, 0.08) !important;
+    }
+
+    [data-testid="stChatInput"] textarea, .stChatInput textarea {
+        color: #F5F5F7 !important;
+        font-size: 15px !important;
+        font-weight: 400 !important;
+    }
+
+    [data-testid="stChatInput"] textarea::placeholder,
+    .stChatInput textarea::placeholder {
+        color: #636366 !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+    }
+
+    /* Send button */
+    [data-testid="stChatInput"] button,
+    .stChatInput button {
+        background: linear-gradient(135deg, #FF6B35, #E8572A) !important;
+        border: none !important;
+        border-radius: 10px !important;
+        box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3) !important;
+        transition: all 0.2s ease !important;
+    }
+
+    [data-testid="stChatInput"] button:hover,
+    .stChatInput button:hover {
+        box-shadow: 0 4px 16px rgba(255, 107, 53, 0.5) !important;
+        transform: scale(1.05) !important;
+    }
+
+    [data-testid="stChatInput"] button:disabled,
+    .stChatInput button:disabled {
+        background: #2C2C2E !important;
+        box-shadow: none !important;
+        opacity: 0.5 !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       7. ORDER STATUS CARDS — Vivid status colours
+       ════════════════════════════════════════════════════════════════════ */
     .order-cooking-box {
-        background: #2b2418;
-        border-radius: 10px;
-        padding: 12px 14px;
-        border-left: 4px solid #f39c12;
-        margin-bottom: 8px;
-        font-size: 13px;
+        background: linear-gradient(145deg, rgba(50, 38, 10, 0.9) 0%, rgba(20, 20, 22, 0.95) 100%) !important;
+        border-radius: 14px !important;
+        padding: 16px 18px !important;
+        border: 1px solid rgba(247, 147, 30, 0.2) !important;
+        border-left: 5px solid #F7931E !important;
+        margin-bottom: 12px !important;
+        font-size: 13.5px !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3),
+                    0 0 15px rgba(247, 147, 30, 0.05) !important;
+        line-height: 1.65 !important;
+        color: #D1D1D6 !important;
     }
+
+    .order-cooking-box:hover {
+        border-color: rgba(247, 147, 30, 0.35) !important;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4),
+                    0 0 25px rgba(247, 147, 30, 0.08) !important;
+        transform: translateY(-1px) !important;
+    }
+
     .order-served-box {
-        background: #1a3320;
-        border-radius: 10px;
-        padding: 12px 14px;
-        border-left: 4px solid #2ecc71;
-        margin-bottom: 8px;
-        font-size: 13px;
+        background: linear-gradient(145deg, rgba(15, 50, 25, 0.9) 0%, rgba(20, 20, 22, 0.95) 100%) !important;
+        border-radius: 14px !important;
+        padding: 16px 18px !important;
+        border: 1px solid rgba(52, 199, 89, 0.2) !important;
+        border-left: 5px solid #34C759 !important;
+        margin-bottom: 12px !important;
+        font-size: 13.5px !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3),
+                    0 0 15px rgba(52, 199, 89, 0.05) !important;
+        line-height: 1.65 !important;
+        color: #D1D1D6 !important;
     }
+
+    .order-served-box:hover {
+        border-color: rgba(52, 199, 89, 0.35) !important;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4),
+                    0 0 25px rgba(52, 199, 89, 0.08) !important;
+        transform: translateY(-1px) !important;
+    }
+
+    /* Status label text glow */
+    .order-cooking-box b[style*="color:#f39c12"],
+    .order-cooking-box b[style*="color: #f39c12"] {
+        color: #F7931E !important;
+        text-shadow: 0 0 12px rgba(247, 147, 30, 0.5) !important;
+        font-weight: 700 !important;
+    }
+
+    .order-served-box b[style*="color:#2ecc71"],
+    .order-served-box b[style*="color: #2ecc71"] {
+        color: #34C759 !important;
+        text-shadow: 0 0 12px rgba(52, 199, 89, 0.5) !important;
+        font-weight: 700 !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       8. ADDRESS BOX
+       ════════════════════════════════════════════════════════════════════ */
     .address-box {
-        background: #252525;
-        border-radius: 8px;
-        padding: 10px;
-        margin-top: 10px;
-        font-size: 13px;
-        border-left: 3px solid #3498db;
+        background: linear-gradient(145deg, rgba(25, 35, 50, 0.8) 0%, rgba(20, 20, 22, 0.95) 100%) !important;
+        border-radius: 12px !important;
+        padding: 14px 16px !important;
+        margin-top: 12px !important;
+        font-size: 13.5px !important;
+        border: 1px solid rgba(90, 200, 250, 0.15) !important;
+        border-left: 4px solid #5AC8FA !important;
+        color: #AEAEB2 !important;
+        line-height: 1.6 !important;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2) !important;
     }
-    h1 { color: #ff6b35 !important; }
+
+    .address-box b {
+        color: #FFFFFF !important;
+        font-weight: 600 !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       9. BUTTONS — Bold gradient with glow
+       ════════════════════════════════════════════════════════════════════ */
+    .stButton > button {
+        background: linear-gradient(135deg, #FF6B35 0%, #E8572A 50%, #D44A1E 100%) !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        font-family: 'Inter', system-ui, sans-serif !important;
+        letter-spacing: 0.01em !important;
+        padding: 12px 24px !important;
+        font-size: 14px !important;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 4px 14px rgba(255, 107, 53, 0.35),
+                    inset 0 1px 0 rgba(255,255,255,0.15) !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3) !important;
+    }
+
+    .stButton > button:hover {
+        background: linear-gradient(135deg, #FF7F50 0%, #FF6B35 50%, #E8572A 100%) !important;
+        box-shadow: 0 6px 24px rgba(255, 107, 53, 0.5),
+                    inset 0 1px 0 rgba(255,255,255,0.2) !important;
+        transform: translateY(-2px) !important;
+    }
+
+    .stButton > button:active {
+        transform: translateY(0) !important;
+        box-shadow: 0 2px 8px rgba(255, 107, 53, 0.25) !important;
+    }
+
+    .stButton > button:disabled {
+        background: #2C2C2E !important;
+        color: #636366 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+        cursor: not-allowed !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       10. PROGRESS BARS — Animated gradient
+       ════════════════════════════════════════════════════════════════════ */
+    .stProgress > div > div {
+        background: #1C1C1E !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+        height: 8px !important;
+    }
+
+    .stProgress > div > div > div {
+        background: linear-gradient(90deg, #FF6B35, #F7931E, #FFD700) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 0 16px rgba(255, 107, 53, 0.4) !important;
+        transition: width 1s linear !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       11. CODE / ORDER IDs
+       ════════════════════════════════════════════════════════════════════ */
+    code {
+        font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace !important;
+        background: rgba(255, 107, 53, 0.1) !important;
+        color: #F7931E !important;
+        padding: 3px 8px !important;
+        border-radius: 6px !important;
+        font-size: 0.85em !important;
+        font-weight: 500 !important;
+        border: 1px solid rgba(255, 107, 53, 0.15) !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       12. TOGGLE & WARNINGS
+       ════════════════════════════════════════════════════════════════════ */
+    .stToggle label span {
+        color: #AEAEB2 !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+    }
+
+    .stAlert {
+        background: rgba(255, 214, 10, 0.06) !important;
+        border: 1px solid rgba(255, 214, 10, 0.18) !important;
+        border-radius: 12px !important;
+        color: #FFD60A !important;
+        font-weight: 500 !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       13. GENERAL MARKDOWN TEXT
+       ════════════════════════════════════════════════════════════════════ */
+    .stMarkdown {
+        color: #E5E5EA !important;
+        line-height: 1.65 !important;
+    }
+
+    .stMarkdown a {
+        color: #5AC8FA !important;
+        text-decoration: none !important;
+        font-weight: 500 !important;
+        transition: color 0.2s ease !important;
+    }
+
+    .stMarkdown a:hover {
+        color: #70D5FF !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       14. HORIZONTAL DIVIDERS — Gradient fade
+       ════════════════════════════════════════════════════════════════════ */
+    hr, [data-testid="stAppViewContainer"] hr {
+        border: none !important;
+        height: 1px !important;
+        background: linear-gradient(90deg, transparent 0%, rgba(255,107,53,0.25) 50%, transparent 100%) !important;
+        margin: 24px 0 !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       15. SCROLLBARS
+       ════════════════════════════════════════════════════════════════════ */
+    ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #0A0A0A;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #3A3A3C;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #FF6B35;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       16. INLINE STYLE OVERRIDES (for HTML snippets)
+       ════════════════════════════════════════════════════════════════════ */
+    span[style*="color:#ccc"], span[style*="color: #ccc"] {
+        color: #C7C7CC !important;
+    }
+
+    span[style*="color:#aaa"], span[style*="color: #aaa"] {
+        color: #8E8E93 !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       17. SELECTION & FOCUS RINGS
+       ════════════════════════════════════════════════════════════════════ */
+    ::selection {
+        background: rgba(255, 107, 53, 0.35);
+        color: #FFFFFF;
+    }
+
+    *:focus-visible {
+        outline: 2px solid rgba(255, 107, 53, 0.5) !important;
+        outline-offset: 2px !important;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════
+       18. STREAMLIT CHROME — Hide deploy button, style header
+       ════════════════════════════════════════════════════════════════════ */
+    header[data-testid="stHeader"] {
+        background: rgba(8, 8, 8, 0.85) !important;
+        backdrop-filter: blur(12px) !important;
+        border-bottom: 1px solid rgba(255,255,255,0.03) !important;
+    }
+
+    /* Sidebar collapse button */
+    [data-testid="stSidebarCollapsedControl"] {
+        color: #FF6B35 !important;
+    }
+
+    /* Bottom padding for chat scroll */
+    .block-container {
+        padding-bottom: 100px !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
