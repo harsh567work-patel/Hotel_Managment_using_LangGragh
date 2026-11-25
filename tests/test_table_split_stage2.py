@@ -151,8 +151,8 @@ def test_migration_up_and_down_lifecycle(clean_db: Path) -> None:
     assert len(row["checksum"]) == 64  # Valid SHA-256 hex string
     conn.close()
 
-    # 3. Migrate Down
-    rolled_back = migrate_down(clean_db, steps=1)
+    # 3. Migrate Down (roll back all applied versions cleanly)
+    rolled_back = migrate_down(clean_db, steps=len(applied))
     assert "001" in rolled_back
 
     conn = get_connection(clean_db)

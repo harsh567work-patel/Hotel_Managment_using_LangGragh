@@ -21,6 +21,7 @@ The system tracks the following allergen categories:
 8. **Milk and milk products** (dairy, khoya, paneer, butter, ghee, curd, cheese).
 9. **Sulphites** (in concentrations of 10 mg/kg / $10\text{ ppm}$ or more).
 10. **Sesame** (*extra non-statutory category tracked voluntarily for diner safety*).
+11. **Mustard** (*extra non-statutory category tracked voluntarily for diner safety*).
 
 ### Derived Invariants & Fail-Safe Semantics
 - **Tri-State Logic**: Every allergen and dietary attribute is strictly tri-state: `YES`, `NO`, or `UNKNOWN`.
@@ -55,6 +56,7 @@ erDiagram
         string diet_gluten_free
         string contains_onion_garlic
         string contains_root_veg
+        string contains_honey
         string allergen_cereals_gluten
         string allergen_crustaceans
         string allergen_milk
@@ -65,10 +67,12 @@ erDiagram
         string allergen_soy
         string allergen_sulphite
         string allergen_sesame
+        string allergen_mustard
         string contains_dairy
         int spice_level
         int serves
         bool shareable
+        int sales_volume
         int price_paise
         int tax_rate_bps
         int packaging_paise
@@ -206,6 +210,7 @@ Extends baseline catalog items with allergen classifications, diet flags, portio
 | `diet_gluten_free` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Gluten-free recipe & prep. |
 | `contains_onion_garlic` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Presence of alliums (onion/garlic). |
 | `contains_root_veg` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Root vegetables (potato, carrot, etc.). |
+| `contains_honey` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Presence of honey (excluded under vegan rule). |
 | `allergen_cereals_gluten` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Wheat, rye, barley, oats, spelt. |
 | `allergen_crustaceans` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Prawns, crabs, lobsters, shrimp. |
 | `allergen_milk` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Milk & dairy derivatives. |
@@ -216,10 +221,12 @@ Extends baseline catalog items with allergen classifications, diet flags, portio
 | `allergen_soy` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Soybeans & products. |
 | `allergen_sulphite` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Sulphites ($\ge 10\text{ ppm}$). |
 | `allergen_sesame` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Sesame seeds / tahini (voluntary category). |
+| `allergen_mustard` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK in (`YES`, `NO`, `UNKNOWN`) | Mustard seeds / oil (voluntary category). |
 | `contains_dairy` | `VARCHAR(10)` | No | `'UNKNOWN'` | CHECK (`allergen_milk != 'YES' OR contains_dairy = 'YES'`) | Derived dairy indicator. |
 | `spice_level` | `INTEGER` | Yes | `NULL` | CHECK (`spice_level IS NULL OR (0 <= spice_level <= 4)`) | Heat rating: 0 (None) to 4 (Extreme). |
 | `serves` | `INTEGER` | No | `1` | CHECK (`serves > 0`) | Portions fed by 1 unit. |
 | `shareable` | `BOOLEAN` | No | `1` | - | Suitable for multi-person consumption. |
+| `sales_volume` | `INTEGER` | No | `0` | CHECK (`sales_volume >= 0`) | Sales counter used to prioritize verification. |
 | `price_paise` | `INTEGER` | No | - | CHECK (`price_paise >= 0`) | Base item price in integer paise. |
 | `tax_rate_bps` | `INTEGER` | No | `500` | CHECK (`tax_rate_bps >= 0`) | GST in basis points (500 bps = 5%). |
 | `packaging_paise`| `INTEGER` | No | `0` | CHECK (`packaging_paise >= 0`) | Container charge in paise. |

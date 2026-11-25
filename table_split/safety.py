@@ -37,6 +37,10 @@ def is_dish_safe_for_diner(dish: MenuItem, pref: DinerPreference) -> tuple[bool,
 
     profile = dish.safety_profile
 
+    # 2b. Unverified item exclusion when any hard dietary or allergen constraint is active
+    if (pref.allergies or pref.diet_rules) and not profile.is_verified:
+        reasons.append(f"Dietary info not verified for '{dish.dish_name}' (excluded when hard constraints are active).")
+
     # 3. Allergen checks (Hard safety constraints)
     for allergen in pref.allergies:
         status = profile.allergens.get(allergen, TriState.UNKNOWN)

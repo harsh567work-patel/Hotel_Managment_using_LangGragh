@@ -37,6 +37,7 @@ from graph.orders import (
     format_remaining,
 )
 from rag.qdrant_client import get_all_menu_dishes, get_client, MENU_COLLECTION
+from table_split.api_dietary import router as dietary_router
 
 
 # ── FastAPI App Configuration ────────────────────────────────────────────────
@@ -60,6 +61,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount Table Split Dietary & Verification endpoints (Stage 3)
+app.include_router(dietary_router)
 
 # In-memory session store: session_id -> OrderState
 _sessions: Dict[str, OrderState] = {}

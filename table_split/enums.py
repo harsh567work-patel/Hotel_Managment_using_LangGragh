@@ -46,6 +46,7 @@ class DietRule(str, Enum):
     JAIN = "JAIN"
     HALAL = "HALAL"
     KOSHER = "KOSHER"
+    GLUTEN_FREE = "GLUTEN_FREE"
 
 
 class SpiceLevel(str, Enum):

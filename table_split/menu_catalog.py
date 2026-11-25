@@ -259,9 +259,22 @@ def load_menu_catalog(menu_path: Path | None = None) -> list[MenuItem]:
                 verified_at=reg.get("verified_at"),
                 verification_notes=reg.get("notes"),
             )
+            reg_diets = reg.get("diets", {})
+            reg_allergens = reg.get("allergens", {})
+            # Populate missing keys strictly as UNKNOWN; derive GLUTEN_FREE for legacy entries if absent
+            diets_map = {d: reg_diets.get(d, TriState.UNKNOWN) for d in DietRule}
+            if DietRule.GLUTEN_FREE not in reg_diets:
+                gluten_status = reg_allergens.get(Allergen.GLUTEN, TriState.UNKNOWN)
+                if gluten_status in (TriState.FREE, TriState.NO):
+                    diets_map[DietRule.GLUTEN_FREE] = TriState.CONTAINS
+                elif gluten_status in (TriState.CONTAINS, TriState.YES):
+                    diets_map[DietRule.GLUTEN_FREE] = TriState.FREE
+
+            allergens_map = {a: reg_allergens.get(a, TriState.UNKNOWN) for a in Allergen}
+
             safety_profile = DishSafetyProfile(
-                allergens=reg.get("allergens", {}),
-                diets=reg.get("diets", {}),
+                allergens=allergens_map,
+                diets=diets_map,
                 spice_level=reg.get("spice_level", SpiceLevel.MILD),
                 verification=verification,
             )
