@@ -40,12 +40,6 @@ repo = DietaryRepository()
 items = repo.list_items()
 
 with st.sidebar:
-    st.markdown("### Navigation")
-    st.page_link("app.py", label="💬 AI Ordering Concierge")
-    st.page_link("pages/1_Customer_Menu.py", label="📋 Menu & Allergens")
-    st.page_link("pages/2_Staff_Dietary_Admin.py", label="🛡️ Staff Dietary Admin")
-    st.markdown("---")
-
     st.markdown("### Filter by Dietary & Allergen Constraints")
     selected_diets = st.multiselect(
         "Hard Dietary Requirements",

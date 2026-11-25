@@ -121,119 +121,124 @@ def render_menu_item_card_html(item: DietaryItem) -> str:
 
     badges_html = " ".join([avail_badge, *diet_badges]).strip()
 
-    return f"""
-    <div class="ts-menu-card" data-item-id="{html.escape(item.item_id)}">
-        <div class="ts-card-header">
-            <div class="ts-title-row">
-                {symbol_svg}
-                <strong class="ts-dish-name">{safe_name}</strong>
-                <span class="ts-cat-pill">{safe_cat}</span>
-            </div>
-            <span class="ts-price">{price_str}</span>
-        </div>
-        <p class="ts-desc">{safe_desc}</p>
-        <div class="ts-meta-row">{badges_html} {spice_str}</div>
-        <div class="ts-allergen-line">{allergen_text}</div>
-        {unverified_banner}
-        {cross_contact_html}
-    </div>
-    """
+    raw_html = f"""
+<div class="ts-menu-card" data-item-id="{html.escape(item.item_id)}">
+<div class="ts-card-header">
+<div class="ts-title-row">
+{symbol_svg}
+<strong class="ts-dish-name">{safe_name}</strong>
+<span class="ts-cat-pill">{safe_cat}</span>
+</div>
+<span class="ts-price">{price_str}</span>
+</div>
+<p class="ts-desc">{safe_desc}</p>
+<div class="ts-meta-row">{badges_html} {spice_str}</div>
+<div class="ts-allergen-line">{allergen_text}</div>
+{unverified_banner}
+{cross_contact_html}
+</div>
+"""
+    return "\n".join(line.strip() for line in raw_html.splitlines() if line.strip())
 
 
-MENU_CARD_CSS = """
+MENU_CARD_CSS = "\n".join(
+    line.strip()
+    for line in """
 <style>
 .ts-menu-card {
-    background: linear-gradient(145deg, #161619 0%, #101012 100%);
-    border: 1px solid rgba(255, 107, 53, 0.16);
-    border-radius: 14px;
-    padding: 16px 18px;
-    margin-bottom: 14px;
-    color: #E5E5EA;
+background: linear-gradient(145deg, #161619 0%, #101012 100%);
+border: 1px solid rgba(255, 107, 53, 0.16);
+border-radius: 14px;
+padding: 16px 18px;
+margin-bottom: 14px;
+color: #E5E5EA;
 }
 .ts-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 10px;
+margin-bottom: 8px;
 }
 .ts-title-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
+display: flex;
+align-items: center;
+gap: 8px;
+flex-wrap: wrap;
 }
 .ts-dish-name {
-    font-size: 16px;
-    color: #FFFFFF;
+font-size: 16px;
+color: #FFFFFF;
 }
 .ts-cat-pill {
-    font-size: 11px;
-    color: #AEAEB2;
-    background: rgba(255,255,255,0.06);
-    padding: 2px 8px;
-    border-radius: 999px;
+font-size: 11px;
+color: #AEAEB2;
+background: rgba(255,255,255,0.06);
+padding: 2px 8px;
+border-radius: 999px;
 }
 .ts-price {
-    font-weight: 800;
-    color: #FF6B35;
-    font-size: 16px;
-    white-space: nowrap;
+font-weight: 800;
+color: #FF6B35;
+font-size: 16px;
+white-space: nowrap;
 }
 .ts-desc {
-    font-size: 13.5px;
-    color: #C7C7CC;
-    margin: 0 0 10px 0;
-    line-height: 1.5;
+font-size: 13.5px;
+color: #C7C7CC;
+margin: 0 0 10px 0;
+line-height: 1.5;
 }
 .ts-meta-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
-    font-size: 12px;
+display: flex;
+gap: 8px;
+align-items: center;
+flex-wrap: wrap;
+margin-bottom: 8px;
+font-size: 12px;
 }
 .ts-badge {
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 11px;
+padding: 2px 8px;
+border-radius: 6px;
+font-weight: 600;
+font-size: 11px;
 }
 .ts-badge-green {
-    background: rgba(22, 163, 74, 0.16);
-    color: #4ADE80;
-    border: 1px solid rgba(22, 163, 74, 0.35);
+background: rgba(22, 163, 74, 0.16);
+color: #4ADE80;
+border: 1px solid rgba(22, 163, 74, 0.35);
 }
 .ts-badge-blue {
-    background: rgba(90, 200, 250, 0.14);
-    color: #70D5FF;
-    border: 1px solid rgba(90, 200, 250, 0.3);
+background: rgba(90, 200, 250, 0.14);
+color: #70D5FF;
+border: 1px solid rgba(90, 200, 250, 0.3);
 }
 .ts-badge-muted {
-    background: rgba(142, 142, 147, 0.2);
-    color: #AEAEB2;
+background: rgba(142, 142, 147, 0.2);
+color: #AEAEB2;
 }
 .ts-allergen-line {
-    font-size: 12.5px;
-    color: #FFD60A;
-    font-weight: 500;
-    margin-bottom: 6px;
+font-size: 12.5px;
+color: #FFD60A;
+font-weight: 500;
+margin-bottom: 6px;
 }
 .ts-unverified-banner {
-    background: rgba(255, 159, 10, 0.12);
-    border: 1px solid rgba(255, 159, 10, 0.35);
-    color: #FFB340;
-    border-radius: 8px;
-    padding: 6px 10px;
-    font-size: 12px;
-    font-weight: 600;
-    margin-top: 6px;
+background: rgba(255, 159, 10, 0.12);
+border: 1px solid rgba(255, 159, 10, 0.35);
+color: #FFB340;
+border-radius: 8px;
+padding: 6px 10px;
+font-size: 12px;
+font-weight: 600;
+margin-top: 6px;
 }
 .ts-cross-contact {
-    font-size: 11.5px;
-    color: #8E8E93;
-    margin-top: 6px;
+font-size: 11.5px;
+color: #8E8E93;
+margin-top: 6px;
 }
 </style>
-"""
+""".splitlines()
+    if line.strip()
+)

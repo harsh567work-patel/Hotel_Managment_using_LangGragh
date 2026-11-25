@@ -561,6 +561,7 @@ def test_fssai_symbols_egg_rule_and_unverified_card_rendering() -> None:
     assert FSSAI_VEG_SVG in veg_html
     assert "Tree nuts" in veg_html
     assert "Dietary info not verified" not in veg_html
+    assert all(not ln.startswith("    ") for ln in veg_html.splitlines()), "HTML card must have no 4-space CommonMark indentation"
 
     # 2. Egg-containing item (even if diet_veg was wrongly set or UNKNOWN) -> Brown triangle in brown square!
     egg_item = _make_fully_safe_base_item(

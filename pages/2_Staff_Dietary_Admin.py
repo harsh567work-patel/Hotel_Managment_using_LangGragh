@@ -32,12 +32,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-with st.sidebar:
-    st.markdown("### Navigation")
-    st.page_link("app.py", label="💬 AI Ordering Concierge")
-    st.page_link("pages/1_Customer_Menu.py", label="📋 Menu & Allergens")
-    st.page_link("pages/2_Staff_Dietary_Admin.py", label="🛡️ Staff Dietary Admin")
-
 st.title("🛡️ Staff Dietary & Allergen Verification Portal")
 
 repo = DietaryRepository()

@@ -763,11 +763,6 @@ def _render_live_orders_panel() -> None:
 
 # ── Sidebar — Live Cart & Order Status ───────────────────────────────────────
 with st.sidebar:
-    st.markdown("## 🧭 Explore")
-    st.page_link("app.py", label="💬 AI Ordering Concierge")
-    st.page_link("pages/1_Customer_Menu.py", label="📋 Menu & Allergens (FSSAI)")
-    st.page_link("pages/2_Staff_Dietary_Admin.py", label="🛡️ Staff Dietary Admin")
-    st.markdown("---")
     st.markdown("## 🛒 Current Cart")
     cart = st.session_state.order_state.get("cart", [])
     address = st.session_state.order_state.get("delivery_address")
