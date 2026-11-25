@@ -230,6 +230,7 @@ class TableSession(Base):
     split_mode: Mapped[str] = mapped_column(String(32), default="by_consumption", nullable=False)
     payment_mode: Mapped[str] = mapped_column(String(32), default="each_pays_own", nullable=False)
     delivery_address_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    sensitive_data_purged_at: Mapped[int | None] = mapped_column(Integer, nullable=True)
     created_at: Mapped[int] = mapped_column(
         Integer, default=lambda: int(datetime.now(UTC).timestamp()), nullable=False
     )
@@ -494,6 +495,8 @@ class SessionEvent(Base):
     )
     type: Mapped[str] = mapped_column(String(64), nullable=False)
     payload: Mapped[str] = mapped_column(Text, default="{}", nullable=False)
+    seq: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    session_version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
     created_at: Mapped[int] = mapped_column(
         Integer, default=lambda: int(datetime.now(UTC).timestamp()), nullable=False
     )
@@ -503,4 +506,5 @@ class SessionEvent(Base):
     __table_args__ = (
         Index("idx_session_events_session_id", "session_id"),
         Index("idx_session_events_created_at", "created_at"),
+        Index("idx_session_events_session_seq", "session_id", "seq"),
     )

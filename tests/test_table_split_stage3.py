@@ -358,7 +358,7 @@ def test_monotonicity_property_exhaustive_and_fuzzed() -> None:
 def test_migration_002_up_and_down_reversibility(tmp_path: Path) -> None:
     db_path = tmp_path / "stage3_mig.db"
     applied = migrate_up(db_path)
-    assert applied == ["001", "002"]
+    assert "002" in applied
 
     conn = get_connection(db_path)
     cols = {r[1] for r in conn.execute("PRAGMA table_info(menu_item_extensions);").fetchall()}
@@ -374,15 +374,16 @@ def test_migration_002_up_and_down_reversibility(tmp_path: Path) -> None:
             "INSERT INTO menu_item_extensions (item_id, price_paise, sales_volume) VALUES ('T2', 1000, -1);"
         )
 
-    # Insert valid row and then test downgrade of 002 only
+    # Insert valid row and then roll back down past 002
     conn.execute(
         "INSERT INTO menu_item_extensions (item_id, price_paise, contains_honey, sales_volume) VALUES ('T3', 5000, 'NO', 42);"
     )
     conn.commit()
     conn.close()
 
-    rolled_back = migrate_down(db_path, steps=1)
-    assert rolled_back == ["002"]
+    steps_to_002 = len(applied) - applied.index("002")
+    rolled_back = migrate_down(db_path, steps=steps_to_002)
+    assert "002" in rolled_back
 
     conn2 = get_connection(db_path)
     cols_after = {r[1] for r in conn2.execute("PRAGMA table_info(menu_item_extensions);").fetchall()}

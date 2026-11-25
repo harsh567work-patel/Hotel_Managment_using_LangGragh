@@ -45,7 +45,11 @@ RESTAURANT_LOCATION = "12, Food Street, Bangalore - 560001"
 # ── Table Split Mode Configuration ──────────────────────────────────────────
 TABLE_SPLIT_ENABLED = os.getenv("TABLE_SPLIT_ENABLED", "false").lower() in ("true", "1", "yes")
 AI_PARSER_ENABLED = os.getenv("AI_PARSER_ENABLED", "false").lower() in ("true", "1", "yes")
-TABLE_SPLIT_SESSION_TTL_MINUTES = int(os.getenv("TABLE_SPLIT_SESSION_TTL_MINUTES", "180"))
+TABLE_SPLIT_SESSION_TTL_MINUTES = int(os.getenv("TABLE_SPLIT_SESSION_TTL_MINUTES", "120"))
+TABLE_SPLIT_DEFAULT_EXPIRY_SECONDS = int(os.getenv("TABLE_SPLIT_DEFAULT_EXPIRY_SECONDS", "7200"))  # 2 hours
+TABLE_SPLIT_MAX_EXPIRY_SECONDS = int(os.getenv("TABLE_SPLIT_MAX_EXPIRY_SECONDS", "86400"))     # 24 hours max
+TABLE_SPLIT_RETENTION_SECONDS = int(os.getenv("TABLE_SPLIT_RETENTION_SECONDS", "86400"))       # 24h after expiry
+TABLE_SPLIT_MAX_PARTICIPANTS = int(os.getenv("TABLE_SPLIT_MAX_PARTICIPANTS", "12"))
 TABLE_SPLIT_ROOM_CODE_PREFIX = os.getenv("TABLE_SPLIT_ROOM_CODE_PREFIX", "TAB")
 TABLE_SPLIT_ROOM_CODE_SUFFIX_LEN = int(os.getenv("TABLE_SPLIT_ROOM_CODE_SUFFIX_LEN", "4"))
 RESTAURANT_GST_BPS = int(os.getenv("RESTAURANT_GST_BPS", "500"))  # 5.00% GST (basis points)
