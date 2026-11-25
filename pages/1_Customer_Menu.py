@@ -21,12 +21,11 @@ st.set_page_config(
 )
 
 st.markdown(
-    """
-    <style>
-    .stApp, [data-testid="stAppViewContainer"] { background-color: #080808; color: #E5E5EA; }
-    h1, h2, h3 { color: #FF6B35; }
-    </style>
-    """ + MENU_CARD_CSS,
+    "<style>\n"
+    ".stApp, [data-testid=\"stAppViewContainer\"] { background-color: #080808; color: #E5E5EA; }\n"
+    "h1, h2, h3 { color: #FF6B35; }\n"
+    "</style>\n"
+    + MENU_CARD_CSS,
     unsafe_allow_html=True,
 )
 

@@ -49,6 +49,7 @@ from table_split.enums import TriState
 from table_split.ui_components import (
     FSSAI_NON_VEG_SVG,
     FSSAI_VEG_SVG,
+    MENU_CARD_CSS,
     render_menu_item_card_html,
 )
 
@@ -562,6 +563,7 @@ def test_fssai_symbols_egg_rule_and_unverified_card_rendering() -> None:
     assert "Tree nuts" in veg_html
     assert "Dietary info not verified" not in veg_html
     assert all(not ln.startswith("    ") for ln in veg_html.splitlines()), "HTML card must have no 4-space CommonMark indentation"
+    assert all(not ln.startswith("    ") for ln in MENU_CARD_CSS.splitlines()), "CSS must have no 4-space CommonMark indentation"
 
     # 2. Egg-containing item (even if diet_veg was wrongly set or UNKNOWN) -> Brown triangle in brown square!
     egg_item = _make_fully_safe_base_item(
