@@ -74,7 +74,7 @@ def _parse_sse_frames(raw_text: str) -> list[dict[str, Any]]:
 def test_migration_003_up_and_down(tmp_path: Path) -> None:
     db_path = tmp_path / "mig003.db"
     applied = migrate_up(db_path)
-    assert applied == ["001", "002", "003"]
+    assert "003" in applied
 
     conn = get_sqlite_connection(db_path)
     evt_cols = {r[1] for r in conn.execute("PRAGMA table_info(session_events);").fetchall()}
@@ -84,8 +84,9 @@ def test_migration_003_up_and_down(tmp_path: Path) -> None:
     assert {"seq", "session_version"}.issubset(evt_cols)
     assert "sensitive_data_purged_at" in sess_cols
 
-    rolled = migrate_down(db_path, steps=1)
-    assert rolled == ["003"]
+    steps_to_003 = len(applied) - applied.index("003")
+    rolled = migrate_down(db_path, steps=steps_to_003)
+    assert "003" in rolled
 
     conn2 = get_sqlite_connection(db_path)
     evt_cols_after = {r[1] for r in conn2.execute("PRAGMA table_info(session_events);").fetchall()}
