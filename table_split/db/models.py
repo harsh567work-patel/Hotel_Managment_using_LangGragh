@@ -508,3 +508,34 @@ class SessionEvent(Base):
         Index("idx_session_events_created_at", "created_at"),
         Index("idx_session_events_session_seq", "session_id", "seq"),
     )
+
+
+# ---------------------------------------------------------------------------
+# 10. Parser Logs (PII-Redacted, 7-Day Retention)
+# ---------------------------------------------------------------------------
+class ParserLog(Base):
+    __tablename__ = "parser_logs"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    session_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    participant_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    locale: Mapped[str] = mapped_column(String(32), default="en-IN", nullable=False)
+    redacted_input: Mapped[str] = mapped_column(Text, nullable=False)
+    redacted_output_json: Mapped[str] = mapped_column(Text, default="{}", nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False)
+    error_code: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    latency_ms: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    created_at: Mapped[int] = mapped_column(
+        Integer, default=lambda: int(datetime.now(UTC).timestamp()), nullable=False
+    )
+    expires_at: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('success', 'timeout', 'schema_error', 'disabled', 'error')",
+            name="ck_parser_log_status_valid",
+        ),
+        CheckConstraint("latency_ms >= 0", name="ck_parser_log_latency_non_negative"),
+        Index("idx_parser_logs_session_id", "session_id"),
+        Index("idx_parser_logs_expires_at", "expires_at"),
+    )
