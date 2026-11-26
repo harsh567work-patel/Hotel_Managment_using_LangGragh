@@ -28,11 +28,30 @@ from table_split.security import (
     hash_token,
     verify_token,
 )
+from table_split.services.preference_parser import (
+    ALLOWED_ALLERGENS,
+    ALLOWED_DIETS,
+    MenuVocabulary,
+    build_menu_vocabulary_from_json,
+)
 from table_split.sse import SSEHub
 
 OPEN_FOR_JOIN_STATUSES = ("draft", "collecting", "proposing")
 MUTABLE_PREF_STATUSES = ("draft", "collecting", "proposing")
 TERMINAL_STATUSES = ("placed", "cancelled", "expired")
+VALID_DB_PREFERENCE_KINDS = frozenset({
+    "diet",
+    "allergen",
+    "budget_max_paise",
+    "spice_min",
+    "spice_max",
+    "cuisine_like",
+    "dislike_item",
+    "must_include_category",
+    "must_include_item",
+    "freeform",
+})
+VALID_PREFERENCE_SOURCES = frozenset({"chip", "freetext_parsed", "host_set"})
 
 
 class SessionError(Exception):
@@ -122,11 +141,14 @@ class SessionService:
         ).fetchall()
 
         prefs_by_part: dict[str, list[dict[str, Any]]] = {}
+        private_counts_by_part: dict[str, int] = {}
         for pr in pref_rows:
             is_priv = bool(pr["is_private"])
             owner_pid = pr["participant_id"]
-            # CRITICAL PRIVACY RULE: private preferences NEVER returned to other participants or anonymous GET
+            # CRITICAL PRIVACY RULE: private preferences NEVER returned to other participants or anonymous GET.
+            # Peers only see a generic count/notice ("A constraint was applied").
             if is_priv and (viewer_participant_id is None or owner_pid != viewer_participant_id):
+                private_counts_by_part[owner_pid] = private_counts_by_part.get(owner_pid, 0) + 1
                 continue
             prefs_by_part.setdefault(owner_pid, []).append({
                 "id": pr["id"],
@@ -136,22 +158,29 @@ class SessionService:
                 "value": json.loads(pr["value"]),
                 "source": pr["source"],
                 "raw_text": pr["raw_text"] if (not is_priv or owner_pid == viewer_participant_id) else None,
+                "parser_confidence": pr["parser_confidence"],
                 "confirmed_by_user": bool(pr["confirmed_by_user"]),
                 "is_private": is_priv,
             })
 
-        participants_out = [
-            {
-                "id": row["id"],
+        participants_out = []
+        for row in p_rows:
+            pid = row["id"]
+            priv_cnt = private_counts_by_part.get(pid, 0)
+            is_self = viewer_participant_id is not None and viewer_participant_id == pid
+            participants_out.append({
+                "id": pid,
                 "display_name": row["display_name"],
                 "role": row["role"],
                 "status": row["status"],
                 "is_ready": bool(row["is_ready"]),
                 "joined_at": int(row["joined_at"]),
-                "preferences": prefs_by_part.get(row["id"], []),
-            }
-            for row in p_rows
-        ]
+                "preferences": prefs_by_part.get(pid, []),
+                "private_constraints_count": priv_cnt,
+                "private_constraint_notice": (
+                    "A constraint was applied" if (priv_cnt > 0 and not is_self) else None
+                ),
+            })
 
         return {
             "id": sess["id"],
@@ -1121,7 +1150,146 @@ class SessionService:
         self._publish_events(session_id, events_to_publish)
         return state
 
-    def update_preferences(
+    @staticmethod
+    def _preference_semantic_key(kind: str, value: Mapping[str, Any]) -> str:
+        if kind == "diet":
+            return f"diet:{str(value.get('diet', '')).strip().lower()}"
+        if kind == "allergen":
+            return f"allergen:{str(value.get('allergen', '')).strip().lower()}"
+        if kind in ("budget_max_paise", "spice_min", "spice_max"):
+            return kind
+        if kind == "must_include_category":
+            return f"must_include_category:{str(value.get('category_id', '')).strip().lower()}"
+        if kind == "must_include_item":
+            return f"must_include_item:{str(value.get('item_id', '')).strip().lower()}"
+        if kind == "dislike_item":
+            target = value.get("item_id") or value.get("label") or ""
+            return f"dislike_item:{str(target).strip().lower()}"
+        if kind == "cuisine_like":
+            return f"cuisine_like:{str(value.get('cuisine', '')).strip().lower()}"
+        return f"freeform:{str(value.get('note', '')).strip().lower()}"
+
+    @staticmethod
+    def _normalize_preference_inputs(
+        preferences: Sequence[Mapping[str, Any]],
+        *,
+        require_confirmed: bool,
+        vocab: MenuVocabulary | None = None,
+    ) -> list[dict[str, Any]]:
+        """Validates preference rules, expands `spice_range`, and grounds menu IDs."""
+        menu_vocab = vocab or build_menu_vocabulary_from_json()
+        normalized: list[dict[str, Any]] = []
+
+        for pref in preferences:
+            kind = str(pref["kind"]).strip()
+            strength = str(pref.get("strength", "HARD")).strip().upper()
+            if strength not in ("HARD", "SOFT"):
+                raise SessionValidationError(f"Invalid strength '{strength}'. Must be 'HARD' or 'SOFT'.")
+
+            weight = pref.get("weight", 1)
+            if isinstance(weight, bool) or not isinstance(weight, int) or weight < 1 or weight > 5:
+                raise SessionValidationError("Preference weight must be an integer between 1 and 5.")
+
+            source = str(pref.get("source", "chip")).strip()
+            if source not in VALID_PREFERENCE_SOURCES:
+                raise SessionValidationError(f"Unsupported preference source '{source}'.")
+
+            confirmed = bool(pref.get("confirmed_by_user", True))
+            if require_confirmed and not confirmed:
+                raise SessionValidationError(
+                    "Preferences must have confirmed_by_user=True before entering the session."
+                )
+
+            raw_value = pref.get("value", {})
+            if not isinstance(raw_value, Mapping):
+                raise SessionValidationError("Preference 'value' must be an object.")
+            value = dict(raw_value)
+
+            base_meta = {
+                "id": pref.get("id"),
+                "strength": strength,
+                "weight": weight,
+                "source": source,
+                "raw_text": pref.get("raw_text"),
+                "parser_confidence": pref.get("parser_confidence"),
+                "confirmed_by_user": confirmed,
+                "is_private": bool(pref.get("is_private", False)),
+            }
+
+            if kind == "spice_range":
+                mn = value.get("min", 0)
+                mx = value.get("max", 4)
+                if (
+                    isinstance(mn, bool)
+                    or isinstance(mx, bool)
+                    or not isinstance(mn, int)
+                    or not isinstance(mx, int)
+                    or mn < 0
+                    or mx > 4
+                    or mn > mx
+                ):
+                    raise SessionValidationError("spice_range requires integers 0 <= min <= max <= 4.")
+                normalized.append({**base_meta, "id": None, "kind": "spice_min", "value": {"level": mn}})
+                normalized.append({**base_meta, "id": None, "kind": "spice_max", "value": {"level": mx}})
+                continue
+
+            if kind not in VALID_DB_PREFERENCE_KINDS:
+                raise SessionValidationError(f"Unsupported preference kind '{kind}'.")
+
+            if kind in ("diet", "allergen") and strength != "HARD":
+                raise SessionValidationError(f"Preference kind '{kind}' MUST have strength='HARD'.")
+
+            if kind == "diet" and value:
+                diet_val = str(value.get("diet", "")).strip().lower().replace("-", "_").replace(" ", "_")
+                if diet_val and diet_val not in ALLOWED_DIETS:
+                    raise SessionValidationError(f"Unsupported diet '{diet_val}'.")
+                if diet_val:
+                    value = {"diet": diet_val}
+
+            elif kind == "allergen" and value:
+                all_val = str(value.get("allergen", "")).strip().lower().replace("-", "_").replace(" ", "_")
+                if all_val and all_val not in ALLOWED_ALLERGENS:
+                    raise SessionValidationError(f"Unsupported allergen '{all_val}'.")
+                if all_val:
+                    value = {"allergen": all_val}
+
+            elif kind == "budget_max_paise":
+                paise = value.get("max_paise")
+                if isinstance(paise, bool) or not isinstance(paise, int) or paise <= 0:
+                    raise SessionValidationError("budget_max_paise requires positive integer value.max_paise.")
+
+            elif kind in ("spice_min", "spice_max"):
+                lvl = value.get("level", value.get("min") if kind == "spice_min" else value.get("max"))
+                if isinstance(lvl, bool) or not isinstance(lvl, int) or lvl < 0 or lvl > 4:
+                    raise SessionValidationError(f"{kind} requires integer spice level in 0..4.")
+
+            elif kind == "must_include_category":
+                raw_cat = str(value.get("category_id") or "")
+                resolved_cat = menu_vocab.resolve_category_id(raw_cat)
+                if resolved_cat is None:
+                    raise SessionValidationError(f"Unknown menu category '{raw_cat}'.")
+                value = {"category_id": resolved_cat}
+
+            elif kind == "must_include_item":
+                raw_item = str(value.get("item_id") or "")
+                resolved_item = menu_vocab.resolve_dish_id(raw_item)
+                if resolved_item is None:
+                    raise SessionValidationError(f"Unknown menu item '{raw_item}'.")
+                value = {"item_id": resolved_item}
+
+            elif kind == "dislike_item":
+                raw_item = str(value.get("item_id") or "")
+                if raw_item:
+                    resolved_item = menu_vocab.resolve_dish_id(raw_item)
+                    if resolved_item is None:
+                        raise SessionValidationError(f"Unknown menu item '{raw_item}'.")
+                    value["item_id"] = resolved_item
+
+            normalized.append({**base_meta, "kind": kind, "value": value})
+
+        return normalized
+
+    def _apply_preference_write(
         self,
         session_id: str,
         *,
@@ -1129,9 +1297,15 @@ class SessionService:
         expected_version: int,
         preferences: Sequence[Mapping[str, Any]],
         is_ready: bool | None = None,
+        replace_all: bool = True,
+        require_confirmed: bool = False,
         now: int | None = None,
     ) -> dict[str, Any]:
         ts = int(time.time()) if now is None else int(now)
+        normalized = self._normalize_preference_inputs(
+            preferences,
+            require_confirmed=require_confirmed,
+        )
         conn = get_sqlite_connection(self.db_path)
         events_to_publish: list[dict[str, Any]] = []
 
@@ -1150,45 +1324,113 @@ class SessionService:
                         code="SESSION_LOCKED",
                     )
 
-                for pref in preferences:
-                    kind = str(pref["kind"])
-                    strength = str(pref["strength"]).upper()
-                    if kind in ("diet", "allergen") and strength != "HARD":
-                        raise SessionValidationError(f"Preference kind '{kind}' MUST have strength='HARD'.")
-
                 new_version = self._bump_version(
                     conn, session_id, expected_version, viewer_participant_id=participant_id
                 )
 
-                conn.execute("DELETE FROM preferences WHERE participant_id = ?;", (participant_id,))
-                for pref in preferences:
-                    conn.execute(
-                        """
-                        INSERT INTO preferences (
-                            id, participant_id, kind, strength, weight, value,
-                            source, raw_text, parser_confidence, confirmed_by_user, is_private
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-                        """,
-                        (
-                            str(uuid4()),
-                            participant_id,
-                            str(pref["kind"]),
-                            str(pref["strength"]).upper(),
-                            int(pref.get("weight", 1)),
-                            json.dumps(pref.get("value", {})),
-                            str(pref.get("source", "chip")),
-                            pref.get("raw_text"),
-                            pref.get("parser_confidence"),
-                            1 if pref.get("confirmed_by_user", True) else 0,
-                            1 if pref.get("is_private", False) else 0,
-                        ),
-                    )
+                if replace_all:
+                    conn.execute("DELETE FROM preferences WHERE participant_id = ?;", (participant_id,))
+                    for pref in normalized:
+                        conn.execute(
+                            """
+                            INSERT INTO preferences (
+                                id, participant_id, kind, strength, weight, value,
+                                source, raw_text, parser_confidence, confirmed_by_user, is_private
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                            """,
+                            (
+                                str(pref.get("id") or uuid4()),
+                                participant_id,
+                                pref["kind"],
+                                pref["strength"],
+                                int(pref["weight"]),
+                                json.dumps(pref["value"]),
+                                pref["source"],
+                                pref["raw_text"],
+                                pref["parser_confidence"],
+                                1 if pref["confirmed_by_user"] else 0,
+                                1 if pref["is_private"] else 0,
+                            ),
+                        )
+                else:
+                    existing_rows = conn.execute(
+                        "SELECT id, kind, value FROM preferences WHERE participant_id = ?;",
+                        (participant_id,),
+                    ).fetchall()
+                    by_id = {r["id"]: r["id"] for r in existing_rows}
+                    by_semantic = {
+                        self._preference_semantic_key(r["kind"], json.loads(r["value"] or "{}")): r["id"]
+                        for r in existing_rows
+                    }
+
+                    for pref in normalized:
+                        explicit_id = pref.get("id")
+                        if explicit_id and str(explicit_id) not in by_id:
+                            raise SessionValidationError("Preference id does not belong to the calling participant.")
+                        sem_key = self._preference_semantic_key(pref["kind"], pref["value"])
+                        target_id = (
+                            by_id[str(explicit_id)]
+                            if explicit_id
+                            else by_semantic.get(sem_key)
+                        )
+                        if target_id:
+                            conn.execute(
+                                """
+                                UPDATE preferences
+                                SET kind = ?, strength = ?, weight = ?, value = ?, source = ?,
+                                    raw_text = ?, parser_confidence = ?, confirmed_by_user = ?, is_private = ?
+                                WHERE id = ? AND participant_id = ?;
+                                """,
+                                (
+                                    pref["kind"],
+                                    pref["strength"],
+                                    int(pref["weight"]),
+                                    json.dumps(pref["value"]),
+                                    pref["source"],
+                                    pref["raw_text"],
+                                    pref["parser_confidence"],
+                                    1 if pref["confirmed_by_user"] else 0,
+                                    1 if pref["is_private"] else 0,
+                                    target_id,
+                                    participant_id,
+                                ),
+                            )
+                        else:
+                            new_pid = str(explicit_id or uuid4())
+                            conn.execute(
+                                """
+                                INSERT INTO preferences (
+                                    id, participant_id, kind, strength, weight, value,
+                                    source, raw_text, parser_confidence, confirmed_by_user, is_private
+                                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                                """,
+                                (
+                                    new_pid,
+                                    participant_id,
+                                    pref["kind"],
+                                    pref["strength"],
+                                    int(pref["weight"]),
+                                    json.dumps(pref["value"]),
+                                    pref["source"],
+                                    pref["raw_text"],
+                                    pref["parser_confidence"],
+                                    1 if pref["confirmed_by_user"] else 0,
+                                    1 if pref["is_private"] else 0,
+                                ),
+                            )
+                            by_id[new_pid] = new_pid
+                            by_semantic[sem_key] = new_pid
 
                 if is_ready is not None:
                     conn.execute(
                         "UPDATE participants SET is_ready = ? WHERE id = ? AND session_id = ?;",
                         (1 if is_ready else 0, participant_id, session_id),
                     )
+
+                total_row = conn.execute(
+                    "SELECT COUNT(*) AS cnt FROM preferences WHERE participant_id = ? AND confirmed_by_user = 1;",
+                    (participant_id,),
+                ).fetchone()
 
                 # CRITICAL PRIVACY RULE: Never embed raw preference values or raw_text in SSE events!
                 evt = self._append_event(
@@ -1199,7 +1441,7 @@ class SessionService:
                     participant_id=participant_id,
                     payload={
                         "participant_id": participant_id,
-                        "preference_count": len(preferences),
+                        "preference_count": int(total_row["cnt"]),
                         "is_ready": is_ready,
                     },
                     now=ts,
@@ -1216,6 +1458,107 @@ class SessionService:
 
         self._publish_events(session_id, events_to_publish)
         return state
+
+    def update_preferences(
+        self,
+        session_id: str,
+        *,
+        participant_id: str,
+        expected_version: int,
+        preferences: Sequence[Mapping[str, Any]],
+        is_ready: bool | None = None,
+        now: int | None = None,
+    ) -> dict[str, Any]:
+        """Replaces the participant's preferences atomically (PUT /preferences)."""
+        return self._apply_preference_write(
+            session_id,
+            participant_id=participant_id,
+            expected_version=expected_version,
+            preferences=preferences,
+            is_ready=is_ready,
+            replace_all=True,
+            require_confirmed=False,
+            now=now,
+        )
+
+    def upsert_preferences(
+        self,
+        session_id: str,
+        *,
+        participant_id: str,
+        expected_version: int,
+        preferences: Sequence[Mapping[str, Any]],
+        is_ready: bool | None = None,
+        replace_all: bool = False,
+        now: int | None = None,
+    ) -> dict[str, Any]:
+        """Upserts confirmed preferences for the calling participant (POST /preferences)."""
+        return self._apply_preference_write(
+            session_id,
+            participant_id=participant_id,
+            expected_version=expected_version,
+            preferences=preferences,
+            is_ready=is_ready,
+            replace_all=replace_all,
+            require_confirmed=True,
+            now=now,
+        )
+
+    def assert_can_edit_preferences(self, session_id: str, participant_id: str, *, now: int | None = None) -> None:
+        """Verifies session is open/non-terminal and caller is an active participant."""
+        ts = int(time.time()) if now is None else int(now)
+        conn = get_sqlite_connection(self.db_path)
+        try:
+            sess = self._load_session_row(conn, session_id)
+            self._assert_not_terminal(conn, sess, ts, viewer_participant_id=participant_id)
+            self._require_active_participant(conn, session_id, participant_id)
+            if sess["status"] not in MUTABLE_PREF_STATUSES:
+                latest = self._build_sanitized_state(conn, session_id, viewer_participant_id=participant_id)
+                raise SessionConflictError(
+                    f"Preferences cannot be modified while session is '{sess['status']}'.",
+                    latest_state=latest,
+                    code="SESSION_LOCKED",
+                )
+        finally:
+            conn.close()
+
+    def get_confirmed_engine_preferences(self, session_id: str) -> list[dict[str, Any]]:
+        """
+        Returns ONLY confirmed (`confirmed_by_user=1`) preferences for active participants
+        for internal solver/engine consumption (includes private constraints while never
+        exposing them in peer GET/SSE views).
+        """
+        conn = get_sqlite_connection(self.db_path)
+        try:
+            self._load_session_row(conn, session_id)
+            rows = conn.execute(
+                """
+                SELECT p.*, part.display_name
+                FROM preferences p
+                JOIN participants part ON part.id = p.participant_id
+                WHERE part.session_id = ?
+                  AND part.status = 'active'
+                  AND p.confirmed_by_user = 1
+                ORDER BY part.joined_at ASC, part.rowid ASC, p.id ASC;
+                """,
+                (session_id,),
+            ).fetchall()
+            return [
+                {
+                    "id": r["id"],
+                    "participant_id": r["participant_id"],
+                    "kind": r["kind"],
+                    "strength": r["strength"],
+                    "weight": int(r["weight"]),
+                    "value": json.loads(r["value"]),
+                    "source": r["source"],
+                    "confirmed_by_user": True,
+                    "is_private": bool(r["is_private"]),
+                }
+                for r in rows
+            ]
+        finally:
+            conn.close()
 
     def post_message(
         self,
