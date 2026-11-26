@@ -41,6 +41,7 @@ def run_expiry_and_retention_job(
     expired_session_ids: list[str] = []
     purged_session_ids: list[str] = []
     deleted_preferences_count = 0
+    deleted_parser_logs_count = 0
     events_to_publish: list[tuple[str, dict[str, Any]]] = []
 
     conn = get_sqlite_connection(target_db)
@@ -152,6 +153,13 @@ def run_expiry_and_retention_job(
                 )
                 purged_session_ids.append(sid)
 
+            # Pass 3: Purge expired PII-redacted parser audit logs (7-day retention)
+            del_logs = conn.execute(
+                "DELETE FROM parser_logs WHERE expires_at <= ?;",
+                (ts,),
+            )
+            deleted_parser_logs_count = int(del_logs.rowcount or 0)
+
             conn.execute("COMMIT;")
         except Exception:
             conn.execute("ROLLBACK;")
@@ -169,4 +177,5 @@ def run_expiry_and_retention_job(
         "purged_session_count": len(purged_session_ids),
         "purged_session_ids": purged_session_ids,
         "deleted_preferences_count": deleted_preferences_count,
+        "deleted_parser_logs_count": deleted_parser_logs_count,
     }
