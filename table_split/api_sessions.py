@@ -22,6 +22,12 @@ from config import (
 )
 from table_split.rate_limit import RateLimitExceededError, SlidingWindowRateLimiter
 from table_split.security import hash_token
+from table_split.services.preference_parser import (
+    GroqPreferenceParser,
+    PreferenceParser,
+    build_menu_vocabulary_from_json,
+    record_parser_log,
+)
 from table_split.services.session_service import (
     ForbiddenError,
     SessionConflictError,
@@ -52,8 +58,13 @@ def get_rate_limiter() -> SlidingWindowRateLimiter:
     return _default_rate_limiter
 
 
+def get_preference_parser() -> PreferenceParser:
+    return GroqPreferenceParser()
+
+
 SessionServiceDep = Annotated[SessionService, Depends(get_session_service)]
 RateLimiterDep = Annotated[SlidingWindowRateLimiter, Depends(get_rate_limiter)]
+PreferenceParserDep = Annotated[PreferenceParser, Depends(get_preference_parser)]
 
 
 def _cookie_name(session_id: str) -> str:
@@ -148,6 +159,7 @@ class ExtendSessionRequest(BaseModel):
 
 
 class PreferenceInput(BaseModel):
+    id: str | None = None
     kind: str
     strength: str = "HARD"
     weight: int = Field(default=1, ge=1, le=5)
@@ -163,6 +175,18 @@ class UpdatePreferencesRequest(BaseModel):
     version: int = Field(..., ge=1)
     preferences: list[PreferenceInput] = Field(default_factory=list)
     is_ready: bool | None = None
+
+
+class UpsertPreferencesRequest(BaseModel):
+    version: int = Field(..., ge=1)
+    preferences: list[PreferenceInput] = Field(default_factory=list)
+    is_ready: bool | None = None
+    replace_all: bool = False
+
+
+class ParsePreferencesRequest(BaseModel):
+    text: str = Field(..., max_length=2000)
+    locale: str = Field(default="en-IN", max_length=32)
 
 
 class PostMessageRequest(BaseModel):
@@ -500,6 +524,83 @@ def update_preferences(
             preferences=[p.model_dump() for p in payload.preferences],
             is_ready=payload.is_ready,
         )
+    except (SessionError, RateLimitExceededError) as exc:
+        err = _handle_session_error(exc)
+        if isinstance(err, JSONResponse):
+            return err
+        raise err from exc
+
+
+@router.post("/table-sessions/{session_id}/preferences")
+def upsert_preferences(
+    session_id: str,
+    payload: UpsertPreferencesRequest,
+    request: Request,
+    service: SessionServiceDep,
+    limiter: RateLimiterDep,
+) -> Any:
+    """Upserts confirmed preferences (chips or user-confirmed parsed entries) for the calling participant."""
+    raw_token, user_id = _extract_raw_token(request, session_id)
+    try:
+        caller = service.authenticate_participant(session_id, raw_token, user_id=user_id)
+        limiter.check_and_consume("preference_participant", f"{session_id}:{caller['id']}")
+        return service.upsert_preferences(
+            session_id,
+            participant_id=caller["id"],
+            expected_version=payload.version,
+            preferences=[p.model_dump() for p in payload.preferences],
+            is_ready=payload.is_ready,
+            replace_all=payload.replace_all,
+        )
+    except (SessionError, RateLimitExceededError) as exc:
+        err = _handle_session_error(exc)
+        if isinstance(err, JSONResponse):
+            return err
+        raise err from exc
+
+
+@router.post("/table-sessions/{session_id}/preferences/parse")
+def parse_free_text_preferences(
+    session_id: str,
+    payload: ParsePreferencesRequest,
+    request: Request,
+    service: SessionServiceDep,
+    limiter: RateLimiterDep,
+    parser: PreferenceParserDep,
+) -> Any:
+    """
+    Parses free-text dining preferences (English/Hinglish/Hindi) via the provider-agnostic
+    PreferenceParser into unconfirmed candidate chips. Nothing enters the engine until confirmed.
+    """
+    raw_token, user_id = _extract_raw_token(request, session_id)
+    try:
+        caller = service.authenticate_participant(session_id, raw_token, user_id=user_id)
+        service.assert_can_edit_preferences(session_id, caller["id"])
+        limiter.check_and_consume("preference_participant", f"{session_id}:{caller['id']}")
+
+        vocab = build_menu_vocabulary_from_json()
+        parsed = parser.parse(
+            text=payload.text,
+            locale=payload.locale,
+            menu_vocabulary=vocab,
+        )
+        log_id = record_parser_log(
+            service.db_path,
+            session_id=session_id,
+            participant_id=caller["id"],
+            locale=payload.locale,
+            raw_input=payload.text,
+            parsed=parsed,
+            error_code=None if parsed.status == "success" else parsed.status.upper(),
+        )
+        return {
+            "log_id": log_id,
+            "status": parsed.status,
+            "fallback_to_chips": parsed.fallback_to_chips,
+            "friendly_message": parsed.friendly_message,
+            "items": [it.model_dump() for it in parsed.items],
+            "low_confidence_items": [it.model_dump() for it in parsed.items if it.needs_confirmation_prompt],
+        }
     except (SessionError, RateLimitExceededError) as exc:
         err = _handle_session_error(exc)
         if isinstance(err, JSONResponse):
