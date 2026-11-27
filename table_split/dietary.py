@@ -28,7 +28,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field, field_validator
 
 from table_split.enums import Allergen, DietRule, TriState
-from table_split.models import DinerPreference, MenuItem
+from table_split.models import DinerPreference, MenuItem, validate_strict_paise
 
 # Canonical list of all 21 tri-state dietary, ingredient, and allergen fields tracked per menu item
 DIET_TRISTATE_FIELDS: tuple[str, ...] = (
@@ -201,11 +201,15 @@ class DietaryItem(BaseModel):
     category: str = ""
     description: str = ""
     price_paise: int = 0
+    tax_rate_bps: int = 500
+    packaging_paise: int = 0
     is_available: bool = True
     spice_level: int | None = None
     serves: int = 1
     shareable: bool = True
     sales_volume: int = 0
+    tags: list[str] = Field(default_factory=list)
+    cuisine: str | None = None
 
     # Verification metadata
     verified_by: str | None = None
@@ -239,6 +243,11 @@ class DietaryItem(BaseModel):
     allergen_sesame: TriState = TriState.UNKNOWN
     allergen_mustard: TriState = TriState.UNKNOWN
     contains_dairy: TriState = TriState.UNKNOWN
+
+    @field_validator("price_paise", "tax_rate_bps", "packaging_paise", mode="before")
+    @classmethod
+    def _check_strict_paise(cls, v: Any) -> int:
+        return validate_strict_paise(v)
 
     @field_validator(*ALL_TRISTATE_FIELDS, mode="before")
     @classmethod
@@ -309,6 +318,7 @@ class DietaryItem(BaseModel):
             price_paise=item.price_paise,
             is_available=item.is_available,
             spice_level=profile.spice_level.rank,
+            tags=list(item.tags),
             verified_by=verif.verified_by,
             verified_at=verif.verified_at,
             cross_contact_note=verif.verification_notes,
@@ -442,7 +452,11 @@ def _coerce_item(item: DietaryItem | MenuItem | Mapping[str, Any]) -> DietaryIte
             "serves": getattr(item, "serves", 1),
             "shareable": bool(getattr(item, "shareable", True)),
             "price_paise": getattr(item, "price_paise", 0),
+            "tax_rate_bps": getattr(item, "tax_rate_bps", 500),
+            "packaging_paise": getattr(item, "packaging_paise", 0),
             "sales_volume": getattr(item, "sales_volume", 0),
+            "tags": list(getattr(item, "tags", []) or []),
+            "cuisine": getattr(item, "cuisine", None),
         }
         for field_name in ALL_TRISTATE_FIELDS:
             if hasattr(item, field_name):

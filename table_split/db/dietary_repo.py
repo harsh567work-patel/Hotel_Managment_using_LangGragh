@@ -82,6 +82,8 @@ class DietaryRepository:
                 "price_paise": price_paise,
                 "is_available": bool(raw.get("is_available", True)),
                 "sales_volume": raw_sales,
+                "tags": list(raw.get("tags", [])),
+                "cuisine": raw.get("cuisine"),
             }
             if ext:
                 for field_name in ALL_TRISTATE_FIELDS:
@@ -90,6 +92,8 @@ class DietaryRepository:
                 payload["spice_level"] = ext.get("spice_level")
                 payload["serves"] = ext.get("serves", 1)
                 payload["shareable"] = bool(ext.get("shareable", 1))
+                payload["tax_rate_bps"] = int(ext.get("tax_rate_bps", 500))
+                payload["packaging_paise"] = int(ext.get("packaging_paise", 0))
                 payload["verified_by"] = ext.get("verified_by")
                 payload["verified_at"] = ext.get("verified_at")
                 payload["cross_contact_note"] = ext.get("cross_contact_note")
