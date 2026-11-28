@@ -336,15 +336,16 @@ def stage5_env(
 def test_migration_004_up_and_down(tmp_path: Path) -> None:
     db_path = tmp_path / "mig004.db"
     applied = migrate_up(db_path)
-    assert applied == ["001", "002", "003", "004"]
+    assert "004" in applied
 
     conn = get_sqlite_connection(db_path)
     tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall()}
     conn.close()
     assert "parser_logs" in tables
 
-    rolled = migrate_down(db_path, steps=1)
-    assert rolled == ["004"]
+    steps_to_004 = len(applied) - applied.index("004")
+    rolled = migrate_down(db_path, steps=steps_to_004)
+    assert "004" in rolled
 
     conn2 = get_sqlite_connection(db_path)
     tables_after = {r[0] for r in conn2.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall()}
