@@ -41,16 +41,26 @@ from graph.orders import (
 )
 from rag.qdrant_client import get_all_menu_dishes, get_client, MENU_COLLECTION
 from table_split.api_dietary import router as dietary_router
+from table_split.api_payments import get_payment_provider
+from table_split.api_payments import router as payments_router
 from table_split.api_sessions import get_sse_hub
 from table_split.api_sessions import router as sessions_router
+from table_split.services.payment_reconciler import reconcile_pending_payments
 from table_split.services.session_reaper import run_expiry_and_retention_job
 
 
 async def _session_reaper_loop(interval_seconds: float = 60.0) -> None:
-    """Periodic background task expiring overdue table sessions and purging old private data."""
+    """Periodic background task expiring overdue table sessions, purging old private data, and reconciling pending payments."""
     while True:
         with contextlib.suppress(Exception):
-            await asyncio.to_thread(run_expiry_and_retention_job, sse_hub=get_sse_hub())
+            hub = get_sse_hub()
+            await asyncio.to_thread(run_expiry_and_retention_job, sse_hub=hub)
+            await asyncio.to_thread(
+                reconcile_pending_payments,
+                provider=get_payment_provider(),
+                sse_hub=hub,
+                stale_after_seconds=60,
+            )
         try:
             await asyncio.sleep(interval_seconds)
         except asyncio.CancelledError:
@@ -91,9 +101,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount Table Split Dietary & Verification endpoints (Stage 3) and Session Lifecycle endpoints (Stage 4)
+# Mount Table Split Dietary & Verification endpoints (Stage 3), Session Lifecycle (Stage 4), and Payments (Stage 9)
 app.include_router(dietary_router)
 app.include_router(sessions_router)
+app.include_router(payments_router)
 
 # In-memory session store: session_id -> OrderState
 _sessions: Dict[str, OrderState] = {}
